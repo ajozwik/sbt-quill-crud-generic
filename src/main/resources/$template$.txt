@@ -1,0 +1,43 @@
+package __PACKAGE__
+
+import io.getquill.NamingStrategy
+import io.getquill.context.jdbc.JdbcContext
+import io.getquill.context.sql.idiom.SqlIdiom
+import __BEAN_PACKAGE__
+import __ID_PACKAGE__
+import pl.jozwik.quillgeneric.quillmacro.sync.{ Queries, Repository }
+
+import scala.util.Try
+
+trait __REPOSITORY_NAME__[Dialect <: SqlIdiom, Naming <: NamingStrategy]
+  extends Repository[__ID__, __BEAN__] {
+  val context: JdbcContext[Dialect, Naming] with Queries
+
+  import context._
+
+  override def all: Try[Seq[__BEAN__]] =
+    context.all[__BEAN__]
+
+  override def create(__BEAN__: __BEAN__, generateId: Boolean = false): Try[__ID__] =
+    if (generateId) {
+      context.createAndGenerateId[__ID__, __BEAN__](__BEAN__)
+    } else {
+      context.create[__ID__, __BEAN__](__BEAN__)
+    }
+
+  override def read(id: __ID__): Try[Option[__BEAN__]] =
+    context.read[__ID__, __BEAN__](id)
+
+  override def createOrUpdate(entity: __BEAN__): Try[__ID__] =
+    context.insertOrUpdate[__ID__, __BEAN__](entity)
+
+  override def update(__BEAN__: __BEAN__): Try[Long] =
+    context.update[__BEAN__](__BEAN__)
+
+  override def update(id: __ID__, action: __BEAN__ => (Any, Any), actions: Function[__BEAN__, (Any, Any)]*): Try[Long] =
+    context.updateById[__BEAN__](_.id == lift(id), action, actions: _*)
+
+  override def delete(id: __ID__): Try[Boolean] =
+    context.deleteByFilter[__BEAN__](_.id == context.lift(id))
+
+}

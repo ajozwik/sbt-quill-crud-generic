@@ -1,5 +1,3 @@
-
-
 name := "sbt-quill-crud-generic"
 
 organization := "com.github.ajozwik"

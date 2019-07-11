@@ -1,5 +1,5 @@
 package pl.jozwik.quillgeneric.sbt
 
-class SbtquillcrudgenericTest {
+class SbtQuillCrudGenericTest {
   // write tests with your preferred framework
 }
