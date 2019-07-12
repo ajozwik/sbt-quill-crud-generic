@@ -20,36 +20,41 @@ object CodeGenerator {
 
   private val template = "$template$.txt"
 
-  private val defaultContent = readTemplate
+  private lazy val defaultContent = readTemplate
 
-  def generate(rootPath: File, content: String = defaultContent)(description: RepositoryDescription) = {
+  def generate(rootPath: File, content: String = defaultContent)(description: RepositoryDescription): (File, String) = {
     val (packageName, repositorySimpleClassName) = toPackageNameSimpleClass(description.repositoryClassName)
     val (_, beanSimpleClassName) = toPackageNameSimpleClass(description.beanClass)
     val (_, beanIdSimpleClassName) = toPackageNameSimpleClass(description.beanIdClass)
     val path = Paths.get(rootPath.getAbsolutePath, packageName: _*)
     val dir = path.toFile
     dir.mkdirs()
+    val p = packageName match {
+      case Seq() =>
+        ""
+      case s =>
+        s"""package ${s.mkString(".")}"""
+    }
     val file = dir / s"$repositorySimpleClassName.scala"
     val result = content
-      .replace(packageTemplate, packageName.mkString("."))
+      .replace(packageTemplate, p)
       .replace(repositoryClassTemplate, repositorySimpleClassName)
       .replace(beanTemplate, beanSimpleClassName)
       .replace(beanPackageTemplate, description.beanClass)
       .replace(beanIdTemplate, beanIdSimpleClassName)
       .replace(beanIdPackageTemplate, description.beanIdClass)
 
-    IO.write(file, result)
-    file
+    (file, result)
   }
 
-  private def toPackageNameSimpleClass(className: String): (Seq[String], String) = {
+  private[sbt] def toPackageNameSimpleClass(className: String): (Seq[String], String) = {
     val array = className.split("\\.")
     val packageName = array.slice(0, array.length - 1)
     val repositorySimpleClassName = array(array.length - 1)
     (packageName, repositorySimpleClassName)
   }
 
-  private val readTemplate: String = {
+  private lazy val readTemplate: String = {
     val input = Option(getClass.getClassLoader.getResourceAsStream(template))
       .getOrElse(getClass.getClassLoader.getResourceAsStream(s"/$template"))
     try {

@@ -1,4 +1,4 @@
-package __PACKAGE__
+__PACKAGE__
 
 import io.getquill.NamingStrategy
 import io.getquill.context.jdbc.JdbcContext
@@ -9,11 +9,11 @@ import pl.jozwik.quillgeneric.quillmacro.sync.{ Queries, Repository }
 
 import scala.util.Try
 
-trait __REPOSITORY_NAME__[Dialect <: SqlIdiom, Naming <: NamingStrategy]
+final class __REPOSITORY_NAME__[Dialect <: SqlIdiom, Naming <: NamingStrategy](
+    protected val context: JdbcContext[Dialect, Naming] with Queries,
+    protected val tableName: String
+)
   extends Repository[__ID__, __BEAN__] {
-  val context: JdbcContext[Dialect, Naming] with Queries
-
-  import context._
 
   override def all: Try[Seq[__BEAN__]] =
     context.all[__BEAN__]
@@ -29,15 +29,15 @@ trait __REPOSITORY_NAME__[Dialect <: SqlIdiom, Naming <: NamingStrategy]
     context.read[__ID__, __BEAN__](id)
 
   override def createOrUpdate(entity: __BEAN__, generateId: Boolean = false): Try[__ID__] =
-    context.insertOrUpdate[__ID__, __BEAN__](entity, generateId)
+    context.createOrUpdate[__ID__, __BEAN__](entity, generateId)
 
   override def update(__BEAN__: __BEAN__): Try[Long] =
     context.update[__BEAN__](__BEAN__)
 
   override def update(id: __ID__, action: __BEAN__ => (Any, Any), actions: Function[__BEAN__, (Any, Any)]*): Try[Long] =
-    context.updateById[__BEAN__](_.id == lift(id), action, actions: _*)
+    context.updateByFilter[__BEAN__](_.id == id, action, actions: _*)
 
   override def delete(id: __ID__): Try[Boolean] =
-    context.deleteByFilter[__BEAN__](_.id == context.lift(id))
+    context.deleteByFilter[__BEAN__](_.id == id)
 
 }
