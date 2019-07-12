@@ -5,6 +5,8 @@ import java.nio.file.Paths
 
 import sbt._
 
+import scala.io.Source
+
 object CodeGenerator {
 
   private val packageTemplate = "__PACKAGE__"
@@ -16,7 +18,11 @@ object CodeGenerator {
   private val beanIdTemplate = "__ID__"
   private val beanIdPackageTemplate = "__ID_PACKAGE__"
 
-  def generate(rootPath: File, content: String)(description: RepositoryDescription) = {
+  private val template = "$template$.txt"
+
+  private val defaultContent = readTemplate
+
+  def generate(rootPath: File, content: String = defaultContent)(description: RepositoryDescription) = {
     val (packageName, repositorySimpleClassName) = toPackageNameSimpleClass(description.repositoryClassName)
     val (_, beanSimpleClassName) = toPackageNameSimpleClass(description.beanClass)
     val (_, beanIdSimpleClassName) = toPackageNameSimpleClass(description.beanIdClass)
@@ -41,5 +47,15 @@ object CodeGenerator {
     val packageName = array.slice(0, array.length - 1)
     val repositorySimpleClassName = array(array.length - 1)
     (packageName, repositorySimpleClassName)
+  }
+
+  private val readTemplate: String = {
+    val input = Option(getClass.getClassLoader.getResourceAsStream(template))
+      .getOrElse(getClass.getClassLoader.getResourceAsStream(s"/$template"))
+    try {
+      Source.fromInputStream(input).mkString
+    } finally {
+      input.close()
+    }
   }
 }

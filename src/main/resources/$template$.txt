@@ -28,8 +28,8 @@ trait __REPOSITORY_NAME__[Dialect <: SqlIdiom, Naming <: NamingStrategy]
   override def read(id: __ID__): Try[Option[__BEAN__]] =
     context.read[__ID__, __BEAN__](id)
 
-  override def createOrUpdate(entity: __BEAN__): Try[__ID__] =
-    context.insertOrUpdate[__ID__, __BEAN__](entity)
+  override def createOrUpdate(entity: __BEAN__, generateId: Boolean = false): Try[__ID__] =
+    context.insertOrUpdate[__ID__, __BEAN__](entity, generateId)
 
   override def update(__BEAN__: __BEAN__): Try[Long] =
     context.update[__BEAN__](__BEAN__)
