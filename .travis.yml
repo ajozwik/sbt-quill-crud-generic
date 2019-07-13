@@ -4,8 +4,8 @@ jdk:
   - oraclejdk8
 
 script:
-  ## runs both regular tests and sbt-scripted integration tests
-  - sbt -Dfile.encoding=UTF8 test scripted
+  ## runs tests
+  - sbt ++$TRAVIS_SCALA_VERSION -Dfile.encoding=UTF8 test
 
 sudo: false
 

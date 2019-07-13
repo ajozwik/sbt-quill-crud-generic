@@ -21,9 +21,9 @@ releaseProcess := Seq[ReleaseStep](
   pushChanges
 )
 
-ThisScope / pgpSecretRing := file("/home/ajozwik/Downloads/gpg.private")
-
-ThisScope / pgpPublicRing := file("/home/ajozwik/Downloads/gpg.public")
+//ThisScope / pgpSecretRing := file("/home/ajozwik/Downloads/gpg.private")
+//
+//ThisScope / pgpPublicRing := file("/home/ajozwik/Downloads/gpg.public")
 
 ThisBuild / developers := List(
   Developer(
