@@ -1,4 +1,7 @@
 # sbt-quill-crud-generic
+
+[![Build Status](https://travis-ci.org/ajozwik/sbt-quill-crud-generic.svg?branch=master)](https://travis-ci.org/ajozwik/sbt-quill-crud-generic)
+
 Plugin to create generic repository based on [quill-generic](https://github.com/ajozwik/quill-generic) and [quill](https://github.com/getquill/quill)
 
 See [quill-macro-example](https://github.com/ajozwik/quill-macro-example) for example of usage
