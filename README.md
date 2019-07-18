@@ -32,7 +32,8 @@ import pl.jozwik.quillgeneric.sbt.QuillRepositoryPlugin._
     RepositoryDescription("pl.jozwik.example.model.Person",
     "pl.jozwik.example.model.PersonId",
     "pl.jozwik.example.repository.PersonRepository")
-    )
+    ),
+  quillMacroVersion := "0.1.4"
 ```
 
 - enable auto plugin
