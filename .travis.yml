@@ -5,14 +5,17 @@ jdk:
 
 script:
   ## runs tests
-  - sbt ++$TRAVIS_SCALA_VERSION -Dfile.encoding=UTF8 test
-
+  - sbt ++$TRAVIS_SCALA_VERSION -Dfile.encoding=UTF8 -Dquill.macro.log=false -Dquill.binds.log=true clean coverage test coverageReport scalastyle
+  - sbt ++$TRAVIS_SCALA_VERSION coverageAggregate
 sudo: false
 
 before_cache:
   # Tricks to avoid unnecessary cache updates
   - find $HOME/.sbt -name "*.lock" | xargs rm
   - find $HOME/.ivy2 -name "ivydata-*.properties" | xargs rm
+
+after_success:
+  - sbt ++$TRAVIS_SCALA_VERSION coveralls
 
 # These directories are cached to S3 at the end of the build
 cache:
