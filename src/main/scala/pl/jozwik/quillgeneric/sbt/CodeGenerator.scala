@@ -25,9 +25,7 @@ object CodeGenerator {
   private lazy val defaultContent = readTemplate
 
   def generate(rootPath: File, content: String = defaultContent)(description: RepositoryDescription): (File, String) = {
-    val (packageName, repositorySimpleClassName) = toPackageNameSimpleClass(description.repositoryClassName)
-    val (_, beanSimpleClassName) = toPackageNameSimpleClass(description.beanClass)
-    val (_, beanIdSimpleClassName) = toPackageNameSimpleClass(description.beanIdClass)
+    import description._
     val path = Paths.get(rootPath.getAbsolutePath, packageName: _*)
     val dir = path.toFile
     dir.mkdirs()
@@ -40,7 +38,7 @@ object CodeGenerator {
     val file = dir / s"$repositorySimpleClassName.scala"
 
     val toColumnMapping = {
-      val map = description.mapping.map {
+      val map = mapping.map {
         case (k, v) =>
           s"""alias(_.$k, "$v")"""
       }
@@ -55,19 +53,12 @@ object CodeGenerator {
       .replace(packageTemplate, p)
       .replace(repositoryClassTemplate, repositorySimpleClassName)
       .replace(beanTemplate, beanSimpleClassName)
-      .replace(beanPackageTemplate, description.beanClass)
+      .replace(beanPackageTemplate, beanClass)
       .replace(beanIdTemplate, beanIdSimpleClassName)
-      .replace(beanIdPackageTemplate, description.beanIdClass)
+      .replace(beanIdPackageTemplate, beanIdClass)
       .replace(columnMapping, toColumnMapping)
 
     (file, result)
-  }
-
-  private[sbt] def toPackageNameSimpleClass(className: String): (Seq[String], String) = {
-    val array = className.split("\\.")
-    val packageName = array.slice(0, array.length - 1)
-    val repositorySimpleClassName = array(array.length - 1)
-    (packageName, repositorySimpleClassName)
   }
 
   private lazy val readTemplate: String = {
