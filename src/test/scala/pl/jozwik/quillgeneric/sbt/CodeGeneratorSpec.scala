@@ -15,8 +15,22 @@ class CodeGeneratorSpec extends AbstractSpec {
       content should include(description.beanIdClass)
       content should include(description.repositoryClassName)
       content should include(description.toTableName)
-
-      generateAndLog(description.copy(mapping = Map("birthDate" -> "dob")))
+    }
+    "Custom mapping " in {
+      val dob = "dob"
+      val description = RepositoryDescription(
+        "pl.jozwik.model.Person",
+        "pl.jozwik.model.PersonId",
+        "pl.jozwik.repository.PersonRepository",
+        None,
+        Map("birthDate" -> dob))
+      val (file: File, content: String) = generateAndLog(description)
+      file.exists() shouldBe false
+      content should include(description.beanClass)
+      content should include(description.beanIdClass)
+      content should include(description.repositoryClassName)
+      content should include(description.toTableName)
+      content should include(dob)
     }
   }
 

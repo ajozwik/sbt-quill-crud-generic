@@ -1,14 +1,14 @@
 package pl.jozwik.quillgeneric.sbt
 
 import sbt.Keys._
+import sbt._
 import sbt.plugins.JvmPlugin
-import sbt.{ Def, IO, _ }
 
 object QuillRepositoryPlugin extends AutoPlugin {
 
-  override def trigger = allRequirements
+  override def trigger: sbt.PluginTrigger = allRequirements
 
-  override def requires = JvmPlugin
+  override def requires: sbt.Plugins = JvmPlugin
 
   object autoImport extends PluginKeys
 
