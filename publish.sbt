@@ -1,7 +1,5 @@
 import sbtrelease.ReleaseStateTransformations._
 
-ThisScope / sbtPlugin := true
-
 ThisScope / crossSbtVersions := Seq("1.2.8")
 
 ThisScope / sbtrelease.ReleasePlugin.autoImport.releasePublishArtifactsAction := PgpKeys.publishSigned.value

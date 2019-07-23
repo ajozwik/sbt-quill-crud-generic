@@ -6,6 +6,7 @@ jdk:
 script:
   ## runs tests
   - sbt ++$TRAVIS_SCALA_VERSION -Dfile.encoding=UTF8 -Dquill.macro.log=false -Dquill.binds.log=true clean coverage test coverageReport scalastyle
+  - sbt ++$TRAVIS_SCALA_VERSION scripted
   - sbt ++$TRAVIS_SCALA_VERSION coverageAggregate
 sudo: false
 
