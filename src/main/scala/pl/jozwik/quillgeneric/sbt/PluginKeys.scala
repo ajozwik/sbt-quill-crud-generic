@@ -9,5 +9,5 @@ trait PluginKeys {
 
   val defaultSettings: Seq[Def.Setting[_]] = Seq(
     generateDescription := Seq.empty,
-    quillMacroVersion := "0.1.5")
+    quillMacroVersion := "0.2.0")
 }

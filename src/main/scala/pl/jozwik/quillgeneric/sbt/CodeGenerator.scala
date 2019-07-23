@@ -18,6 +18,8 @@ object CodeGenerator {
   private val beanIdTemplate = "__ID__"
   private val beanIdPackageTemplate = "__ID_PACKAGE__"
 
+  private val columnMapping = "__COLUMN_MAPPING__"
+
   private val template = "$template$.txt"
 
   private lazy val defaultContent = readTemplate
@@ -36,6 +38,19 @@ object CodeGenerator {
         s"""package ${s.mkString(".")}"""
     }
     val file = dir / s"$repositorySimpleClassName.scala"
+
+    val toColumnMapping = {
+      val map = description.mapping.map {
+        case (k, v) =>
+          s"""alias(_.$k, "$v")"""
+      }
+      if (map.isEmpty) {
+        ""
+      } else {
+        s""", ${map.mkString(", ")}"""
+      }
+    }
+
     val result = content
       .replace(packageTemplate, p)
       .replace(repositoryClassTemplate, repositorySimpleClassName)
@@ -43,6 +58,7 @@ object CodeGenerator {
       .replace(beanPackageTemplate, description.beanClass)
       .replace(beanIdTemplate, beanIdSimpleClassName)
       .replace(beanIdPackageTemplate, description.beanIdClass)
+      .replace(columnMapping, toColumnMapping)
 
     (file, result)
   }

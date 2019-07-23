@@ -9,14 +9,21 @@ class CodeGeneratorSpec extends AbstractSpec {
   "Generator " should {
     "Generate code " in {
       val description = RepositoryDescription("Person", "PersonId", "PersonRepository")
-      val (file, content) = CodeGenerator.generate(new File(baseTempPath))(description)
-      logger.debug(s"$file")
-      logger.debug(s"\n$content")
+      val (file: File, content: String) = generateAndLog(description)
       file.exists() shouldBe false
       content should include(description.beanClass)
       content should include(description.beanIdClass)
       content should include(description.repositoryClassName)
       content should include(description.toTableName)
+
+      generateAndLog(description.copy(mapping = Map("birthDate" -> "dob")))
     }
+  }
+
+  private def generateAndLog(description: RepositoryDescription) = {
+    val (file, content) = CodeGenerator.generate(new File(baseTempPath))(description)
+    logger.debug(s"$file")
+    logger.debug(s"\n$content")
+    (file, content)
   }
 }
