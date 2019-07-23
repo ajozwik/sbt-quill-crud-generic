@@ -10,8 +10,9 @@ object PersonId {
 
 final case class PersonId(value: Int) extends AnyVal
 
-final case class Person(id: PersonId,
-                        firstName: String,
-                        lastName: String,
-                        birthDate: LocalDate,
-                        addressId: Option[AddressId] = None) extends WithId[PersonId]
+final case class Person(
+  id: PersonId,
+  firstName: String,
+  lastName: String,
+  birthDate: LocalDate,
+  addressId: Option[AddressId] = None) extends WithId[PersonId]

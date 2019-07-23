@@ -41,8 +41,10 @@ ThisBuild / libraryDependencies ++= Seq(
   `com.github.ajozwik_macro-quill` % Test
 )
 
+ThisScope / sbtPlugin := true
+
 lazy val root = (project in file("."))
   .settings(
     scriptedLaunchOpts += ("-Dplugin.version=" + version.value),
     scriptedBufferLog := false
-  )
+  ).enablePlugins(SbtPlugin)
