@@ -5,12 +5,12 @@ import io.getquill.context.jdbc.JdbcContext
 import io.getquill.context.sql.idiom.SqlIdiom
 import __BEAN_PACKAGE__
 import __ID_PACKAGE__
-import pl.jozwik.quillgeneric.quillmacro.sync.{ Queries, Repository }
+import pl.jozwik.quillgeneric.quillmacro.sync.{ QuillCrudWithContext, Repository }
 
 import scala.util.Try
 
 final class __REPOSITORY_NAME__[Dialect <: SqlIdiom, Naming <: NamingStrategy](
-    protected val context: JdbcContext[Dialect, Naming] with Queries,
+    protected val context: JdbcContext[Dialect, Naming] with QuillCrudWithContext,
     tableName: String
 )
   extends Repository[__ID__, __BEAN__] {
@@ -38,9 +38,6 @@ final class __REPOSITORY_NAME__[Dialect <: SqlIdiom, Naming <: NamingStrategy](
 
   override def update(__BEAN__: __BEAN__): Try[Long] =
     context.update[__BEAN__](__BEAN__)
-
-  override def update(id: __ID__, action: __BEAN__ => (Any, Any), actions: Function[__BEAN__, (Any, Any)]*): Try[Long] =
-    context.updateByFilter[__BEAN__](_.id == id, action, actions: _*)
 
   override def delete(id: __ID__): Try[Boolean] =
     context.deleteByFilter[__BEAN__](_.id == id)
