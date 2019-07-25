@@ -14,7 +14,7 @@ lazy val root = Project("person", file(".")).settings(
     RepositoryDescription("pl.jozwik.example.model.Person",
       "pl.jozwik.example.model.PersonId",
       "pl.jozwik.example.repository.PersonRepository",
-      Option("pl.jozwik.example.repository.MyPersonRepository")),
+      Option("pl.jozwik.example.repository.MyPersonRepository[Dialect, Naming]")),
     RepositoryDescription("pl.jozwik.example.model.Address",
       "pl.jozwik.example.model.AddressId",
       "pl.jozwik.example.repository.AddressRepository",
@@ -24,7 +24,7 @@ lazy val root = Project("person", file(".")).settings(
     RepositoryDescription("pl.jozwik.example.model.Person",
       "pl.jozwik.example.model.PersonId",
       "pl.jozwik.example.generated.repository.PersonRepository",
-      Option("pl.jozwik.example.repository.MyPersonRepository")),
+      Option("pl.jozwik.example.repository.MyPersonRepository[Dialect, Naming]")),
   )
 )
   .enablePlugins(QuillRepositoryPlugin)

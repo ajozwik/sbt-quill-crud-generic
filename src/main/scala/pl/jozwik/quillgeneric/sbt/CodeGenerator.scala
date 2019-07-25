@@ -54,7 +54,15 @@ object CodeGenerator {
     val (repositoryTraitSimpleClassName, repositoryImport) = if (repositoryTraitSimpleClassNameOpt.isEmpty) {
       (s"Repository[$BeanIdTemplate, $BeanTemplate]", "")
     } else {
-      (s"$repositoryTraitSimpleClassNameOpt", createImport(packageName, repositoryPackageName, repositoryTrait.getOrElse("")))
+      val clazzName = repositoryTrait.getOrElse("")
+      val withoutGeneric = clazzName.indexOf('[') match {
+        case -1 =>
+          clazzName
+        case index =>
+          clazzName.substring(0, index)
+      }
+
+      (s"$repositoryTraitSimpleClassNameOpt", createImport(packageName, repositoryPackageName, withoutGeneric))
     }
 
     val result = content
