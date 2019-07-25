@@ -20,6 +20,8 @@ object CodeGenerator {
 
   private val columnMapping = "__COLUMN_MAPPING__"
 
+  private val importContext = "__IMPORT_CONTEXT__"
+
   private val template = "$template$.txt"
 
   private lazy val defaultContent = readTemplate
@@ -48,6 +50,11 @@ object CodeGenerator {
         s""", ${map.mkString(", ")}"""
       }
     }
+    val importCtx = if (toColumnMapping.isEmpty) {
+      ""
+    } else {
+      "import context._"
+    }
 
     val result = content
       .replace(packageTemplate, p)
@@ -57,6 +64,7 @@ object CodeGenerator {
       .replace(beanIdTemplate, beanIdSimpleClassName)
       .replace(beanIdPackageTemplate, beanIdClass)
       .replace(columnMapping, toColumnMapping)
+      .replace(importContext, importCtx)
 
     (file, result)
   }

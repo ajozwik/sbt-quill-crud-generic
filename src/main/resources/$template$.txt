@@ -16,7 +16,7 @@ final class __REPOSITORY_NAME__[Dialect <: SqlIdiom, Naming <: NamingStrategy](
   extends Repository[__ID__, __BEAN__] {
 
   private implicit val dSchema: context.DynamicEntityQuery[__BEAN__] = {
-      import context._
+      __IMPORT_CONTEXT__
       context.dynamicQuerySchema[__BEAN__](tableName__COLUMN_MAPPING__)
     }
 
