@@ -2,6 +2,8 @@ name := "sbt-quill-crud-generic"
 
 organization := "com.github.ajozwik"
 
+resolvers += Resolver.sonatypeRepo("releases")
+
 ThisBuild / scalacOptions ++= Seq(
   "-target:jvm-1.8",
   "-encoding", "UTF-8",
