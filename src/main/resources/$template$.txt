@@ -23,11 +23,11 @@ final class __REPOSITORY_NAME__[Dialect <: SqlIdiom, Naming <: NamingStrategy](
   override def all: Try[Seq[__BEAN__]] =
     context.all[__BEAN__]
 
-  override def create(__BEAN__: __BEAN__, generateId: Boolean = false): Try[__ID__] =
+  override def create(entity: __BEAN__, generateId: Boolean = false): Try[__ID__] =
     if (generateId) {
-      context.createAndGenerateId[__ID__, __BEAN__](__BEAN__)
+      context.createAndGenerateId[__ID__, __BEAN__](entity)
     } else {
-      context.create[__ID__, __BEAN__](__BEAN__)
+      context.create[__ID__, __BEAN__](entity)
     }
 
   override def read(id: __ID__): Try[Option[__BEAN__]] =
@@ -36,8 +36,8 @@ final class __REPOSITORY_NAME__[Dialect <: SqlIdiom, Naming <: NamingStrategy](
   override def createOrUpdate(entity: __BEAN__, generateId: Boolean = false): Try[__ID__] =
     context.createOrUpdate[__ID__, __BEAN__](entity, generateId)
 
-  override def update(__BEAN__: __BEAN__): Try[Long] =
-    context.update[__BEAN__](__BEAN__)
+  override def update(entity: __BEAN__): Try[Long] =
+    context.update[__BEAN__](entity)
 
   override def delete(id: __ID__): Try[Boolean] =
     context.deleteByFilter[__BEAN__](_.id == id)
