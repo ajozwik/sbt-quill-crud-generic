@@ -12,9 +12,11 @@ import scala.util.Try
 
 final class __REPOSITORY_NAME__[Dialect <: SqlIdiom, Naming <: NamingStrategy](
     protected val context: JdbcContext[Dialect, Naming] with QuillCrudWithContext,
-    tableName: String = "__TABLE_NAME__"
+    protected val tableName: String = "__TABLE_NAME__"
 )
   extends __REPOSITORY_TRAIT_SIMPLE_NAME__  {
+
+  protected def dynamicSchema: context.DynamicEntityQuery[__BEAN__] = dSchema
 
   private implicit val dSchema: context.DynamicEntityQuery[__BEAN__] = {
       __IMPORT_CONTEXT__

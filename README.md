@@ -41,17 +41,28 @@ For simpler inject support (guice/spring) you can use own trait
 ```
 package pl.jozwik.example
 
-import pl.jozwik.example.model.{Person, PersonId}
-import pl.jozwik.quillgeneric.quillmacro.sync.Repository
+import java.time.LocalDate
 
-trait MyPersonRepository extends Repository[PersonId,Person]
+import io.getquill.NamingStrategy
+import io.getquill.context.sql.idiom.SqlIdiom
+import pl.jozwik.quillgeneric.quillmacro.sync.JdbcRepository
+import pl.jozwik.quillgeneric.sbt.model.{ Person, PersonId }
+
+trait MyPersonRepository[Dialect <: SqlIdiom, Naming <: NamingStrategy]
+  extends JdbcRepository[PersonId, Person, Dialect, Naming] {
+  def max: Option[LocalDate] = {
+    import context._
+    val r = dynamicSchema.map(p => p.birthDate)
+    context.run(r.max)
+  }
+}
 ```
 and point to them
 ```
  RepositoryDescription("pl.jozwik.example.model.Person",
       "pl.jozwik.example.model.PersonId",
       "pl.jozwik.example.PersonRepository",
-      Option("pl.jozwik.example.MyPersonRepository")
+      Option("pl.jozwik.example.MyPersonRepository[Dialect,Naming]")
   )
 ```
 
