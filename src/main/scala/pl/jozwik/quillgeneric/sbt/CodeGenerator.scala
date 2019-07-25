@@ -9,20 +9,27 @@ import scala.io.Source
 
 object CodeGenerator {
 
-  private val packageTemplate = "__PACKAGE__"
-  private val repositoryClassTemplate = "__REPOSITORY_NAME__"
+  private val PackageTemplate = "__PACKAGE__"
 
-  private val beanTemplate = "__BEAN__"
-  private val beanPackageTemplate = "__BEAN_PACKAGE__"
+  private val RepositoryClassTemplate = "__REPOSITORY_NAME__"
 
-  private val beanIdTemplate = "__ID__"
-  private val beanIdPackageTemplate = "__ID_PACKAGE__"
+  private val BeanTemplate = "__BEAN__"
 
-  private val columnMapping = "__COLUMN_MAPPING__"
+  private val BeanClassImport = "__BEAN_CLASS_IMPORT__"
 
-  private val importContext = "__IMPORT_CONTEXT__"
+  private val BeanIdTemplate = "__ID__"
 
-  private val tableNamePattern = "__TABLE_NAME__"
+  private val BeanIdClassImport = "__ID_CLASS_IMPORT__"
+
+  private val ColumnMapping = "__COLUMN_MAPPING__"
+
+  private val ImportContext = "__IMPORT_CONTEXT__"
+
+  private val TableNamePattern = "__TABLE_NAME__"
+
+  private val RepositoryTraitImport = "__REPOSITORY_TRAIT_IMPORT__"
+
+  private val RepositoryTraitSimpleClassName = "__REPOSITORY_TRAIT_SIMPLE_NAME__"
 
   private val template = "$template$.txt"
 
@@ -41,7 +48,36 @@ object CodeGenerator {
     }
     val file = dir / s"$repositorySimpleClassName.scala"
 
-    val toColumnMapping = {
+    val columnMapping = toColumnMapping(mapping)
+    val importCtx = toImportContext(columnMapping)
+
+    val (repositoryTraitSimpleClassName, repositoryImport) = if (repositoryTraitSimpleClassNameOpt.isEmpty) {
+      (s"Repository[$BeanIdTemplate, $BeanTemplate]", "")
+    } else {
+      (s"$repositoryTraitSimpleClassNameOpt", createImport(packageName, repositoryPackageName, repositoryTrait.getOrElse("")))
+    }
+
+    val result = content
+      .replace(RepositoryTraitSimpleClassName, repositoryTraitSimpleClassName)
+      .replace(RepositoryTraitImport, repositoryImport)
+      .replace(PackageTemplate, p)
+      .replace(RepositoryClassTemplate, repositorySimpleClassName)
+      .replace(BeanTemplate, beanSimpleClassName)
+      .replace(BeanClassImport, createImport(packageName, beanPackageName, beanClass))
+      .replace(BeanIdTemplate, beanIdSimpleClassName)
+      .replace(BeanIdClassImport, createImport(packageName, beanIdPackageName, beanIdClass))
+      .replace(ColumnMapping, columnMapping)
+      .replace(ImportContext, importCtx)
+      .replace(TableNamePattern, toTableName)
+
+    (file, result)
+  }
+
+  private def createImport(packageNameSeq: Seq[String], packageNameBean: Seq[String], className: String) =
+    if (packageNameSeq == packageNameBean) "" else s"import $className"
+
+  private def toColumnMapping(mapping: Map[String, String]) = {
+    val columnMapping = {
       val map = mapping.map {
         case (k, v) =>
           s"""alias(_.$k, "$v")"""
@@ -52,24 +88,16 @@ object CodeGenerator {
         s""", ${map.mkString(", ")}"""
       }
     }
+    columnMapping
+  }
+
+  private def toImportContext(toColumnMapping: String) = {
     val importCtx = if (toColumnMapping.isEmpty) {
       ""
     } else {
       "import context._"
     }
-
-    val result = content
-      .replace(packageTemplate, p)
-      .replace(repositoryClassTemplate, repositorySimpleClassName)
-      .replace(beanTemplate, beanSimpleClassName)
-      .replace(beanPackageTemplate, beanClass)
-      .replace(beanIdTemplate, beanIdSimpleClassName)
-      .replace(beanIdPackageTemplate, beanIdClass)
-      .replace(columnMapping, toColumnMapping)
-      .replace(importContext, importCtx)
-      .replace(tableNamePattern, toTableName)
-
-    (file, result)
+    importCtx
   }
 
   private lazy val readTemplate: String = {

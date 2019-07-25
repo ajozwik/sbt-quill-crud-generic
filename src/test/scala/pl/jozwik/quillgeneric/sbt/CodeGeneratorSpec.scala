@@ -22,6 +22,7 @@ class CodeGeneratorSpec extends AbstractSpec {
         "pl.jozwik.model.Person",
         "pl.jozwik.model.PersonId",
         "pl.jozwik.repository.PersonRepository",
+        Option("pl.jozwik.quillgeneric.sbt.MyPersonRepository"),
         None,
         Map("birthDate" -> dob))
       val (file: File, content: String) = generateAndLog(description)

@@ -3,8 +3,9 @@ __PACKAGE__
 import io.getquill.NamingStrategy
 import io.getquill.context.jdbc.JdbcContext
 import io.getquill.context.sql.idiom.SqlIdiom
-import __BEAN_PACKAGE__
-import __ID_PACKAGE__
+__BEAN_CLASS_IMPORT__
+__ID_CLASS_IMPORT__
+__REPOSITORY_TRAIT_IMPORT__
 import pl.jozwik.quillgeneric.quillmacro.sync.{ QuillCrudWithContext, Repository }
 
 import scala.util.Try
@@ -13,7 +14,7 @@ final class __REPOSITORY_NAME__[Dialect <: SqlIdiom, Naming <: NamingStrategy](
     protected val context: JdbcContext[Dialect, Naming] with QuillCrudWithContext,
     tableName: String = "__TABLE_NAME__"
 )
-  extends Repository[__ID__, __BEAN__] {
+  extends __REPOSITORY_TRAIT_SIMPLE_NAME__  {
 
   private implicit val dSchema: context.DynamicEntityQuery[__BEAN__] = {
       __IMPORT_CONTEXT__

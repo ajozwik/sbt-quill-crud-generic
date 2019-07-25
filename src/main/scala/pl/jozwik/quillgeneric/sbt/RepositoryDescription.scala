@@ -17,12 +17,15 @@ final case class RepositoryDescription(
   beanClass: String,
   beanIdClass: String,
   repositoryClassName: String,
+  repositoryTrait: Option[String] = None,
   tableName: Option[String] = None,
   mapping: Map[String, String] = Map.empty) {
 
   val (packageName, repositorySimpleClassName) = toPackageNameSimpleClass(repositoryClassName)
-  val (_, beanSimpleClassName) = toPackageNameSimpleClass(beanClass)
-  val (_, beanIdSimpleClassName) = toPackageNameSimpleClass(beanIdClass)
+  val (beanPackageName, beanSimpleClassName) = toPackageNameSimpleClass(beanClass)
+  val (beanIdPackageName, beanIdSimpleClassName) = toPackageNameSimpleClass(beanIdClass)
+  val (repositoryPackageName, repositoryTraitSimpleClassNameOpt) =
+    toPackageNameSimpleClass(repositoryTrait.getOrElse(""))
 
   lazy val toTableName: String = tableName
     .filter(_.trim.nonEmpty)
