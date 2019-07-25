@@ -36,6 +36,25 @@ import pl.jozwik.quillgeneric.sbt.QuillRepositoryPlugin._
     ),
   quillMacroVersion := "0.2.1.2"
 ```
+For simpler inject support (guice/spring) you can use own trait
+
+```
+package pl.jozwik.example
+
+import pl.jozwik.example.model.{Person, PersonId}
+import pl.jozwik.quillgeneric.quillmacro.sync.Repository
+
+trait MyPersonRepository extends Repository[PersonId,Person]
+```
+and point to them
+```
+ RepositoryDescription("pl.jozwik.example.model.Person",
+      "pl.jozwik.example.model.PersonId",
+      "pl.jozwik.example.PersonRepository",
+      Option("pl.jozwik.example.MyPersonRepository")
+  )
+```
+
 
 - enable auto plugin
 
