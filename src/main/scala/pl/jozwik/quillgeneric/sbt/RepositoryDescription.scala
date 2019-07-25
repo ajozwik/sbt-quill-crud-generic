@@ -1,11 +1,24 @@
 package pl.jozwik.quillgeneric.sbt
 
+object RepositoryDescription {
+  def firstToLower(txt: String): String =
+    if (txt.length == 0) {
+      ""
+    } else if (txt.charAt(0).isLower) {
+      txt
+    } else {
+      val chars = txt.toCharArray
+      chars(0) = chars(0).toLower
+      new String(chars)
+    }
+}
+
 final case class RepositoryDescription(
-                                        beanClass: String,
-                                        beanIdClass: String,
-                                        repositoryClassName: String,
-                                        tableName: Option[String] = None,
-                                        mapping: Map[String, String] = Map.empty) {
+  beanClass: String,
+  beanIdClass: String,
+  repositoryClassName: String,
+  tableName: Option[String] = None,
+  mapping: Map[String, String] = Map.empty) {
 
   val (packageName, repositorySimpleClassName) = toPackageNameSimpleClass(repositoryClassName)
   val (_, beanSimpleClassName) = toPackageNameSimpleClass(beanClass)
@@ -15,7 +28,7 @@ final case class RepositoryDescription(
     .filter(_.trim.nonEmpty)
     .getOrElse {
       val (_, simpleClassName) = toPackageNameSimpleClass(beanClass)
-      simpleClassName
+      RepositoryDescription.firstToLower(simpleClassName)
     }
 
   private[sbt] def toPackageNameSimpleClass(className: String): (Seq[String], String) = {
