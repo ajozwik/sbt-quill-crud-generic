@@ -22,6 +22,8 @@ object CodeGenerator {
 
   private val importContext = "__IMPORT_CONTEXT__"
 
+  private val tableNamePattern = "__TABLE_NAME__"
+
   private val template = "$template$.txt"
 
   private lazy val defaultContent = readTemplate
@@ -65,6 +67,7 @@ object CodeGenerator {
       .replace(beanIdPackageTemplate, beanIdClass)
       .replace(columnMapping, toColumnMapping)
       .replace(importContext, importCtx)
+      .replace(tableNamePattern, toTableName)
 
     (file, result)
   }
