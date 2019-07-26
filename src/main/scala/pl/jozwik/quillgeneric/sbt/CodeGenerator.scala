@@ -31,6 +31,10 @@ object CodeGenerator {
 
   private val RepositoryTraitSimpleClassName = "__REPOSITORY_TRAIT_SIMPLE_NAME__"
 
+  private val RepositoryImport = "__REPOSITORY_IMPORT__"
+
+  private val macroRepositoryImport = "import pl.jozwik.quillgeneric.quillmacro.sync.Repository"
+
   private val template = "$template$.txt"
 
   private lazy val defaultContent = readTemplate
@@ -51,19 +55,8 @@ object CodeGenerator {
     val columnMapping = toColumnMapping(mapping)
     val importCtx = toImportContext(columnMapping)
 
-    val (repositoryTraitSimpleClassName, repositoryImport) = if (repositoryTraitSimpleClassNameOpt.isEmpty) {
-      (s"Repository[$BeanIdTemplate, $BeanTemplate]", "")
-    } else {
-      val clazzName = repositoryTrait.getOrElse("")
-      val withoutGeneric = clazzName.indexOf('[') match {
-        case -1 =>
-          clazzName
-        case index =>
-          clazzName.substring(0, index)
-      }
-
-      (s"$repositoryTraitSimpleClassNameOpt", createImport(packageName, repositoryPackageName, withoutGeneric))
-    }
+    val (repositoryTraitSimpleClassName, repositoryImport, defaultRepositoryImport) =
+      toRepositoryTraitImport(repositoryTrait, packageName, repositoryPackageName, repositoryTraitSimpleClassNameOpt)
 
     val result = content
       .replace(RepositoryTraitSimpleClassName, repositoryTraitSimpleClassName)
@@ -77,9 +70,29 @@ object CodeGenerator {
       .replace(ColumnMapping, columnMapping)
       .replace(ImportContext, importCtx)
       .replace(TableNamePattern, toTableName)
+      .replace(RepositoryImport, defaultRepositoryImport)
 
     (file, result)
   }
+
+  private def toRepositoryTraitImport(
+    repositoryTrait: Option[String],
+    packageName: Seq[String],
+    repositoryPackageName: Seq[String],
+    repositoryTraitSimpleClassNameOpt: String) =
+    if (repositoryTraitSimpleClassNameOpt.isEmpty) {
+      (s"Repository[$BeanIdTemplate, $BeanTemplate]", "", macroRepositoryImport)
+    } else {
+      val clazzName = repositoryTrait.getOrElse("")
+      val withoutGeneric = clazzName.indexOf('[') match {
+        case -1 =>
+          clazzName
+        case index =>
+          clazzName.substring(0, index)
+      }
+      val imp = createImport(packageName, repositoryPackageName, withoutGeneric)
+      (s"$repositoryTraitSimpleClassNameOpt", imp, "")
+    }
 
   private def createImport(packageNameSeq: Seq[String], packageNameBean: Seq[String], className: String) =
     if (packageNameSeq == packageNameBean) "" else s"import $className"

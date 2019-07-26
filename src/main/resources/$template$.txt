@@ -6,7 +6,8 @@ import io.getquill.context.sql.idiom.SqlIdiom
 __BEAN_CLASS_IMPORT__
 __ID_CLASS_IMPORT__
 __REPOSITORY_TRAIT_IMPORT__
-import pl.jozwik.quillgeneric.quillmacro.sync.{ QuillCrudWithContext, Repository }
+import pl.jozwik.quillgeneric.quillmacro.sync.QuillCrudWithContext
+__REPOSITORY_IMPORT__
 
 import scala.util.Try
 
