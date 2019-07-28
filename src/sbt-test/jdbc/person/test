@@ -1,3 +1,4 @@
 # check if repository created
 > clean
 > compile
+> test
