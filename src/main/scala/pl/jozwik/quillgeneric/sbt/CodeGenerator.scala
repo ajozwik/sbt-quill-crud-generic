@@ -7,40 +7,51 @@ import sbt._
 
 import scala.io.Source
 
-object CodeGenerator {
+trait CodeGenerationTemplates {
+  val DialectTemplate = "__DIALECT__"
+  val NamingTemplate = "__NAMING__"
+  val PackageTemplate = "__PACKAGE__"
+  val RepositoryClassTemplate = "__REPOSITORY_NAME__"
+  val BeanTemplate = "__BEAN__"
+  val BeanClassImport = "__BEAN_CLASS_IMPORT__"
+  val BeanIdTemplate = "__ID__"
+  val BeanIdClassImport = "__ID_CLASS_IMPORT__"
+  val ColumnMapping = "__COLUMN_MAPPING__"
+  val ImportContext = "__IMPORT_CONTEXT__"
+  val TableNamePattern = "__TABLE_NAME__"
+  val RepositoryTraitImport = "__REPOSITORY_TRAIT_IMPORT__"
+  val RepositoryTraitSimpleClassName = "__REPOSITORY_TRAIT_SIMPLE_NAME__"
+  val RepositoryImport = "__REPOSITORY_IMPORT__"
+}
 
-  private val PackageTemplate = "__PACKAGE__"
+object CodeGenerator extends CodeGenerationTemplates {
+  private val Dialect = "Dialect"
+  private val Naming = "Naming"
 
-  private val RepositoryClassTemplate = "__REPOSITORY_NAME__"
+  private val macroRepository = "Repository"
 
-  private val BeanTemplate = "__BEAN__"
+  private val macroRepositoryWithGeneric = s"$macroRepository[$BeanIdTemplate, $BeanTemplate]"
 
-  private val BeanClassImport = "__BEAN_CLASS_IMPORT__"
+  private val macroRepositoryImport = s"import pl.jozwik.quillgeneric.quillmacro.sync.$macroRepository"
 
-  private val BeanIdTemplate = "__ID__"
+  private val macroRepositoryWithGenerated = "JdbcRepositoryWithGeneratedId"
 
-  private val BeanIdClassImport = "__ID_CLASS_IMPORT__"
+  private val macroRepositoryWithGeneratedWithGeneric = s"$macroRepositoryWithGenerated[$BeanIdTemplate, $BeanTemplate, $DialectTemplate, $NamingTemplate]"
 
-  private val ColumnMapping = "__COLUMN_MAPPING__"
-
-  private val ImportContext = "__IMPORT_CONTEXT__"
-
-  private val TableNamePattern = "__TABLE_NAME__"
-
-  private val RepositoryTraitImport = "__REPOSITORY_TRAIT_IMPORT__"
-
-  private val RepositoryTraitSimpleClassName = "__REPOSITORY_TRAIT_SIMPLE_NAME__"
-
-  private val RepositoryImport = "__REPOSITORY_IMPORT__"
-
-  private val macroRepositoryImport = "import pl.jozwik.quillgeneric.quillmacro.sync.Repository"
+  private val macroRepositoryWithGeneratedImport = s"import pl.jozwik.quillgeneric.quillmacro.sync.$macroRepositoryWithGenerated"
 
   private val template = "$template$.txt"
 
-  private lazy val defaultContent = readTemplate
+  private val templateWithGeneratedId = "$template_generate_id$.txt"
 
-  def generate(rootPath: File, content: String = defaultContent)(description: RepositoryDescription): (File, String) = {
+  def generate(rootPath: File)(description: RepositoryDescription): (File, String) = {
     import description._
+    val templateFile = if (generateId) {
+      templateWithGeneratedId
+    } else {
+      template
+    }
+    val content = readTemplate(templateFile)
     val path = Paths.get(rootPath.getAbsolutePath, packageName: _*)
     val dir = path.toFile
     dir.mkdirs()
@@ -56,7 +67,7 @@ object CodeGenerator {
     val importCtx = toImportContext(columnMapping)
 
     val (repositoryTraitSimpleClassName, repositoryImport, defaultRepositoryImport) =
-      toRepositoryTraitImport(repositoryTrait, packageName, repositoryPackageName, repositoryTraitSimpleClassNameOpt)
+      toRepositoryTraitImport(repositoryTrait, packageName, repositoryPackageName, repositoryTraitSimpleClassNameOpt, generateId)
 
     val result = content
       .replace(RepositoryTraitSimpleClassName, repositoryTraitSimpleClassName)
@@ -71,6 +82,8 @@ object CodeGenerator {
       .replace(ImportContext, importCtx)
       .replace(TableNamePattern, toTableName)
       .replace(RepositoryImport, defaultRepositoryImport)
+      .replace(DialectTemplate, Dialect)
+      .replace(NamingTemplate, Naming)
 
     (file, result)
   }
@@ -79,9 +92,16 @@ object CodeGenerator {
     repositoryTrait: Option[String],
     packageName: Seq[String],
     repositoryPackageName: Seq[String],
-    repositoryTraitSimpleClassNameOpt: String) =
+    repositoryTraitSimpleClassNameOpt: String,
+    generateId: Boolean) =
     if (repositoryTraitSimpleClassNameOpt.isEmpty) {
-      (s"Repository[$BeanIdTemplate, $BeanTemplate]", "", macroRepositoryImport)
+      val (repository, repositoryImport) = if (generateId) {
+        (macroRepositoryWithGeneratedWithGeneric, macroRepositoryWithGeneratedImport)
+      } else {
+        (macroRepositoryWithGeneric, macroRepositoryImport)
+      }
+      (s"$repository", "", repositoryImport)
+
     } else {
       val clazzName = repositoryTrait.getOrElse("")
       val withoutGeneric = clazzName.indexOf('[') match {
@@ -121,9 +141,9 @@ object CodeGenerator {
     importCtx
   }
 
-  private lazy val readTemplate: String = {
-    val input = Option(getClass.getClassLoader.getResourceAsStream(template))
-      .getOrElse(getClass.getClassLoader.getResourceAsStream(s"/$template"))
+  private def readTemplate(templateResource: String): String = {
+    val input = Option(getClass.getClassLoader.getResourceAsStream(templateResource))
+      .getOrElse(getClass.getClassLoader.getResourceAsStream(s"/$templateResource"))
     try {
       Source.fromInputStream(input).mkString
     } finally {

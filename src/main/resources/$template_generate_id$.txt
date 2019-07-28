@@ -27,14 +27,23 @@ final class __REPOSITORY_NAME__[__DIALECT__ <: SqlIdiom, __NAMING__ <: __NAMING_
   override def all: Try[Seq[__BEAN__]] =
     context.all[__BEAN__]
 
-  override def create(entity: __BEAN__): Try[__ID__] =
-   context.create[__ID__, __BEAN__](entity)
+  override def create(entity: __BEAN__, generateId: Boolean = true): Try[__ID__] =
+    if (generateId) {
+      context.createAndGenerateId[__ID__, __BEAN__](entity)
+    } else {
+      context.create[__ID__, __BEAN__](entity)
+    }
 
   override def read(id: __ID__): Try[Option[__BEAN__]] =
     context.read[__ID__, __BEAN__](id)
 
-  override def createOrUpdate(entity: __BEAN__): Try[__ID__] =
-    context.createOrUpdate[__ID__, __BEAN__](entity)
+  override def createOrUpdate(entity: __BEAN__, generateId: Boolean = true): Try[__ID__] =
+      if (generateId) {
+        context.createAndGenerateIdOrUpdate[__ID__, __BEAN__](entity)
+      } else {
+         context.createOrUpdate[__ID__, __BEAN__](entity)
+      }
+
 
   override def update(entity: __BEAN__): Try[Long] =
     context.update[__BEAN__](entity)

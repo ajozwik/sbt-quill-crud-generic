@@ -7,8 +7,8 @@ class CodeGeneratorSpec extends AbstractSpec {
   private val baseTempPath = System.getProperty("java.io.tmpdir")
 
   "Generator " should {
-    "Generate code " in {
-      val description = RepositoryDescription("Person", "PersonId", "PersonRepository")
+    "Generate code for Person" in {
+      val description = RepositoryDescription("Person", "PersonId", "PersonRepository", true)
       val (file: File, content: String) = generateAndLog(description)
       file.exists() shouldBe false
       content should include(description.beanSimpleClassName)
@@ -22,6 +22,7 @@ class CodeGeneratorSpec extends AbstractSpec {
         "pl.jozwik.model.Person",
         "pl.jozwik.model.PersonId",
         "pl.jozwik.repository.PersonRepository",
+        true,
         Option("pl.jozwik.quillgeneric.sbt.MyPersonRepository[Dialect, Naming]"),
         None,
         Map("birthDate" -> dob))
@@ -32,6 +33,16 @@ class CodeGeneratorSpec extends AbstractSpec {
       content should include(description.repositorySimpleClassName)
       content should include(description.toTableName)
       content should include(dob)
+    }
+
+    "Generate code for Configuration" in {
+      val description = RepositoryDescription("Configuration", "ConfigurationId", "PersonRepository")
+      val (file: File, content: String) = generateAndLog(description)
+      file.exists() shouldBe false
+      content should include(description.beanSimpleClassName)
+      content should include(description.beanIdSimpleClassName)
+      content should include(description.repositorySimpleClassName)
+      content should include(description.toTableName)
     }
   }
 

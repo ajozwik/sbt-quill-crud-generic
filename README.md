@@ -10,6 +10,11 @@ See [quill-macro-example](https://github.com/ajozwik/quill-macro-example) for ex
 
 - create model classes (must be visible during compilation)
 
+- add plugin (project/plugins.sbt)
+```
+addSbtPlugin("com.github.ajozwik" % "sbt-quill-crud-generic" % "<version>")
+```
+
 ```
 package pl.jozwik.example.model
 

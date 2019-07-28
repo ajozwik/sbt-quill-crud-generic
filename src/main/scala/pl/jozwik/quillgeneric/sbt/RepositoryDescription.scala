@@ -4,6 +4,7 @@ final case class RepositoryDescription(
   beanClass: String,
   beanIdClass: String,
   repositoryClassName: String,
+  generateId: Boolean = false,
   repositoryTrait: Option[String] = None,
   tableName: Option[String] = None,
   mapping: Map[String, String] = Map.empty) {
