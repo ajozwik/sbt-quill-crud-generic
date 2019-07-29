@@ -44,6 +44,8 @@ object CodeGenerator extends CodeGenerationTemplates {
 
   private val templateWithGeneratedId = "$template_generate_id$.txt"
 
+  private val headerFile = "$header$.txt"
+
   def generate(rootPath: File)(description: RepositoryDescription): (File, String) = {
     import description._
     val templateFile = if (generateId) {
@@ -51,6 +53,7 @@ object CodeGenerator extends CodeGenerationTemplates {
     } else {
       template
     }
+    val header = readTemplate(headerFile)
     val content = readTemplate(templateFile)
     val path = Paths.get(rootPath.getAbsolutePath, packageName: _*)
     val dir = path.toFile
@@ -85,7 +88,7 @@ object CodeGenerator extends CodeGenerationTemplates {
       .replace(DialectTemplate, Dialect)
       .replace(NamingTemplate, Naming)
 
-    (file, result)
+    (file, s"$header\n$result")
   }
 
   private def toRepositoryTraitImport(
