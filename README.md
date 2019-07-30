@@ -37,13 +37,15 @@ import pl.jozwik.quillgeneric.sbt.QuillRepositoryPlugin._
   generateDescription := Seq(
     RepositoryDescription("pl.jozwik.example.model.Person",
     "pl.jozwik.example.model.PersonId",
-    "pl.jozwik.example.repository.PersonRepository")
+    "pl.jozwik.example.repository.PersonRepository",
+    true,
+    Option("pl.jozwik.example.repository.MyPersonRepository[Dialect, Naming]"))
     )
 ```
 For simpler inject support (guice/spring) you can use own trait
 
 ```
-package pl.jozwik.example
+package pl.jozwik.example.repository
 
 import java.time.LocalDate
 
@@ -66,7 +68,7 @@ and point to them
  RepositoryDescription("pl.jozwik.example.model.Person",
       "pl.jozwik.example.model.PersonId",
       "pl.jozwik.example.PersonRepository",
-      Option("pl.jozwik.example.MyPersonRepository[Dialect,Naming]")
+      Option("pl.jozwik.example.repository.MyPersonRepository[Dialect,Naming]")
   )
 ```
 
