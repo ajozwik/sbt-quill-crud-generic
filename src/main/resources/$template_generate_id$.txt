@@ -6,14 +6,13 @@ import io.getquill.context.sql.idiom.SqlIdiom
 __BEAN_CLASS_IMPORT__
 __ID_CLASS_IMPORT__
 __REPOSITORY_TRAIT_IMPORT__
-import pl.jozwik.quillgeneric.quillmacro.quotes.DateQuotes
-import pl.jozwik.quillgeneric.quillmacro.sync.QuillCrudWithContext
+import pl.jozwik.quillgeneric.quillmacro.sync.JdbcRepository.JdbcContextDateQuotes
 __REPOSITORY_IMPORT__
 
 import scala.util.Try
 
 final class __REPOSITORY_NAME__[__DIALECT__ <: SqlIdiom, __NAMING__ <: __NAMING__Strategy](
-    protected val context: JdbcContext[__DIALECT__, __NAMING__] with QuillCrudWithContext with DateQuotes,
+    protected val context: JdbcContextDateQuotes[__DIALECT__, __NAMING__],
     protected val tableName: String = "__TABLE_NAME__"
 )
   extends __REPOSITORY_TRAIT_SIMPLE_NAME__  {
