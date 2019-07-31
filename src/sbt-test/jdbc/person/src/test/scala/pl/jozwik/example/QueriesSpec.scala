@@ -61,6 +61,7 @@ class QueriesSpec extends AbstractQuillSpec {
       val repository = new ConfigurationRepository(ctx)
       logger.debug("configuration")
       val entity = Configuration(ConfigurationId("firstName"), "lastName")
+      val entity2 = Configuration(ConfigurationId("nextName"), "nextName")
       repository.all shouldBe Try(Seq())
       val entityId = repository.create(entity)
       val entityIdProvided = entityId.success.value
@@ -74,6 +75,12 @@ class QueriesSpec extends AbstractQuillSpec {
       repository.delete(createdEntity.id) shouldBe 'success
       repository.read(createdEntity.id).success.value shouldBe empty
       repository.all shouldBe Try(Seq())
+
+      repository.createOrUpdate(entity) shouldBe 'success
+      repository.createOrUpdate(entity2) shouldBe 'success
+      repository.createOrUpdate(entity2) shouldBe 'success
+      repository.update(entity2) shouldBe 'success
+      repository.all.success.value should contain theSameElementsAs Seq(entity, entity2)
     }
   }
 }
