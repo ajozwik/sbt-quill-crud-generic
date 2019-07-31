@@ -1,7 +1,6 @@
 __PACKAGE__
 
 import io.getquill.NamingStrategy
-import io.getquill.context.jdbc.JdbcContext
 import io.getquill.context.sql.idiom.SqlIdiom
 __BEAN_CLASS_IMPORT__
 __ID_CLASS_IMPORT__
