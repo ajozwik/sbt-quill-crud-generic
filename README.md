@@ -63,14 +63,6 @@ trait MyPersonRepository[Dialect <: SqlIdiom, Naming <: NamingStrategy]
   }
 }
 ```
-and point to them
-```
- RepositoryDescription("pl.jozwik.example.model.Person",
-      "pl.jozwik.example.model.PersonId",
-      "pl.jozwik.example.PersonRepository",
-      Option("pl.jozwik.example.repository.MyPersonRepository[Dialect,Naming]")
-  )
-```
 
 
 - enable auto plugin
