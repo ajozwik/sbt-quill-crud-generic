@@ -33,6 +33,13 @@ final class __REPOSITORY_NAME__[__DIALECT__ <: SqlIdiom, __NAMING__ <: __NAMING_
       context.create[__ID__, __BEAN__](entity)
     }
 
+  override def createAndRead(entity: __BEAN__, generateId: Boolean = true): Try[__BEAN__] =
+    if (generateId) {
+      context.createWithGenerateIdAndRead[__ID__, __BEAN__](entity)
+    } else {
+      context.createAndRead[__ID__, __BEAN__](entity)
+    }
+
   override def read(id: __ID__): Try[Option[__BEAN__]] =
     context.read[__ID__, __BEAN__](id)
 
@@ -43,9 +50,18 @@ final class __REPOSITORY_NAME__[__DIALECT__ <: SqlIdiom, __NAMING__ <: __NAMING_
          context.createOrUpdate[__ID__, __BEAN__](entity)
       }
 
+  override def createOrUpdateAndRead(entity: __BEAN__, generateId: Boolean = true): Try[__BEAN__] =
+      if (generateId) {
+        context.createWithGenerateIdOrUpdateAndRead[__ID__, __BEAN__](entity)
+      } else {
+         context.createOrUpdateAndRead[__ID__, __BEAN__](entity)
+      }
 
   override def update(entity: __BEAN__): Try[Long] =
     context.update[__BEAN__](entity)
+
+  override def updateAndRead(entity: __BEAN__): Try[__BEAN__] =
+    context.updateAndRead[__BEAN__](entity)
 
   override def delete(id: __ID__): Try[Boolean] =
     context.delete[__ID__, __BEAN__](id)
