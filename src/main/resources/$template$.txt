@@ -29,7 +29,7 @@ final class __REPOSITORY_NAME__[__DIALECT__ <: SqlIdiom, __NAMING__ <: __NAMING_
   override def create(entity: __BEAN__): Try[__ID__] =
    context.create[__ID__, __BEAN__](entity)
 
-  override def createAndRead(entity: __BEAN__): Try[ __BEAN__] =
+  override def createAndRead(entity: __BEAN__): Try[__BEAN__] =
    context.createAndRead[__ID__, __BEAN__](entity)
 
   override def read(id: __ID__): Try[Option[__BEAN__]] =
