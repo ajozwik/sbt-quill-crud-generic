@@ -4,21 +4,21 @@ import java.time.LocalDate
 
 import org.scalatest.TryValues._
 import pl.jozwik.example.model.{ Address, AddressId, Configuration, ConfigurationId, Person, PersonId }
-import pl.jozwik.example.repository.AddressRepository
+import pl.jozwik.example.repository.AddressRepositoryGen
 
 import scala.util.{ Failure, Success, Try }
 
 class QueriesSpec extends AbstractQuillSpec {
 
-  private lazy val personRepositoryAutoIncrement = new PersonRepository(ctx, "Person2")
-  private lazy val addressRepository = new AddressRepository(ctx, "Address")
+  private lazy val personRepositoryAutoIncrement = new PersonRepositoryGen(ctx, "Person2")
+  private lazy val addressRepository = new AddressRepositoryGen(ctx, "Address")
 
   private val generateId = true
   private val addressId = AddressId(1)
 
   "QueriesSync " should {
     "Call all operations on Person" in {
-      val personRepository = new PersonRepository(ctx, "Person")
+      val personRepository = new PersonRepositoryGen(ctx, "Person")
       val address = Address(addressId, "Poland", "Warsaw", Option("Podbipiety"))
       val person = Person(PersonId(1), "firstName", "lastName", LocalDate.now, Option(addressId))
       val notExisting = Person(PersonId(2), "firstName", "lastName", LocalDate.now, Option(addressId))
@@ -58,7 +58,7 @@ class QueriesSpec extends AbstractQuillSpec {
     }
 
     "Configuration " in {
-      val repository = new ConfigurationRepository(ctx)
+      val repository = new ConfigurationRepositoryGen(ctx)
       logger.debug("configuration")
       val entity = Configuration(ConfigurationId("firstName"), "lastName")
       val entity2 = Configuration(ConfigurationId("nextName"), "nextName")

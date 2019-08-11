@@ -1,8 +1,14 @@
 package pl.jozwik.quillgeneric.sbt
 
+object KeyType extends Enumeration {
+  val Single, Composite = Value
+}
+
+final case class BeanIdClass(name: String, key: KeyType.Value = KeyType.Single)
+
 final case class RepositoryDescription(
   beanClass: String,
-  beanIdClass: String,
+  beanIdClass: BeanIdClass,
   repositoryClassName: String,
   generateId: Boolean = false,
   repositoryTrait: Option[String] = None,
@@ -11,7 +17,7 @@ final case class RepositoryDescription(
 
   val (packageName, repositorySimpleClassName) = toPackageNameSimpleClass(repositoryClassName)
   val (beanPackageName, beanSimpleClassName) = toPackageNameSimpleClass(beanClass)
-  val (beanIdPackageName, beanIdSimpleClassName) = toPackageNameSimpleClass(beanIdClass)
+  val (beanIdPackageName, beanIdSimpleClassName) = toPackageNameSimpleClass(beanIdClass.name)
   val (repositoryPackageName, repositoryTraitSimpleClassNameOpt) =
     toPackageNameSimpleClass(repositoryTrait.getOrElse(""))
 

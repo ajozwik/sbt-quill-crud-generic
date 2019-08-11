@@ -1,4 +1,4 @@
-import pl.jozwik.quillgeneric.sbt.RepositoryDescription
+import pl.jozwik.quillgeneric.sbt._
 
 val `scala_2.12` = "2.12.8"
 
@@ -38,27 +38,27 @@ lazy val root = Project("quill-macro-example", file(".")).settings(
   ),
   generateDescription := Seq(
     RepositoryDescription("pl.jozwik.example.model.Person",
-      "pl.jozwik.example.model.PersonId",
-      "pl.jozwik.example.repository.PersonRepository",
+      BeanIdClass("pl.jozwik.example.model.PersonId"),
+      "pl.jozwik.example.repository.PersonRepositoryGen",
       true,
       Option("pl.jozwik.example.repository.MyPersonRepository[Dialect, Naming]"),
       None),
     RepositoryDescription("pl.jozwik.example.model.Address",
-      "pl.jozwik.example.model.AddressId",
-      "pl.jozwik.example.repository.AddressRepository",
+      BeanIdClass("pl.jozwik.example.model.AddressId"),
+      "pl.jozwik.example.repository.AddressRepositoryGen",
       true,
       None,
       None,
       Map("city"-> "city")),
     RepositoryDescription("pl.jozwik.example.model.Person",
-      "pl.jozwik.example.model.PersonId",
-      "pl.jozwik.example.PersonRepository",
+      BeanIdClass("pl.jozwik.example.model.PersonId"),
+      "pl.jozwik.example.PersonRepositoryGen",
       true,
       Option("pl.jozwik.example.repository.MyPersonRepository[Dialect, Naming]"),
       None),
     RepositoryDescription("pl.jozwik.example.model.Configuration",
-      "pl.jozwik.example.model.ConfigurationId",
-      "pl.jozwik.example.ConfigurationRepository",
+      BeanIdClass("pl.jozwik.example.model.ConfigurationId"),
+      "pl.jozwik.example.ConfigurationRepositoryGen",
       false,
       None,
       None,

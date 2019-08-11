@@ -8,7 +8,7 @@ class CodeGeneratorSpec extends AbstractSpec {
 
   "Generator " should {
     "Generate code for Person" in {
-      val description = RepositoryDescription("Person", "PersonId", "PersonRepository", true)
+      val description = RepositoryDescription("Person", BeanIdClass("PersonId"), "PersonRepository", true)
       val (file: File, content: String) = generateAndLog(description)
       file.exists() shouldBe false
       content should include(description.beanSimpleClassName)
@@ -20,7 +20,7 @@ class CodeGeneratorSpec extends AbstractSpec {
       val dob = "dob"
       val description = RepositoryDescription(
         "pl.jozwik.model.Person",
-        "pl.jozwik.model.PersonId",
+        BeanIdClass("pl.jozwik.model.PersonId"),
         "pl.jozwik.repository.PersonRepository",
         true,
         Option("pl.jozwik.quillgeneric.sbt.MyPersonRepository[Dialect, Naming]"),
@@ -36,7 +36,17 @@ class CodeGeneratorSpec extends AbstractSpec {
     }
 
     "Generate code for Configuration" in {
-      val description = RepositoryDescription("Configuration", "ConfigurationId", "PersonRepository")
+      val description = RepositoryDescription("Configuration", BeanIdClass("ConfigurationId"), "PersonRepository")
+      val (file: File, content: String) = generateAndLog(description)
+      file.exists() shouldBe false
+      content should include(description.beanSimpleClassName)
+      content should include(description.beanIdSimpleClassName)
+      content should include(description.repositorySimpleClassName)
+      content should include(description.toTableName)
+    }
+
+    "Generate code for Sale" in {
+      val description = RepositoryDescription("Sale", BeanIdClass("SaleId", KeyType.Composite), "SaleRepository")
       val (file: File, content: String) = generateAndLog(description)
       file.exists() shouldBe false
       content should include(description.beanSimpleClassName)

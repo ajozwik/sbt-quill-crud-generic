@@ -22,6 +22,7 @@ trait CodeGenerationTemplates {
   val RepositoryTraitImport = "__REPOSITORY_TRAIT_IMPORT__"
   val RepositoryTraitSimpleClassName = "__REPOSITORY_TRAIT_SIMPLE_NAME__"
   val RepositoryImport = "__REPOSITORY_IMPORT__"
+  val ContextAlias = "__CONTEXT_ALIAS__"
 }
 
 object CodeGenerator extends CodeGenerationTemplates {
@@ -30,9 +31,7 @@ object CodeGenerator extends CodeGenerationTemplates {
 
   private val macroRepository = "Repository"
 
-  private val macroRepositoryWithGeneric = s"$macroRepository[$BeanIdTemplate, $BeanTemplate]"
-
-  private val macroRepositoryImport = s"import pl.jozwik.quillgeneric.quillmacro.sync.$macroRepository"
+  private val repositoryCompositeKey = "RepositoryCompositeKey"
 
   private val macroRepositoryWithGenerated = "JdbcRepositoryWithGeneratedId"
 
@@ -45,6 +44,23 @@ object CodeGenerator extends CodeGenerationTemplates {
   private val templateWithGeneratedId = "$template_generate_id$.txt"
 
   private val headerFile = "$header$.txt"
+
+  private def macroRepositoryWithGeneric(key: KeyType.Value) = {
+    val repo = key match {
+      case KeyType.Composite =>
+        repositoryCompositeKey
+      case _ =>
+        macroRepository
+    }
+    (s"$repo[$BeanIdTemplate, $BeanTemplate]", s"import pl.jozwik.quillgeneric.quillmacro.sync.$repo")
+  }
+
+  private def toAliasName(key: KeyType.Value) = key match {
+    case KeyType.Composite =>
+      "JdbcCompositeKeyContextDateQuotes"
+    case _ =>
+      "JdbcContextDateQuotes"
+  }
 
   def generate(rootPath: File)(description: RepositoryDescription): (File, String) = {
     import description._
@@ -70,7 +86,9 @@ object CodeGenerator extends CodeGenerationTemplates {
     val importCtx = toImportContext(columnMapping)
 
     val (repositoryTraitSimpleClassName, repositoryImport, defaultRepositoryImport) =
-      toRepositoryTraitImport(repositoryTrait, packageName, repositoryPackageName, repositoryTraitSimpleClassNameOpt, generateId)
+      toRepositoryTraitImport(repositoryTrait, packageName, repositoryPackageName, repositoryTraitSimpleClassNameOpt, generateId, beanIdClass.key)
+
+    val aliasName = toAliasName(beanIdClass.key)
 
     val result = content
       .replace(RepositoryTraitSimpleClassName, repositoryTraitSimpleClassName)
@@ -80,13 +98,14 @@ object CodeGenerator extends CodeGenerationTemplates {
       .replace(BeanTemplate, beanSimpleClassName)
       .replace(BeanClassImport, createImport(packageName, beanPackageName, beanClass))
       .replace(BeanIdTemplate, beanIdSimpleClassName)
-      .replace(BeanIdClassImport, createImport(packageName, beanIdPackageName, beanIdClass))
+      .replace(BeanIdClassImport, createImport(packageName, beanIdPackageName, beanIdClass.name))
       .replace(ColumnMapping, columnMapping)
       .replace(ImportContext, importCtx)
       .replace(TableNamePattern, toTableName)
       .replace(RepositoryImport, defaultRepositoryImport)
       .replace(DialectTemplate, Dialect)
       .replace(NamingTemplate, Naming)
+      .replace(ContextAlias, aliasName)
 
     (file, s"$header\n$result")
   }
@@ -96,12 +115,13 @@ object CodeGenerator extends CodeGenerationTemplates {
     packageName: Seq[String],
     repositoryPackageName: Seq[String],
     repositoryTraitSimpleClassNameOpt: String,
-    generateId: Boolean) =
+    generateId: Boolean,
+    key: KeyType.Value) =
     if (repositoryTraitSimpleClassNameOpt.isEmpty) {
       val (repository, repositoryImport) = if (generateId) {
         (macroRepositoryWithGeneratedWithGeneric, macroRepositoryWithGeneratedImport)
       } else {
-        (macroRepositoryWithGeneric, macroRepositoryImport)
+        macroRepositoryWithGeneric(key)
       }
       (s"$repository", "", repositoryImport)
 

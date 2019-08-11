@@ -7,7 +7,7 @@ import scala.util.Try
 import io.getquill.NamingStrategy
 import io.getquill.context.jdbc.JdbcContext
 import io.getquill.context.sql.idiom.SqlIdiom
-import pl.jozwik.quillgeneric.quillmacro.sync.{ JdbcRepositoryWithGeneratedId, QuillCrudWithContext }
+import pl.jozwik.quillgeneric.quillmacro.sync.JdbcRepositoryWithGeneratedId
 
 trait MyPersonRepository[Dialect <: SqlIdiom, Naming <: NamingStrategy]
   extends JdbcRepositoryWithGeneratedId[PersonId, Person, Dialect, Naming] {
