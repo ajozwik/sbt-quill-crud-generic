@@ -86,9 +86,9 @@ object CodeGenerator extends CodeGenerationTemplates {
     val importCtx = toImportContext(columnMapping)
 
     val (repositoryTraitSimpleClassName, repositoryImport, defaultRepositoryImport) =
-      toRepositoryTraitImport(repositoryTrait, packageName, repositoryPackageName, repositoryTraitSimpleClassNameOpt, generateId, beanIdClass.key)
+      toRepositoryTraitImport(repositoryTrait, packageName, repositoryPackageName, repositoryTraitSimpleClassNameOpt, generateId, beanIdClass.keyType)
 
-    val aliasName = toAliasName(beanIdClass.key)
+    val aliasName = toAliasName(beanIdClass.keyType)
 
     val result = content
       .replace(RepositoryTraitSimpleClassName, repositoryTraitSimpleClassName)
@@ -116,12 +116,12 @@ object CodeGenerator extends CodeGenerationTemplates {
     repositoryPackageName: Seq[String],
     repositoryTraitSimpleClassNameOpt: String,
     generateId: Boolean,
-    key: KeyType.Value) =
+    keyType: KeyType.Value) =
     if (repositoryTraitSimpleClassNameOpt.isEmpty) {
       val (repository, repositoryImport) = if (generateId) {
         (macroRepositoryWithGeneratedWithGeneric, macroRepositoryWithGeneratedImport)
       } else {
-        macroRepositoryWithGeneric(key)
+        macroRepositoryWithGeneric(keyType)
       }
       (s"$repository", "", repositoryImport)
 

@@ -4,7 +4,7 @@ object KeyType extends Enumeration {
   val Single, Composite = Value
 }
 
-final case class BeanIdClass(name: String, key: KeyType.Value = KeyType.Single)
+final case class BeanIdClass(name: String, keyType: KeyType.Value = KeyType.Single)
 
 final case class RepositoryDescription(
   beanClass: String,
