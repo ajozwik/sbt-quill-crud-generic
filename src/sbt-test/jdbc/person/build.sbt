@@ -1,6 +1,6 @@
 import pl.jozwik.quillgeneric.sbt._
 
-val `scala_2.12` = "2.12.8"
+val `scala_2.12` = "2.12.9"
 
 resolvers += Resolver.sonatypeRepo("releases")
 
@@ -17,7 +17,6 @@ ThisBuild / scalacOptions ++= Seq(
   "-language:postfixOps"
 )
 
-
 val `org.scalatest_scalatest` = "org.scalatest" %% "scalatest" % "3.0.8" % "test"
 
 val `org.scalacheck_scalacheck` = "org.scalacheck" %% "scalacheck" % "1.14.0" % "test"
@@ -28,42 +27,51 @@ val `ch.qos.logback_logback-classic` = "ch.qos.logback" % "logback-classic" % "1
 
 val `com.h2database_h2` = "com.h2database" % "h2" % "1.4.199"
 
+val basePackage = "pl.jozwik.example"
+val domainModelPackage = s"$basePackage.domain.model"
+val implementationPackage = s"$basePackage.impl"
+
 lazy val root = Project("quill-macro-example", file(".")).settings(
+  generateDescription := Seq(
+    RepositoryDescription(s"$domainModelPackage.Person",
+      BeanIdClass(s"$domainModelPackage.PersonId"),
+      s"$basePackage.repository.PersonRepositoryGen",
+      true,
+      Option(s"$implementationPackage.PersonRepositoryImpl[Dialect, Naming]"),
+      None),
+    RepositoryDescription(s"$domainModelPackage.Address",
+      BeanIdClass(s"$domainModelPackage.AddressId"),
+      s"$basePackage.repository.AddressRepositoryGen",
+      true,
+      Option(s"$implementationPackage.AddressRepositoryImpl[Dialect, Naming]"),
+      None,
+      Map("city" -> "city")),
+    RepositoryDescription(s"$domainModelPackage.Configuration",
+      BeanIdClass(s"$domainModelPackage.ConfigurationId"),
+      s"$basePackage.ConfigurationRepositoryGen",
+      false,
+      None,
+      None,
+      Map("id" -> "key")
+    ),
+    RepositoryDescription(s"$domainModelPackage.Sale",
+      BeanIdClass(s"$domainModelPackage.SaleId", KeyType.Composite),
+      s"$basePackage.repository.SaleRepositoryGen",
+      false,
+      None,
+      None,
+      Map("id.fk1" -> "productId", "id.fk2" -> "personId")),
+    RepositoryDescription(s"$domainModelPackage.Product",
+      BeanIdClass(s"$domainModelPackage.ProductId"),
+      s"$basePackage.repository.ProductRepositoryGen",
+      true)
+  ),
   libraryDependencies ++= Seq(
     `org.scalatest_scalatest`,
     `org.scalacheck_scalacheck`,
     `com.typesafe.scala-logging_scala-logging`,
     `ch.qos.logback_logback-classic`,
     `com.h2database_h2` % Test
-  ),
-  generateDescription := Seq(
-    RepositoryDescription("pl.jozwik.example.model.Person",
-      BeanIdClass("pl.jozwik.example.model.PersonId"),
-      "pl.jozwik.example.repository.PersonRepositoryGen",
-      true,
-      Option("pl.jozwik.example.repository.MyPersonRepository[Dialect, Naming]"),
-      None),
-    RepositoryDescription("pl.jozwik.example.model.Address",
-      BeanIdClass("pl.jozwik.example.model.AddressId"),
-      "pl.jozwik.example.repository.AddressRepositoryGen",
-      true,
-      None,
-      None,
-      Map("city"-> "city")),
-    RepositoryDescription("pl.jozwik.example.model.Person",
-      BeanIdClass("pl.jozwik.example.model.PersonId"),
-      "pl.jozwik.example.PersonRepositoryGen",
-      true,
-      Option("pl.jozwik.example.repository.MyPersonRepository[Dialect, Naming]"),
-      None),
-    RepositoryDescription("pl.jozwik.example.model.Configuration",
-      BeanIdClass("pl.jozwik.example.model.ConfigurationId"),
-      "pl.jozwik.example.ConfigurationRepositoryGen",
-      false,
-      None,
-      None,
-      Map("id"->"key")
-    )
   )
 )
   .enablePlugins(QuillRepositoryPlugin)
