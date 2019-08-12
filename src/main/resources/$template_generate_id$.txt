@@ -58,10 +58,10 @@ final class __REPOSITORY_NAME__[__DIALECT__ <: SqlIdiom, __NAMING__ <: __NAMING_
       }
 
   override def update(entity: __BEAN__): Try[Long] =
-    context.update[__BEAN__](entity)
+    context.update[__ID__, __BEAN__](entity)
 
   override def updateAndRead(entity: __BEAN__): Try[__BEAN__] =
-    context.updateAndRead[__BEAN__](entity)
+    context.updateAndRead[__ID__, __BEAN__](entity)
 
   override def delete(id: __ID__): Try[Boolean] =
     context.delete[__ID__, __BEAN__](id)
