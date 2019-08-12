@@ -8,12 +8,11 @@ import pl.jozwik.example.domain.model.AddressId
 import pl.jozwik.example.domain.repository.AddressRepository
 import pl.jozwik.example.repository.AddressRepositoryGen
 import pl.jozwik.quillgeneric.quillmacro.quotes.DateQuotes
-import pl.jozwik.quillgeneric.quillmacro.sync.{ CompositeKeyCrudWithContext, CrudWithContext }
+import pl.jozwik.quillgeneric.quillmacro.sync.CrudWithContext
 
 trait AbstractQuillSpec extends AbstractSpec with BeforeAndAfterAll {
   sys.props.put("quill.binds.log", "true")
   lazy protected val ctx = new H2JdbcContext(SnakeCase, "h2") with CrudWithContext with DateQuotes
-  lazy protected val compositeCtx = new H2JdbcContext(SnakeCase, "h2") with CompositeKeyCrudWithContext with DateQuotes
   protected lazy val addressRepository: AddressRepository = new AddressRepositoryGen(ctx, "Address")
   protected val today: LocalDate = LocalDate.now()
   protected val (offset, limit) = (0, 100)

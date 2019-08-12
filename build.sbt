@@ -23,7 +23,7 @@ javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
 
 scalaVersion := "2.12.9"
 
-val quillMacroVersion = "0.6.0"
+val quillMacroVersion = "0.6.1"
 
 val `com.typesafe.scala-logging_scala-logging` = "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2"
 

@@ -29,6 +29,8 @@ object CodeGenerator extends CodeGenerationTemplates {
   private val Dialect = "Dialect"
   private val Naming = "Naming"
 
+  private val aliasName = "JdbcContextDateQuotes"
+
   private val macroRepository = "Repository"
 
   private val repositoryCompositeKey = "RepositoryCompositeKey"
@@ -53,13 +55,6 @@ object CodeGenerator extends CodeGenerationTemplates {
         macroRepository
     }
     (s"$repo[$BeanIdTemplate, $BeanTemplate]", s"import pl.jozwik.quillgeneric.quillmacro.sync.$repo")
-  }
-
-  private def toAliasName(key: KeyType.Value) = key match {
-    case KeyType.Composite =>
-      "JdbcCompositeKeyContextDateQuotes"
-    case _ =>
-      "JdbcContextDateQuotes"
   }
 
   def generate(rootPath: File)(description: RepositoryDescription): (File, String) = {
@@ -87,8 +82,6 @@ object CodeGenerator extends CodeGenerationTemplates {
 
     val (repositoryTraitSimpleClassName, repositoryImport, defaultRepositoryImport) =
       toRepositoryTraitImport(repositoryTrait, packageName, repositoryPackageName, repositoryTraitSimpleClassNameOpt, generateId, beanIdClass.keyType)
-
-    val aliasName = toAliasName(beanIdClass.keyType)
 
     val result = content
       .replace(RepositoryTraitSimpleClassName, repositoryTraitSimpleClassName)

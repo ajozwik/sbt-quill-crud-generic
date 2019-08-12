@@ -20,8 +20,7 @@ trait AddressRepositoryImpl[Dialect <: SqlIdiom, Naming <: NamingStrategy]
     val q = dynamicSchema.filter(_.city == lift(city))
       .update(
         setValue(_.country, country),
-        setValue(_.updated, Option(now))
-      )
+        setValue(_.updated, Option(now)))
     run(q)
   }
 
