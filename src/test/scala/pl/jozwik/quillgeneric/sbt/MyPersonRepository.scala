@@ -11,7 +11,7 @@ import scala.util.Try
 
 trait MyPersonRepository[Dialect <: SqlIdiom, Naming <: NamingStrategy] extends JdbcRepository[PersonId, Person, Dialect, Naming] {
 
-  def searchByFirstName(name: String)(offset: Int, limit: Int): Try[Seq[Person]] = {
+  def searchByFirstName(name: String)(offset: Int, limit: Int): Try[Seq[Person]] = Try {
     import context._
     searchByFilter((p: Person) => p.firstName == lift(name) && p.lastName != lift(""))(offset, limit)(dynamicSchema)
   }
@@ -22,11 +22,12 @@ trait MyPersonRepository[Dialect <: SqlIdiom, Naming <: NamingStrategy] extends 
     run(r.max)
   }
 
-  def youngerThan(date: LocalDate)(offset: Int, limit: Int): Try[Seq[Person]] = {
+  def youngerThan(date: LocalDate)(offset: Int, limit: Int): Try[Seq[Person]] = Try {
     import context._
     searchByFilter((p: Person) => quote(p.birthDate > lift(date)))(offset, limit)(dynamicSchema)
   }
 
-  def count: Try[Long] =
+  def count: Try[Long] = Try {
     context.count((_: Person) => true)(dynamicSchema)
+  }
 }

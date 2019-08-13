@@ -6,12 +6,13 @@ resolvers += Resolver.sonatypeRepo("releases")
 
 ThisBuild / scalacOptions ++= Seq(
   "-target:jvm-1.8",
-  "-encoding", "UTF-8",
-  "-deprecation", // warning and location for usages of deprecated APIs
-  "-feature", // warning and location for usages of features that should be imported explicitly
-  "-unchecked", // additional warnings where generated code depends on assumptions
-  "-Xlint", // recommended additional warnings
-  "-Ywarn-adapted-args", // Warn if an argument list is modified to match the receiver
+  "-encoding",
+  "UTF-8",
+  "-deprecation",         // warning and location for usages of deprecated APIs
+  "-feature",             // warning and location for usages of features that should be imported explicitly
+  "-unchecked",           // additional warnings where generated code depends on assumptions
+  "-Xlint",               // recommended additional warnings
+  "-Ywarn-adapted-args",  // Warn if an argument list is modified to match the receiver
   "-Ywarn-value-discard", // Warn when non-Unit expression results are unused
   "-Ywarn-inaccessible",
   "-Ywarn-dead-code",
@@ -21,9 +22,9 @@ ThisBuild / scalacOptions ++= Seq(
 
 javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
 
-scalaVersion := "2.12.9"
+ThisBuild / scalaVersion := "2.12.9"
 
-val quillMacroVersion = "0.6.1.2"
+val quillMacroVersion = "0.6.2"
 
 val `com.typesafe.scala-logging_scala-logging` = "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2"
 
@@ -36,7 +37,7 @@ val `org.scalacheck_scalacheck` = "org.scalacheck" %% "scalacheck" % "1.14.0" % 
 val `com.github.ajozwik_macro-quill` = "com.github.ajozwik" %% "macro-quill" % quillMacroVersion
 
 ThisBuild / libraryDependencies ++= Seq(
-  `ch.qos.logback_logback-classic` % Test,
+  `ch.qos.logback_logback-classic`           % Test,
   `com.typesafe.scala-logging_scala-logging` % Test,
   `org.scalatest_scalatest`,
   `org.scalacheck_scalacheck`,
@@ -49,4 +50,5 @@ lazy val root = (project in file("."))
   .settings(
     scriptedLaunchOpts += ("-Dplugin.version=" + version.value),
     scriptedBufferLog := false
-  ).enablePlugins(SbtPlugin)
+  )
+  .enablePlugins(SbtPlugin)

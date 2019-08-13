@@ -14,7 +14,7 @@ trait PersonRepositoryImpl[Dialect <: SqlIdiom, Naming <: NamingStrategy]
   extends JdbcRepositoryWithGeneratedId[PersonId, Person, Dialect, Naming]
   with PersonRepository {
 
-  def searchByFirstName(name: String)(offset: Int, limit: Int): Try[Seq[Person]] = {
+  def searchByFirstName(name: String)(offset: Int, limit: Int): Try[Seq[Person]] = Try {
     import context._
     searchByFilter((p: Person) =>
       p.firstName == lift(name) && p.lastName != lift(""))(offset, limit)(dynamicSchema)
@@ -26,12 +26,12 @@ trait PersonRepositoryImpl[Dialect <: SqlIdiom, Naming <: NamingStrategy]
     run(r.max)
   }
 
-  def youngerThan(date: LocalDate)(offset: Int, limit: Int): Try[Seq[Person]] = {
+  def youngerThan(date: LocalDate)(offset: Int, limit: Int): Try[Seq[Person]] = Try {
     import context._
     searchByFilter((p: Person) => quote(p.birthDate > lift(date)))(offset, limit)(dynamicSchema)
   }
 
-  def count: Try[Long] = {
+  def count: Try[Long] = Try {
     context.count((_: Person) => true)(dynamicSchema)
   }
 
