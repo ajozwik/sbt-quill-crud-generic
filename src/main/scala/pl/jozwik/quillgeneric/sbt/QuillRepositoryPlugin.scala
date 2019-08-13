@@ -16,15 +16,15 @@ object QuillRepositoryPlugin extends AutoPlugin {
 
   override lazy val projectSettings: Seq[Def.Setting[_]] =
     defaultSettings ++ Seq(
-      sourceGenerators in Compile += Def.task {
-        val rootPath = (sourceManaged in Compile).value
-        generateDescription.value.map {
-          d =>
-            val (file, content) = CodeGenerator.generate(rootPath)(d)
-            IO.write(file, content)
-            file
-        }
-      }.taskValue,
-      libraryDependencies ++= Seq("com.github.ajozwik" %% "macro-quill" % quillMacroVersion.value))
+          sourceGenerators in Compile += Def.task {
+                val rootPath = (sourceManaged in Compile).value
+                generateDescription.value.map { d =>
+                  val (file, content) = CodeGenerator.generate(rootPath)(d)
+                  IO.write(file, content)
+                  file
+                }
+              }.taskValue,
+          libraryDependencies ++= Seq("com.github.ajozwik" %% "macro-quill" % quillMacroVersion.value)
+        )
 
 }

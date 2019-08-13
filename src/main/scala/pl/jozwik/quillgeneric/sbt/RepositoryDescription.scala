@@ -7,17 +7,19 @@ object KeyType extends Enumeration {
 final case class BeanIdClass(name: String, keyType: KeyType.Value = KeyType.Single)
 
 final case class RepositoryDescription(
-  beanClass: String,
-  beanIdClass: BeanIdClass,
-  repositoryClassName: String,
-  generateId: Boolean = false,
-  repositoryTrait: Option[String] = None,
-  tableName: Option[String] = None,
-  mapping: Map[String, String] = Map.empty) {
+    beanClass: String,
+    beanIdClass: BeanIdClass,
+    repositoryClassName: String,
+    generateId: Boolean = false,
+    repositoryTrait: Option[String] = None,
+    tableName: Option[String] = None,
+    mapping: Map[String, String] = Map.empty
+) {
 
-  val (packageName, repositorySimpleClassName) = toPackageNameSimpleClass(repositoryClassName)
-  val (beanPackageName, beanSimpleClassName) = toPackageNameSimpleClass(beanClass)
+  val (packageName, repositorySimpleClassName)   = toPackageNameSimpleClass(repositoryClassName)
+  val (beanPackageName, beanSimpleClassName)     = toPackageNameSimpleClass(beanClass)
   val (beanIdPackageName, beanIdSimpleClassName) = toPackageNameSimpleClass(beanIdClass.name)
+
   val (repositoryPackageName, repositoryTraitSimpleClassNameOpt) =
     toPackageNameSimpleClass(repositoryTrait.getOrElse(""))
 
@@ -29,8 +31,8 @@ final case class RepositoryDescription(
     }
 
   private[sbt] def toPackageNameSimpleClass(className: String): (Seq[String], String) = {
-    val array = className.split("\\.")
-    val packageName = array.slice(0, array.length - 1)
+    val array                     = className.split("\\.")
+    val packageName               = array.slice(0, array.length - 1)
     val repositorySimpleClassName = array(array.length - 1)
     (packageName, repositorySimpleClassName)
   }

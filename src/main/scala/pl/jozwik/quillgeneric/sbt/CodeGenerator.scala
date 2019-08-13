@@ -8,26 +8,26 @@ import sbt._
 import scala.io.Source
 
 trait CodeGenerationTemplates {
-  val DialectTemplate = "__DIALECT__"
-  val NamingTemplate = "__NAMING__"
-  val PackageTemplate = "__PACKAGE__"
-  val RepositoryClassTemplate = "__REPOSITORY_NAME__"
-  val BeanTemplate = "__BEAN__"
-  val BeanClassImport = "__BEAN_CLASS_IMPORT__"
-  val BeanIdTemplate = "__ID__"
-  val BeanIdClassImport = "__ID_CLASS_IMPORT__"
-  val ColumnMapping = "__COLUMN_MAPPING__"
-  val ImportContext = "__IMPORT_CONTEXT__"
-  val TableNamePattern = "__TABLE_NAME__"
-  val RepositoryTraitImport = "__REPOSITORY_TRAIT_IMPORT__"
+  val DialectTemplate                = "__DIALECT__"
+  val NamingTemplate                 = "__NAMING__"
+  val PackageTemplate                = "__PACKAGE__"
+  val RepositoryClassTemplate        = "__REPOSITORY_NAME__"
+  val BeanTemplate                   = "__BEAN__"
+  val BeanClassImport                = "__BEAN_CLASS_IMPORT__"
+  val BeanIdTemplate                 = "__ID__"
+  val BeanIdClassImport              = "__ID_CLASS_IMPORT__"
+  val ColumnMapping                  = "__COLUMN_MAPPING__"
+  val ImportContext                  = "__IMPORT_CONTEXT__"
+  val TableNamePattern               = "__TABLE_NAME__"
+  val RepositoryTraitImport          = "__REPOSITORY_TRAIT_IMPORT__"
   val RepositoryTraitSimpleClassName = "__REPOSITORY_TRAIT_SIMPLE_NAME__"
-  val RepositoryImport = "__REPOSITORY_IMPORT__"
-  val ContextAlias = "__CONTEXT_ALIAS__"
+  val RepositoryImport               = "__REPOSITORY_IMPORT__"
+  val ContextAlias                   = "__CONTEXT_ALIAS__"
 }
 
 object CodeGenerator extends CodeGenerationTemplates {
   private val Dialect = "Dialect"
-  private val Naming = "Naming"
+  private val Naming  = "Naming"
 
   private val aliasName = "JdbcContextDateQuotes"
 
@@ -64,10 +64,10 @@ object CodeGenerator extends CodeGenerationTemplates {
     } else {
       template
     }
-    val header = readTemplate(headerFile)
+    val header  = readTemplate(headerFile)
     val content = readTemplate(templateFile)
-    val path = Paths.get(rootPath.getAbsolutePath, packageName: _*)
-    val dir = path.toFile
+    val path    = Paths.get(rootPath.getAbsolutePath, packageName: _*)
+    val dir     = path.toFile
     dir.mkdirs()
     val p = packageName match {
       case Seq() =>
@@ -78,7 +78,7 @@ object CodeGenerator extends CodeGenerationTemplates {
     val file = dir / s"$repositorySimpleClassName.scala"
 
     val columnMapping = toColumnMapping(mapping)
-    val importCtx = toImportContext(columnMapping)
+    val importCtx     = toImportContext(columnMapping)
 
     val (repositoryTraitSimpleClassName, repositoryImport, defaultRepositoryImport) =
       toRepositoryTraitImport(repositoryTrait, packageName, repositoryPackageName, repositoryTraitSimpleClassNameOpt, generateId, beanIdClass.keyType)
@@ -104,12 +104,13 @@ object CodeGenerator extends CodeGenerationTemplates {
   }
 
   private def toRepositoryTraitImport(
-    repositoryTrait: Option[String],
-    packageName: Seq[String],
-    repositoryPackageName: Seq[String],
-    repositoryTraitSimpleClassNameOpt: String,
-    generateId: Boolean,
-    keyType: KeyType.Value) =
+      repositoryTrait: Option[String],
+      packageName: Seq[String],
+      repositoryPackageName: Seq[String],
+      repositoryTraitSimpleClassNameOpt: String,
+      generateId: Boolean,
+      keyType: KeyType.Value
+  ) =
     if (repositoryTraitSimpleClassNameOpt.isEmpty) {
       val (repository, repositoryImport) = if (generateId) {
         (macroRepositoryWithGeneratedWithGeneric, macroRepositoryWithGeneratedImport)
