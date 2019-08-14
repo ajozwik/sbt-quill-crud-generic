@@ -31,9 +31,9 @@ object CodeGenerator extends CodeGenerationTemplates {
 
   private val aliasName = "JdbcContextDateQuotes"
 
-  private val macroRepository = "Repository"
+  private val macroRepository = "JdbcRepository"
 
-  private val repositoryCompositeKey = "RepositoryCompositeKey"
+  private val repositoryCompositeKey = "JdbcRepositoryCompositeKey"
 
   private val macroRepositoryWithGenerated = "JdbcRepositoryWithGeneratedId"
 
@@ -54,7 +54,7 @@ object CodeGenerator extends CodeGenerationTemplates {
       case _ =>
         macroRepository
     }
-    (s"$repo[$BeanIdTemplate, $BeanTemplate]", s"import pl.jozwik.quillgeneric.quillmacro.sync.$repo")
+    (s"$repo[$BeanIdTemplate, $BeanTemplate, $DialectTemplate, $NamingTemplate]", s"import pl.jozwik.quillgeneric.quillmacro.sync.$repo")
   }
 
   def generate(rootPath: File)(description: RepositoryDescription): (File, String) = {

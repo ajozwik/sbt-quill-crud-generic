@@ -3,7 +3,7 @@ package pl.jozwik.example.domain.repository
 import java.time.LocalDate
 
 import pl.jozwik.example.domain.model.{ Person, PersonId }
-import pl.jozwik.quillgeneric.quillmacro.sync.RepositoryWithGeneratedId
+import pl.jozwik.quillgeneric.quillmacro.RepositoryWithGeneratedId
 
 import scala.util.Try
 

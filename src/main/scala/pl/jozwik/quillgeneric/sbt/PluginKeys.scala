@@ -7,5 +7,5 @@ trait PluginKeys {
   val generateDescription  = settingKey[Seq[RepositoryDescription]]("The repository descriptions")
   val quillMacroVersion    = settingKey[String]("Quill macro version")
 
-  val defaultSettings: Seq[Def.Setting[_]] = Seq(generateDescription := Seq.empty, quillMacroVersion := "0.6.2")
+  val defaultSettings: Seq[Def.Setting[_]] = Seq(generateDescription := Seq.empty, quillMacroVersion := "0.7.0-SNAPSHOT")
 }
