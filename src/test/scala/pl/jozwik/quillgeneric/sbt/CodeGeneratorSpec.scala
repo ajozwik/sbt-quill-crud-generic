@@ -2,7 +2,11 @@ package pl.jozwik.quillgeneric.sbt
 
 import java.io.File
 
-class CodeGeneratorSpec extends AbstractSpec {
+class SyncGeneratorCodeSpec extends AbstractCodeGeneratorSpec(SyncCodeGenerator)
+
+class MonixGeneratorCodeSpec extends AbstractCodeGeneratorSpec(MonixCodeGenerator)
+
+abstract class AbstractCodeGeneratorSpec(generator: Generator) extends AbstractSpec {
 
   private val baseTempPath = System.getProperty("java.io.tmpdir")
 
@@ -58,7 +62,7 @@ class CodeGeneratorSpec extends AbstractSpec {
     }
 
   private def generateAndLog(description: RepositoryDescription) = {
-    val (file, content) = CodeGenerator.generate(new File(baseTempPath))(description)
+    val (file, content) = generator.generate(new File(baseTempPath))(description)
     logger.debug(s"$file")
     logger.debug(s"\n$content")
     (file, content)

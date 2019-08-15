@@ -4,6 +4,8 @@ organization := "com.github.ajozwik"
 
 resolvers += Resolver.sonatypeRepo("releases")
 
+resolvers += Resolver.sonatypeRepo("snapshots")
+
 ThisBuild / scalacOptions ++= Seq(
   "-target:jvm-1.8",
   "-encoding",

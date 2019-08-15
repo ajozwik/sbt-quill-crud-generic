@@ -4,6 +4,8 @@ val `scala_2.12` = "2.12.9"
 
 resolvers += Resolver.sonatypeRepo("releases")
 
+resolvers += Resolver.sonatypeRepo("snapshots")
+
 ThisBuild / organization := "pl.jozwik.demo"
 
 ThisBuild / scalaVersion := `scala_2.12`
@@ -77,6 +79,15 @@ lazy val root = Project("quill-macro-example", file("."))
             BeanIdClass(s"$domainModelPackage.ProductId"),
             s"$basePackage.repository.ProductRepositoryGen",
             true
+          ),
+          RepositoryDescription(
+            s"$domainModelPackage.Cell4d",
+            BeanIdClass(s"$domainModelPackage.Cell4dId", KeyType.Composite),
+            s"$basePackage.repository.Cell4dRepositoryGen",
+            false,
+            None,
+            None,
+            Map("id.fk1" -> "x", "id.fk2" -> "y", "id.fk3" -> "z", "id.fk4" -> "t")
           )
         ),
     libraryDependencies ++= Seq(
