@@ -7,43 +7,51 @@ import sbt._
 
 import scala.io.Source
 
-trait CodeGenerationTemplates {
-  val DialectTemplate                = "__DIALECT__"
-  val NamingTemplate                 = "__NAMING__"
-  val PackageTemplate                = "__PACKAGE__"
-  val RepositoryClassTemplate        = "__REPOSITORY_NAME__"
-  val BeanTemplate                   = "__BEAN__"
-  val BeanClassImport                = "__BEAN_CLASS_IMPORT__"
-  val BeanIdTemplate                 = "__ID__"
-  val BeanIdClassImport              = "__ID_CLASS_IMPORT__"
-  val ColumnMapping                  = "__COLUMN_MAPPING__"
-  val ImportContext                  = "__IMPORT_CONTEXT__"
-  val TableNamePattern               = "__TABLE_NAME__"
-  val RepositoryTraitImport          = "__REPOSITORY_TRAIT_IMPORT__"
-  val RepositoryTraitSimpleClassName = "__REPOSITORY_TRAIT_SIMPLE_NAME__"
-  val RepositoryImport               = "__REPOSITORY_IMPORT__"
-  val ContextAlias                   = "__CONTEXT_ALIAS__"
+object SyncCodeGenerator extends AbstractCodeGenerator {
+  protected def genericPackage               = "pl.jozwik.quillgeneric.quillmacro.sync"
+  protected def aliasName                    = "JdbcContextDateQuotes"
+  protected def macroRepository: String      = "JdbcRepository"
+  protected def repositoryCompositeKey       = "JdbcRepositoryCompositeKey"
+  protected def macroRepositoryWithGenerated = "JdbcRepositoryWithGeneratedId"
+  protected def template                     = "$template$.txt"
+  protected def templateWithGeneratedId      = "$template_generate_id$.txt"
 }
 
-object CodeGenerator extends CodeGenerationTemplates {
+object MonixCodeGenerator extends AbstractCodeGenerator {
+  protected def genericPackage               = "pl.jozwik.quillgeneric.quillmacro.monix"
+  protected def aliasName                    = "MonixJdbcContextDateQuotes"
+  protected def macroRepository: String      = "JdbcMonixRepository"
+  protected def repositoryCompositeKey       = "JdbcMonixRepositoryCompositeKey"
+  protected def macroRepositoryWithGenerated = "JdbcMonixRepositoryWithGeneratedId"
+  protected def template                     = "$monix_template$.txt"
+  protected def templateWithGeneratedId      = "$monix_template_generated_id$.txt"
+}
+
+trait Generator {
+  def generate(rootPath: File)(description: RepositoryDescription): (File, String)
+}
+
+abstract class AbstractCodeGenerator extends Generator with CodeGenerationTemplates {
   private val Dialect = "Dialect"
   private val Naming  = "Naming"
 
-  private val aliasName = "JdbcContextDateQuotes"
+  protected def aliasName: String
 
-  private val macroRepository = "Repository"
+  protected def macroRepository: String
 
-  private val repositoryCompositeKey = "RepositoryCompositeKey"
+  protected def repositoryCompositeKey: String
 
-  private val macroRepositoryWithGenerated = "JdbcRepositoryWithGeneratedId"
+  protected def macroRepositoryWithGenerated: String
 
   private val macroRepositoryWithGeneratedWithGeneric = s"$macroRepositoryWithGenerated[$BeanIdTemplate, $BeanTemplate, $DialectTemplate, $NamingTemplate]"
 
-  private val macroRepositoryWithGeneratedImport = s"import pl.jozwik.quillgeneric.quillmacro.sync.$macroRepositoryWithGenerated"
+  protected def genericPackage: String
 
-  private val template = "$template$.txt"
+  private val macroRepositoryWithGeneratedImport = s"import $genericPackage.$macroRepositoryWithGenerated"
 
-  private val templateWithGeneratedId = "$template_generate_id$.txt"
+  protected def template: String
+
+  protected def templateWithGeneratedId: String
 
   private val headerFile = "$header$.txt"
 
@@ -54,7 +62,7 @@ object CodeGenerator extends CodeGenerationTemplates {
       case _ =>
         macroRepository
     }
-    (s"$repo[$BeanIdTemplate, $BeanTemplate]", s"import pl.jozwik.quillgeneric.quillmacro.sync.$repo")
+    (s"$repo[$BeanIdTemplate, $BeanTemplate, $DialectTemplate, $NamingTemplate]", s"import $genericPackage.$repo")
   }
 
   def generate(rootPath: File)(description: RepositoryDescription): (File, String) = {

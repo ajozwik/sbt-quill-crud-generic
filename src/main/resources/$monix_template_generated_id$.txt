@@ -1,0 +1,75 @@
+__PACKAGE__
+
+import io.getquill.NamingStrategy
+import io.getquill.context.sql.idiom.SqlIdiom
+import monix.eval.Task
+__BEAN_CLASS_IMPORT__
+__ID_CLASS_IMPORT__
+__REPOSITORY_TRAIT_IMPORT__
+import pl.jozwik.quillgeneric.quillmacro.monix.JdbcMonixRepository.MonixJdbcContextDateQuotes
+__REPOSITORY_IMPORT__
+
+final class __REPOSITORY_NAME__[__DIALECT__ <: SqlIdiom, __NAMING__ <: __NAMING__Strategy](
+    protected val context: MonixJdbcContextDateQuotes[__DIALECT__ , __NAMING__],
+    protected val tableName: String = "__TABLE_NAME__"
+) extends __REPOSITORY_TRAIT_SIMPLE_NAME__ {
+
+  protected def dynamicSchema: context.DynamicEntityQuery[__BEAN__] = dSchema
+
+  private implicit val dSchema: context.DynamicEntityQuery[__BEAN__] = {
+      __IMPORT_CONTEXT__
+      context.dynamicQuerySchema[__BEAN__](tableName__COLUMN_MAPPING__)
+    }
+
+  override def all: Task[Seq[__BEAN__]] =
+    context.all[__BEAN__]
+
+  override def create(entity: __BEAN__, generateId: Boolean = true): Task[__ID__] =
+    if (generateId) {
+      context.createAndGenerateId[__ID__, __BEAN__](entity)
+    } else {
+      context.create[__ID__, __BEAN__](entity)
+    }
+
+  override def createAndRead(entity: __BEAN__, generateId: Boolean = true): Task[__BEAN__] =
+    context.transaction {
+      if (generateId) {
+        context.createWithGenerateIdAndRead[__ID__, __BEAN__](entity)
+      } else {
+        context.createAndRead[__ID__, __BEAN__](entity)
+      }
+    }
+
+  override def read(id: __ID__): Task[Option[__BEAN__]] =
+    context.read[__ID__, __BEAN__](id)
+
+  override def createOrUpdate(entity: __BEAN__, generateId: Boolean = true): Task[__ID__] =
+    context.transaction {
+      if (generateId) {
+        context.createAndGenerateIdOrUpdate[__ID__, __BEAN__](entity)
+      } else {
+        context.createOrUpdate[__ID__, __BEAN__](entity)
+      }
+    }
+
+  override def createOrUpdateAndRead(entity: __BEAN__, generateId: Boolean = true): Task[__BEAN__] =
+    context.transaction {
+      if (generateId) {
+        context.createWithGenerateIdOrUpdateAndRead[__ID__, __BEAN__](entity)
+      } else {
+        context.createOrUpdateAndRead[__ID__, __BEAN__](entity)
+      }
+    }
+
+  override def update(entity: __BEAN__): Task[Long] =
+    context.update[__ID__, __BEAN__](entity)
+
+  override def updateAndRead(entity: __BEAN__): Task[__BEAN__] =
+    context.transaction {
+      context.updateAndRead[__ID__, __BEAN__](entity)
+    }
+
+  override def delete(id: __ID__): Task[Long] =
+    context.delete[__ID__, __BEAN__](id)
+
+}

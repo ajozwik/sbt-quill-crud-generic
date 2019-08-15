@@ -11,10 +11,11 @@ object AddressId {
 final case class AddressId(value: Int) extends AnyVal
 
 final case class Address(
-  id: AddressId,
-  country: String,
-  city: String,
-  street: Option[String] = None,
-  buildingNumber: Option[String] = None,
-  updated: Option[LocalDateTime] = None,
-  localNumber: Option[String] = None) extends WithId[AddressId]
+    id: AddressId,
+    country: String,
+    city: String,
+    street: Option[String] = None,
+    buildingNumber: Option[String] = None,
+    updated: Option[LocalDateTime] = None,
+    localNumber: Option[String] = None
+) extends WithId[AddressId]

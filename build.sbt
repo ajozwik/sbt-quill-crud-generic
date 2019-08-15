@@ -4,6 +4,8 @@ organization := "com.github.ajozwik"
 
 resolvers += Resolver.sonatypeRepo("releases")
 
+resolvers += Resolver.sonatypeRepo("snapshots")
+
 ThisBuild / scalacOptions ++= Seq(
   "-target:jvm-1.8",
   "-encoding",
@@ -24,7 +26,7 @@ javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
 
 ThisBuild / scalaVersion := "2.12.9"
 
-val quillMacroVersion = "0.6.2"
+val quillMacroVersion = "0.7.0"
 
 val `com.typesafe.scala-logging_scala-logging` = "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2"
 

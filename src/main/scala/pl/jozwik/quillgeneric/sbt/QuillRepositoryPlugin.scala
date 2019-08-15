@@ -14,15 +14,19 @@ object QuillRepositoryPlugin extends AutoPlugin {
 
   import autoImport._
 
+  private def generate(descriptions: Seq[RepositoryDescription], rootPath: File, generator: Generator) =
+    descriptions.map { d =>
+      val (file, content) = generator.generate(rootPath)(d)
+      IO.write(file, content)
+      file
+    }
+
   override lazy val projectSettings: Seq[Def.Setting[_]] =
     defaultSettings ++ Seq(
           sourceGenerators in Compile += Def.task {
                 val rootPath = (sourceManaged in Compile).value
-                generateDescription.value.map { d =>
-                  val (file, content) = CodeGenerator.generate(rootPath)(d)
-                  IO.write(file, content)
-                  file
-                }
+                generate(generateDescription.value, rootPath, SyncCodeGenerator) ++
+                  generate(generateMonixRepositories.value, rootPath, MonixCodeGenerator)
               }.taskValue,
           libraryDependencies ++= Seq("com.github.ajozwik" %% "macro-quill" % quillMacroVersion.value)
         )

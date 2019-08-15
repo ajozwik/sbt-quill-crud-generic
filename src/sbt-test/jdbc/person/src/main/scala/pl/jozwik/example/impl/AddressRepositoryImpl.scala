@@ -17,10 +17,12 @@ trait AddressRepositoryImpl[Dialect <: SqlIdiom, Naming <: NamingStrategy]
   def setCountryIfCity(city: String, country: String): Try[Unit] = Try {
     import context._
     val now = LocalDateTime.now
-    val q = dynamicSchema.filter(_.city == lift(city))
+    val q = dynamicSchema
+      .filter(_.city == lift(city))
       .update(
         setValue(_.country, country),
-        setValue(_.updated, Option(now)))
+        setValue(_.updated, Option(now))
+      )
     run(q)
   }
 

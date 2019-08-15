@@ -1,7 +1,7 @@
 package pl.jozwik.example.domain.repository
 
 import pl.jozwik.example.domain.model.{ Address, AddressId }
-import pl.jozwik.quillgeneric.quillmacro.sync.RepositoryWithGeneratedId
+import pl.jozwik.quillgeneric.quillmacro.RepositoryWithGeneratedId
 
 import scala.util.Try
 
