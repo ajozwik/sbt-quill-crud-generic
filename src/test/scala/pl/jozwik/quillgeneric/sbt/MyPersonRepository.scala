@@ -19,7 +19,7 @@ trait MyPersonRepository[Dialect <: SqlIdiom, Naming <: NamingStrategy] extends 
   def max: Try[Option[LocalDate]] = Try {
     import context._
     val r = dynamicSchema.map(p => p.birthDate)
-    run(r.max)
+    context.run(r.max)
   }
 
   def youngerThan(date: LocalDate)(offset: Int, limit: Int): Try[Seq[Person]] = Try {

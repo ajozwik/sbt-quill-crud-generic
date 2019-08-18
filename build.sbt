@@ -26,7 +26,7 @@ javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
 
 ThisBuild / scalaVersion := "2.12.9"
 
-val quillMacroVersion = "0.7.0"
+val quillMacroVersion = "0.7.1-SNAPSHOT"
 
 val `com.typesafe.scala-logging_scala-logging` = "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2"
 
@@ -36,7 +36,7 @@ val `org.scalatest_scalatest` = "org.scalatest" %% "scalatest" % "3.0.8" % Test
 
 val `org.scalacheck_scalacheck` = "org.scalacheck" %% "scalacheck" % "1.14.0" % Test
 
-val `com.github.ajozwik_macro-quill` = "com.github.ajozwik" %% "macro-quill" % quillMacroVersion
+val `com.github.ajozwik_macro-quill` = "com.github.ajozwik" %% "quill-jdbc-macro" % quillMacroVersion
 
 ThisBuild / libraryDependencies ++= Seq(
   `ch.qos.logback_logback-classic`           % Test,

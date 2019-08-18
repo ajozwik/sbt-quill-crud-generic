@@ -3,6 +3,7 @@ package pl.jozwik.quillgeneric.sbt
 import sbt.Keys._
 import sbt._
 import sbt.plugins.JvmPlugin
+import DependencyHelper._
 
 object QuillRepositoryPlugin extends AutoPlugin {
 
@@ -28,7 +29,8 @@ object QuillRepositoryPlugin extends AutoPlugin {
                 generate(generateDescription.value, rootPath, SyncCodeGenerator) ++
                   generate(generateMonixRepositories.value, rootPath, MonixCodeGenerator)
               }.taskValue,
-          libraryDependencies ++= Seq("com.github.ajozwik" %% "macro-quill" % quillMacroVersion.value)
+          libraryDependencies ++= addImport(generateDescription.value.nonEmpty, "quill-jdbc-macro", quillMacroVersion.value) ++
+                  addImport(generateMonixRepositories.value.nonEmpty, "quill-jdbc-monix-macro", quillMacroVersion.value)
         )
 
 }
