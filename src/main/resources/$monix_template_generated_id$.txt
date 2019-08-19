@@ -72,4 +72,7 @@ final class __REPOSITORY_NAME__[__DIALECT__ <: SqlIdiom, __NAMING__ <: __NAMING_
   override def delete(id: __ID__): Task[Long] =
     context.delete[__ID__, __BEAN__](id)
 
+ override def deleteAll: Task[Long] =
+    context.deleteAll
+
 }

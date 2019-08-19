@@ -76,4 +76,10 @@ final class __REPOSITORY_NAME__[__DIALECT__ <: SqlIdiom, __NAMING__ <: __NAMING_
         context.delete[__ID__, __BEAN__](id)
       }
 
+ override def deleteAll: Try[Long] =
+       Try {
+         context.deleteAll
+       }
+
+
 }
