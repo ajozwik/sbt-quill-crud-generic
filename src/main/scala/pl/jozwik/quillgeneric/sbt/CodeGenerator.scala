@@ -17,12 +17,12 @@ object SyncCodeGenerator extends AbstractCodeGenerator {
   protected def templateWithGeneratedId      = "$template_generate_id$.txt"
 }
 
-object MonixCodeGenerator extends AbstractCodeGenerator {
-  protected def genericPackage               = "pl.jozwik.quillgeneric.quillmacro.monix"
+object MonixJdbcCodeGenerator extends AbstractCodeGenerator {
+  protected def genericPackage               = "pl.jozwik.quillgeneric.quillmacro.monix.jdbc"
   protected def aliasName                    = "MonixJdbcContextDateQuotes"
-  protected def macroRepository: String      = "JdbcMonixRepository"
-  protected def repositoryCompositeKey       = "JdbcMonixRepositoryCompositeKey"
-  protected def macroRepositoryWithGenerated = "JdbcMonixRepositoryWithGeneratedId"
+  protected def macroRepository: String      = "MonixJdbcRepository"
+  protected def repositoryCompositeKey       = "MonixJdbcRepositoryCompositeKey"
+  protected def macroRepositoryWithGenerated = "MonixJdbcRepositoryWithGeneratedId"
   protected def template                     = "$monix_template$.txt"
   protected def templateWithGeneratedId      = "$monix_template_generated_id$.txt"
 }

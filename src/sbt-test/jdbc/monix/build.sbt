@@ -24,6 +24,14 @@ ThisBuild / scalacOptions ++= Seq(
   "-language:postfixOps"
 )
 
+lazy val readQuillMacroVersionSbt = sys.props.get("plugin.version") match {
+  case Some(pluginVersion) =>
+    pluginVersion
+  case _ =>
+    sys.error("""|The system property 'plugin.version' is not defined.
+                 |Specify this property using the scriptedLaunchOpts -D.""".stripMargin)
+}
+
 val `org.scalatest_scalatest` = "org.scalatest" %% "scalatest" % "3.0.8" % "test"
 
 val `org.scalacheck_scalacheck` = "org.scalacheck" %% "scalacheck" % "1.14.0" % "test"
@@ -38,6 +46,7 @@ val basePackage        = "pl.jozwik.example"
 val domainModelPackage = s"$basePackage.domain.model"
 
 lazy val common = projectWithName("common", file("common"))
+  .settings(libraryDependencies ++= Seq("com.github.ajozwik" %% "macro-quill" % readQuillMacroVersionSbt))
 
 val monixPackage                   = s"$basePackage.monix"
 val monixRepositoryPackage         = s"$monixPackage.impl"

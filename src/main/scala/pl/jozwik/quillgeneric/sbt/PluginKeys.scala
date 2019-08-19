@@ -9,5 +9,5 @@ trait PluginKeys {
   val quillMacroVersion         = settingKey[String]("Quill macro version")
 
   val defaultSettings: Seq[Def.Setting[_]] =
-    Seq(generateDescription := Seq.empty, generateMonixRepositories := Seq.empty, quillMacroVersion := "0.7.1-SNAPSHOT")
+    Seq(generateDescription := Seq.empty, generateMonixRepositories := Seq.empty, quillMacroVersion := "0.7.1")
 }

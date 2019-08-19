@@ -7,10 +7,10 @@ import io.getquill.context.sql.idiom.SqlIdiom
 import monix.eval.Task
 import pl.jozwik.example.domain.model.{ Address, AddressId }
 import pl.jozwik.example.domain.repository.AddressRepository
-import pl.jozwik.quillgeneric.quillmacro.monix.JdbcMonixRepositoryWithGeneratedId
+import pl.jozwik.quillgeneric.quillmacro.monix.jdbc.MonixJdbcRepositoryWithGeneratedId
 
 trait AddressRepositoryImpl[Dialect <: SqlIdiom, Naming <: NamingStrategy]
-  extends JdbcMonixRepositoryWithGeneratedId[AddressId, Address, Dialect, Naming]
+  extends MonixJdbcRepositoryWithGeneratedId[AddressId, Address, Dialect, Naming]
   with AddressRepository {
 
   def setCountryIfCity(city: String, country: String): Task[Long] = {
