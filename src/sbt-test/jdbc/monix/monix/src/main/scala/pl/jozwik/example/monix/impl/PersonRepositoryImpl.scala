@@ -7,10 +7,10 @@ import io.getquill.context.sql.idiom.SqlIdiom
 import monix.eval.Task
 import pl.jozwik.example.domain.model.{ Person, PersonId }
 import pl.jozwik.example.domain.repository.PersonRepository
-import pl.jozwik.quillgeneric.quillmacro.monix.JdbcMonixRepositoryWithGeneratedId
+import pl.jozwik.quillgeneric.quillmacro.monix.jdbc.MonixJdbcRepositoryWithGeneratedId
 
 trait PersonRepositoryImpl[Dialect <: SqlIdiom, Naming <: NamingStrategy]
-  extends JdbcMonixRepositoryWithGeneratedId[PersonId, Person, Dialect, Naming]
+  extends MonixJdbcRepositoryWithGeneratedId[PersonId, Person, Dialect, Naming]
   with PersonRepository {
 
   def searchByFirstName(name: String)(offset: Int, limit: Int): Task[Seq[Person]] = {

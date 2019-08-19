@@ -27,9 +27,10 @@ object QuillRepositoryPlugin extends AutoPlugin {
           sourceGenerators in Compile += Def.task {
                 val rootPath = (sourceManaged in Compile).value
                 generate(generateDescription.value, rootPath, SyncCodeGenerator) ++
-                  generate(generateMonixRepositories.value, rootPath, MonixCodeGenerator)
+                  generate(generateMonixRepositories.value, rootPath, MonixJdbcCodeGenerator)
               }.taskValue,
-          libraryDependencies ++= addImport(generateDescription.value.nonEmpty, "quill-jdbc-macro", quillMacroVersion.value) ++
+          libraryDependencies ++=
+              addImport(generateDescription.value.nonEmpty, "quill-jdbc-macro", quillMacroVersion.value) ++
                   addImport(generateMonixRepositories.value.nonEmpty, "quill-jdbc-monix-macro", quillMacroVersion.value)
         )
 

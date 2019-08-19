@@ -4,7 +4,7 @@ import java.io.File
 
 class SyncGeneratorCodeSpec extends AbstractCodeGeneratorSpec(SyncCodeGenerator)
 
-class MonixGeneratorCodeSpec extends AbstractCodeGeneratorSpec(MonixCodeGenerator)
+class MonixGeneratorCodeSpec extends AbstractCodeGeneratorSpec(MonixJdbcCodeGenerator)
 
 abstract class AbstractCodeGeneratorSpec(generator: Generator) extends AbstractSpec {
 
