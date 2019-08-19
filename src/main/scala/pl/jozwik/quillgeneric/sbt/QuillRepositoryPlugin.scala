@@ -30,7 +30,8 @@ object QuillRepositoryPlugin extends AutoPlugin {
                   generate(generateMonixRepositories.value, rootPath, MonixJdbcCodeGenerator)
               }.taskValue,
           libraryDependencies ++=
-              addImport(generateDescription.value.nonEmpty, "quill-jdbc-macro", quillMacroVersion.value) ++
+              addImport(true, "macro-quill", quillMacroVersion.value) ++
+                  addImport(generateDescription.value.nonEmpty, "quill-jdbc-macro", quillMacroVersion.value) ++
                   addImport(generateMonixRepositories.value.nonEmpty, "quill-jdbc-monix-macro", quillMacroVersion.value)
         )
 
