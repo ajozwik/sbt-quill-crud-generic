@@ -1,57 +1,23 @@
-package pl.jozwik.quillgeneric.sbt
+package pl.jozwik.quillgeneric.sbt.generator
 
 import java.io.File
 import java.nio.file.Paths
 
+import pl.jozwik.quillgeneric.sbt.{ KeyType, RepositoryDescription }
 import sbt._
 
 import scala.io.Source
 
-object SyncCodeGenerator extends AbstractCodeGenerator {
-  protected def genericPackage               = "pl.jozwik.quillgeneric.quillmacro.sync"
-  protected def aliasName                    = "JdbcContextDateQuotes"
-  protected def macroRepository: String      = "JdbcRepository"
-  protected def repositoryCompositeKey       = "JdbcRepositoryCompositeKey"
-  protected def macroRepositoryWithGenerated = "JdbcRepositoryWithGeneratedId"
-  protected def template                     = "$template$.txt"
-  protected def templateWithGeneratedId      = "$template_generate_id$.txt"
-}
-
-object MonixJdbcCodeGenerator extends AbstractCodeGenerator {
-  protected def genericPackage               = "pl.jozwik.quillgeneric.quillmacro.monix.jdbc"
-  protected def aliasName                    = "MonixJdbcContextDateQuotes"
-  protected def macroRepository: String      = "MonixJdbcRepository"
-  protected def repositoryCompositeKey       = "MonixJdbcRepositoryCompositeKey"
-  protected def macroRepositoryWithGenerated = "MonixJdbcRepositoryWithGeneratedId"
-  protected def template                     = "$monix_template$.txt"
-  protected def templateWithGeneratedId      = "$monix_template_generated_id$.txt"
-}
-
-trait Generator {
-  def generate(rootPath: File)(description: RepositoryDescription): (File, String)
-}
-
 abstract class AbstractCodeGenerator extends Generator with CodeGenerationTemplates {
-  private val Dialect = "Dialect"
-  private val Naming  = "Naming"
+  private val Dialect                      = "Dialect"
+  private val Naming                       = "Naming"
+  protected def template                   = "$template$.txt"
+  protected def templateWithGeneratedId    = "$template_generate_id$.txt"
+  protected def importMacroTraitRepository = s"import $genericPackage.$macroRepository.$ContextAlias"
 
-  protected def aliasName: String
+  private def macroRepositoryWithGeneratedWithGeneric = s"$macroRepositoryWithGenerated[$BeanIdTemplate, $BeanTemplate, $DialectTemplate, $NamingTemplate]"
 
-  protected def macroRepository: String
-
-  protected def repositoryCompositeKey: String
-
-  protected def macroRepositoryWithGenerated: String
-
-  private val macroRepositoryWithGeneratedWithGeneric = s"$macroRepositoryWithGenerated[$BeanIdTemplate, $BeanTemplate, $DialectTemplate, $NamingTemplate]"
-
-  protected def genericPackage: String
-
-  private val macroRepositoryWithGeneratedImport = s"import $genericPackage.$macroRepositoryWithGenerated"
-
-  protected def template: String
-
-  protected def templateWithGeneratedId: String
+  private def macroRepositoryWithGeneratedImport = s"import $genericPackage.$macroRepositoryWithGenerated"
 
   private val headerFile = "$header$.txt"
 
@@ -62,39 +28,43 @@ abstract class AbstractCodeGenerator extends Generator with CodeGenerationTempla
       case _ =>
         macroRepository
     }
-    (s"$repo[$BeanIdTemplate, $BeanTemplate, $DialectTemplate, $NamingTemplate]", s"import $genericPackage.$repo")
+    (s"$repo[$BeanIdTemplate, $BeanTemplate, $genericDeclaration]", s"import $genericPackage.$repo")
   }
 
-  def generate(rootPath: File)(description: RepositoryDescription): (File, String) = {
-    import description._
-    val templateFile = if (generateId) {
+  private def chooseTemplate(generateId: Boolean): String =
+    if (generateId) {
       templateWithGeneratedId
     } else {
       template
     }
-    val header  = readTemplate(headerFile)
-    val content = readTemplate(templateFile)
-    val path    = Paths.get(rootPath.getAbsolutePath, packageName: _*)
-    val dir     = path.toFile
+
+  def generate(rootPath: File)(description: RepositoryDescription): (File, String) = {
+    import description._
+    val templateFile = chooseTemplate(generateId)
+    val header       = readTemplate(headerFile)
+    val content      = readTemplate(templateFile)
+    val path         = Paths.get(rootPath.getAbsolutePath, packageName: _*)
+    val dir          = path.toFile
     dir.mkdirs()
-    val p = packageName match {
+    val pName = packageName match {
       case Seq() =>
         ""
       case s =>
         s"""package ${s.mkString(".")}"""
     }
-    val file = dir / s"$repositorySimpleClassName.scala"
-
+    val file          = dir / s"$repositorySimpleClassName.scala"
     val columnMapping = toColumnMapping(mapping)
     val importCtx     = toImportContext(columnMapping)
-
     val (repositoryTraitSimpleClassName, repositoryImport, defaultRepositoryImport) =
       toRepositoryTraitImport(repositoryTrait, packageName, repositoryPackageName, repositoryTraitSimpleClassNameOpt, generateId, beanIdClass.keyType)
 
     val result = content
+      .replace(AliasGenericDeclaration, aliasGenericDeclaration)
+      .replace(GenericDeclaration, genericDeclaration)
+      .replace(RepositoryMacroTraitImport, importMacroTraitRepository)
       .replace(RepositoryTraitSimpleClassName, repositoryTraitSimpleClassName)
       .replace(RepositoryTraitImport, repositoryImport)
-      .replace(PackageTemplate, p)
+      .replace(PackageTemplate, pName)
       .replace(RepositoryClassTemplate, repositorySimpleClassName)
       .replace(BeanTemplate, beanSimpleClassName)
       .replace(BeanClassImport, createImport(packageName, beanPackageName, beanClass))
@@ -107,7 +77,16 @@ abstract class AbstractCodeGenerator extends Generator with CodeGenerationTempla
       .replace(DialectTemplate, Dialect)
       .replace(NamingTemplate, Naming)
       .replace(ContextAlias, aliasName)
-
+      .replace(Update, update)
+      .replace(Monad, monad)
+      .replace(ContextTransactionStart, contextTransactionStart)
+      .replace(ContextTransactionEnd, contextTransactionEnd)
+      .replace(MonadImport, monadImport)
+      .replace(TryStart, tryStart)
+      .replace(TryEnd, tryEnd)
+      .replace(SqlIdiomImport, sqlIdiomImport)
+      .replace(CreateOrUpdate, createOrUpdate)
+      .replace(CreateOrUpdateAndRead, createOrUpdateAndRead)
     (file, s"$header\n$result")
   }
 

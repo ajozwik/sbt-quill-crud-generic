@@ -2,17 +2,23 @@ package pl.jozwik.quillgeneric.sbt
 
 import java.io.File
 
-class SyncGeneratorCodeSpec extends AbstractCodeGeneratorSpec(SyncCodeGenerator)
+import pl.jozwik.quillgeneric.sbt.generator.{ CassandraMonixCodeGenerator, CassandraSyncCodeGenerator, Generator, MonixJdbcCodeGenerator, SyncCodeGenerator }
 
+class SyncGeneratorCodeSpec extends AbstractCodeGeneratorSpec(SyncCodeGenerator)
+//
 class MonixGeneratorCodeSpec extends AbstractCodeGeneratorSpec(MonixJdbcCodeGenerator)
 
-abstract class AbstractCodeGeneratorSpec(generator: Generator) extends AbstractSpec {
+class CassandraMonixGeneratorCodeSpec extends AbstractCodeGeneratorSpec(CassandraMonixCodeGenerator, "[Naming]", false)
+//
+class CassandraSyncGeneratorCodeSpec extends AbstractCodeGeneratorSpec(CassandraSyncCodeGenerator, "[Naming]", false)
+
+abstract class AbstractCodeGeneratorSpec(generator: Generator, generic: String = "[Dialect, Naming]", generatedId: Boolean = true) extends AbstractSpec {
 
   private val baseTempPath = System.getProperty("java.io.tmpdir")
 
   "Generator " should {
       "Generate code for Person" in {
-        val description                   = RepositoryDescription("Person", BeanIdClass("PersonId"), "PersonRepository", true)
+        val description                   = RepositoryDescription("Person", BeanIdClass("PersonId"), "PersonRepository", generatedId)
         val (file: File, content: String) = generateAndLog(description)
         file.exists() shouldBe false
         content should include(description.beanSimpleClassName)
@@ -26,8 +32,8 @@ abstract class AbstractCodeGeneratorSpec(generator: Generator) extends AbstractS
           "pl.jozwik.model.Person",
           BeanIdClass("pl.jozwik.model.PersonId"),
           "pl.jozwik.repository.PersonRepository",
-          true,
-          Option("pl.jozwik.quillgeneric.sbt.MyPersonRepository[Dialect, Naming]"),
+          generatedId,
+          Option(s"pl.jozwik.quillgeneric.sbt.MyPersonRepository$generic"),
           None,
           Map("birthDate" -> dob)
         )
