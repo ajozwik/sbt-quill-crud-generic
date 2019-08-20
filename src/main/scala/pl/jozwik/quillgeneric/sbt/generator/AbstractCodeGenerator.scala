@@ -1,75 +1,23 @@
-package pl.jozwik.quillgeneric.sbt
+package pl.jozwik.quillgeneric.sbt.generator
 
 import java.io.File
 import java.nio.file.Paths
 
+import pl.jozwik.quillgeneric.sbt.{ KeyType, RepositoryDescription }
 import sbt._
 
 import scala.io.Source
 
-trait WithJdbc {
-  protected def update                  = "Long"
-  protected def contextTransactionStart = "     context.transaction {"
-  protected def contextTransactionEnd   = "         }"
-}
-
-object SyncCodeGenerator extends AbstractCodeGenerator with WithJdbc {
-  protected def genericPackage               = "pl.jozwik.quillgeneric.quillmacro.sync"
-  protected def aliasName                    = "JdbcContextDateQuotes"
-  protected def macroRepository: String      = "JdbcRepository"
-  protected def repositoryCompositeKey       = "JdbcRepositoryCompositeKey"
-  protected def macroRepositoryWithGenerated = "JdbcRepositoryWithGeneratedId"
-  protected def template                     = "$template$.txt"
-  protected def templateWithGeneratedId      = "$template_generate_id$.txt"
-  protected def monad: String                = "Try"
-  protected def monadImport: String          = s"import util.$monad"
-  protected def tryStart: String             = "      Try {"
-  protected def tryEnd: String               = "      }"
-  protected def importMacroTraitRepository   = s"import pl.jozwik.quillgeneric.quillmacro.sync.JdbcRepository.$ContextAlias"
-}
-
-object MonixJdbcCodeGenerator extends AbstractCodeGenerator with WithJdbc {
-  protected def genericPackage               = "pl.jozwik.quillgeneric.quillmacro.monix.jdbc"
-  protected def aliasName                    = "MonixJdbcContextDateQuotes"
-  protected def macroRepository: String      = "MonixJdbcRepository"
-  protected def repositoryCompositeKey       = "MonixJdbcRepositoryCompositeKey"
-  protected def macroRepositoryWithGenerated = "MonixJdbcRepositoryWithGeneratedId"
-  protected def template                     = "$monix_template$.txt"
-  protected def templateWithGeneratedId      = "$monix_template_generated_id$.txt"
-  protected def monad: String                = "Task"
-  protected def monadImport: String          = s"import monix.eval.$monad"
-  protected def tryStart: String             = ""
-  protected def tryEnd: String               = ""
-  protected def importMacroTraitRepository   = s"import pl.jozwik.quillgeneric.quillmacro.monix.jdbc.MonixJdbcRepository.$ContextAlias"
-}
-
-trait Generator {
-  protected def aliasName: String
-  protected def monad: String
-  protected def monadImport: String
-  protected def update: String
-  protected def macroRepository: String
-  protected def repositoryCompositeKey: String
-  protected def macroRepositoryWithGenerated: String
-  protected def genericPackage: String
-  protected def template: String
-  protected def templateWithGeneratedId: String
-  protected def contextTransactionStart: String
-  protected def contextTransactionEnd: String
-  protected def tryStart: String
-  protected def tryEnd: String
-  protected def importMacroTraitRepository: String
-
-  def generate(rootPath: File)(description: RepositoryDescription): (File, String)
-}
-
 abstract class AbstractCodeGenerator extends Generator with CodeGenerationTemplates {
-  private val Dialect = "Dialect"
-  private val Naming  = "Naming"
+  private val Dialect                      = "Dialect"
+  private val Naming                       = "Naming"
+  protected def template                   = "$template$.txt"
+  protected def templateWithGeneratedId    = "$template_generate_id$.txt"
+  protected def importMacroTraitRepository = s"import $genericPackage.$macroRepository.$ContextAlias"
 
-  private val macroRepositoryWithGeneratedWithGeneric = s"$macroRepositoryWithGenerated[$BeanIdTemplate, $BeanTemplate, $DialectTemplate, $NamingTemplate]"
+  private def macroRepositoryWithGeneratedWithGeneric = s"$macroRepositoryWithGenerated[$BeanIdTemplate, $BeanTemplate, $DialectTemplate, $NamingTemplate]"
 
-  private val macroRepositoryWithGeneratedImport = s"import $genericPackage.$macroRepositoryWithGenerated"
+  private def macroRepositoryWithGeneratedImport = s"import $genericPackage.$macroRepositoryWithGenerated"
 
   private val headerFile = "$header$.txt"
 
@@ -80,20 +28,23 @@ abstract class AbstractCodeGenerator extends Generator with CodeGenerationTempla
       case _ =>
         macroRepository
     }
-    (s"$repo[$BeanIdTemplate, $BeanTemplate, $DialectTemplate, $NamingTemplate]", s"import $genericPackage.$repo")
+    (s"$repo[$BeanIdTemplate, $BeanTemplate, $genericDeclaration]", s"import $genericPackage.$repo")
   }
 
-  def generate(rootPath: File)(description: RepositoryDescription): (File, String) = {
-    import description._
-    val templateFile = if (generateId) {
+  private def chooseTemplate(generateId: Boolean): String =
+    if (generateId) {
       templateWithGeneratedId
     } else {
       template
     }
-    val header  = readTemplate(headerFile)
-    val content = readTemplate(templateFile)
-    val path    = Paths.get(rootPath.getAbsolutePath, packageName: _*)
-    val dir     = path.toFile
+
+  def generate(rootPath: File)(description: RepositoryDescription): (File, String) = {
+    import description._
+    val templateFile = chooseTemplate(generateId)
+    val header       = readTemplate(headerFile)
+    val content      = readTemplate(templateFile)
+    val path         = Paths.get(rootPath.getAbsolutePath, packageName: _*)
+    val dir          = path.toFile
     dir.mkdirs()
     val pName = packageName match {
       case Seq() =>
@@ -108,6 +59,8 @@ abstract class AbstractCodeGenerator extends Generator with CodeGenerationTempla
       toRepositoryTraitImport(repositoryTrait, packageName, repositoryPackageName, repositoryTraitSimpleClassNameOpt, generateId, beanIdClass.keyType)
 
     val result = content
+      .replace(AliasGenericDeclaration, aliasGenericDeclaration)
+      .replace(GenericDeclaration, genericDeclaration)
       .replace(RepositoryMacroTraitImport, importMacroTraitRepository)
       .replace(RepositoryTraitSimpleClassName, repositoryTraitSimpleClassName)
       .replace(RepositoryTraitImport, repositoryImport)
@@ -131,7 +84,9 @@ abstract class AbstractCodeGenerator extends Generator with CodeGenerationTempla
       .replace(MonadImport, monadImport)
       .replace(TryStart, tryStart)
       .replace(TryEnd, tryEnd)
-
+      .replace(SqlIdiomImport, sqlIdiomImport)
+      .replace(CreateOrUpdate, createOrUpdate)
+      .replace(CreateOrUpdateAndRead, createOrUpdateAndRead)
     (file, s"$header\n$result")
   }
 

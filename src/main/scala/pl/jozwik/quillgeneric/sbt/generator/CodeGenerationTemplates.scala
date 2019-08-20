@@ -1,4 +1,6 @@
-package pl.jozwik.quillgeneric.sbt
+package pl.jozwik.quillgeneric.sbt.generator
+
+object CodeGenerationTemplates extends CodeGenerationTemplates
 
 trait CodeGenerationTemplates {
   val DialectTemplate                = "__DIALECT__"
@@ -24,4 +26,9 @@ trait CodeGenerationTemplates {
   val TryStart                       = "__TRY_START__"
   val TryEnd                         = "__TRY_END__"
   val RepositoryMacroTraitImport     = "__REPOSITORY_MACRO_TRAIT_IMPORT__"
+  val SqlIdiomImport                 = "__SQL_IDIOM_IMPORT__"
+  val AliasGenericDeclaration        = "__ALIAS_GENERIC_DECLARATION__"
+  val GenericDeclaration             = "__GENERIC_DECLARATION__"
+  val CreateOrUpdate                 = "__CREATE_OR_UPDATE__"
+  val CreateOrUpdateAndRead          = "__CREATE_OR_UPDATE_AND_READ__"
 }
