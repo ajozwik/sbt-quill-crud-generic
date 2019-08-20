@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS ADDRESS
+(
+    ID              UUID PRIMARY KEY,
+    COUNTRY         TEXT,
+    CITY            TEXT,
+    STREET          TEXT,
+    BUILDING_NUMBER TEXT,
+    LOCAL_NUMBER    TEXT,
+    UPDATED         TIMESTAMP
+);
