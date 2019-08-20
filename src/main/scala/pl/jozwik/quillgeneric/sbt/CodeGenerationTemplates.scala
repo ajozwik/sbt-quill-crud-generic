@@ -16,4 +16,12 @@ trait CodeGenerationTemplates {
   val RepositoryTraitSimpleClassName = "__REPOSITORY_TRAIT_SIMPLE_NAME__"
   val RepositoryImport               = "__REPOSITORY_IMPORT__"
   val ContextAlias                   = "__CONTEXT_ALIAS__"
+  val Update                         = "__UPDATE__"
+  val Monad                          = "__MONAD__"
+  val ContextTransactionStart        = "__CONTEXT_TRANSACTION_START__"
+  val ContextTransactionEnd          = "__CONTEXT_TRANSACTION_END__"
+  val MonadImport                    = "__MONAD_IMPORT__"
+  val TryStart                       = "__TRY_START__"
+  val TryEnd                         = "__TRY_END__"
+  val RepositoryMacroTraitImport     = "__REPOSITORY_MACRO_TRAIT_IMPORT__"
 }
