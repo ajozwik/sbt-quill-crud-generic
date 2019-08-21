@@ -23,6 +23,8 @@ trait Generator {
   protected def aliasGenericDeclaration: String
   protected def createOrUpdate: String
   protected def createOrUpdateAndRead: String
+  protected def executionContext: String       = ""
+  protected def executionContextImport: String = ""
 
   def generate(rootPath: File)(description: RepositoryDescription): (File, String)
 }

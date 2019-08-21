@@ -46,18 +46,12 @@ abstract class AbstractCodeGenerator extends Generator with CodeGenerationTempla
     val path         = Paths.get(rootPath.getAbsolutePath, packageName: _*)
     val dir          = path.toFile
     dir.mkdirs()
-    val pName = packageName match {
-      case Seq() =>
-        ""
-      case s =>
-        s"""package ${s.mkString(".")}"""
-    }
+    val pName         = toPackageName(packageName)
     val file          = dir / s"$repositorySimpleClassName.scala"
     val columnMapping = toColumnMapping(mapping)
     val importCtx     = toImportContext(columnMapping)
     val (repositoryTraitSimpleClassName, repositoryImport, defaultRepositoryImport) =
       toRepositoryTraitImport(repositoryTrait, packageName, repositoryPackageName, repositoryTraitSimpleClassNameOpt, generateId, beanIdClass.keyType)
-
     val result = content
       .replace(AliasGenericDeclaration, aliasGenericDeclaration)
       .replace(GenericDeclaration, genericDeclaration)
@@ -87,8 +81,18 @@ abstract class AbstractCodeGenerator extends Generator with CodeGenerationTempla
       .replace(SqlIdiomImport, sqlIdiomImport)
       .replace(CreateOrUpdate, createOrUpdate)
       .replace(CreateOrUpdateAndRead, createOrUpdateAndRead)
+      .replace(ExecutionContext, executionContext)
+      .replace(ExecutionContextImport, executionContextImport)
     (file, s"$header\n$result")
   }
+
+  private def toPackageName(packageName: Seq[String]): String =
+    packageName match {
+      case Seq() =>
+        ""
+      case s =>
+        s"""package ${s.mkString(".")}"""
+    }
 
   private def toRepositoryTraitImport(
       repositoryTrait: Option[String],

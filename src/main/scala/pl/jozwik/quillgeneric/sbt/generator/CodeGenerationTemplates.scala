@@ -31,4 +31,6 @@ trait CodeGenerationTemplates {
   val GenericDeclaration             = "__GENERIC_DECLARATION__"
   val CreateOrUpdate                 = "__CREATE_OR_UPDATE__"
   val CreateOrUpdateAndRead          = "__CREATE_OR_UPDATE_AND_READ__"
+  val ExecutionContextImport         = "__EXECUTION_CONTEXT_IMPORT__"
+  val ExecutionContext               = "__EXECUTION_CONTEXT__"
 }

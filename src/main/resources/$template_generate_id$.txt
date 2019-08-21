@@ -8,6 +8,7 @@ __ID_CLASS_IMPORT__
 __REPOSITORY_TRAIT_IMPORT__
 __REPOSITORY_MACRO_TRAIT_IMPORT__
 __REPOSITORY_IMPORT__
+__EXECUTION_CONTEXT_IMPORT__
 
 final class __REPOSITORY_NAME____ALIAS_GENERIC_DECLARATION__(
     protected val context: __CONTEXT_ALIAS__[__GENERIC_DECLARATION__],
@@ -22,12 +23,12 @@ final class __REPOSITORY_NAME____ALIAS_GENERIC_DECLARATION__(
       context.dynamicQuerySchema[__BEAN__](tableName__COLUMN_MAPPING__)
     }
 
-  override def all: __MONAD__[Seq[__BEAN__]] =
+  override def all__EXECUTION_CONTEXT__: __MONAD__[Seq[__BEAN__]] =
 __TRY_START__
       context.all[__BEAN__]
 __TRY_END__
 
-  override def create(entity: __BEAN__, generateId: Boolean = true): __MONAD__[__ID__] =
+  override def create(entity: __BEAN__, generateId: Boolean = true)__EXECUTION_CONTEXT__: __MONAD__[__ID__] =
 __TRY_START__
         if (generateId) {
           context.createAndGenerateId[__ID__, __BEAN__](entity)
@@ -36,7 +37,7 @@ __TRY_START__
         }
 __TRY_END__
 
-  override def createAndRead(entity: __BEAN__, generateId: Boolean = true): __MONAD__[__BEAN__] =
+  override def createAndRead(entity: __BEAN__, generateId: Boolean = true)__EXECUTION_CONTEXT__: __MONAD__[__BEAN__] =
 __TRY_START__
   __CONTEXT_TRANSACTION_START__
         if (generateId) {
@@ -47,7 +48,7 @@ __TRY_START__
   __CONTEXT_TRANSACTION_END__
 __TRY_END__
 
-  override def createOrUpdate(entity: __BEAN__, generateId: Boolean = true): __MONAD__[__ID__] =
+  override def createOrUpdate(entity: __BEAN__, generateId: Boolean = true)__EXECUTION_CONTEXT__: __MONAD__[__ID__] =
 __TRY_START__
   __CONTEXT_TRANSACTION_START__
           if (generateId) {
@@ -58,7 +59,7 @@ __TRY_START__
   __CONTEXT_TRANSACTION_END__
 __TRY_END__
 
-  override def createOrUpdateAndRead(entity: __BEAN__, generateId: Boolean = true): __MONAD__[__BEAN__] =
+  override def createOrUpdateAndRead(entity: __BEAN__, generateId: Boolean = true)__EXECUTION_CONTEXT__: __MONAD__[__BEAN__] =
 __TRY_START__
   __CONTEXT_TRANSACTION_START__
           if (generateId) {
@@ -69,29 +70,34 @@ __TRY_START__
   __CONTEXT_TRANSACTION_END__
 __TRY_END__
 
-  override def read(id: __ID__): __MONAD__[Option[__BEAN__]] =
+  override def read(id: __ID__)__EXECUTION_CONTEXT__: __MONAD__[Option[__BEAN__]] =
 __TRY_START__
       context.read[__ID__, __BEAN__](id)
 __TRY_END__
 
-  override def update(entity: __BEAN__): __MONAD__[__UPDATE__] =
+  override def readUnsafe(id: __ID__)__EXECUTION_CONTEXT__: __MONAD__[__BEAN__] =
+__TRY_START__
+        context.readUnsafe[__ID__, __BEAN__](id)
+__TRY_END__
+
+  override def update(entity: __BEAN__)__EXECUTION_CONTEXT__: __MONAD__[__UPDATE__] =
 __TRY_START__
       context.update[__ID__, __BEAN__](entity)
 __TRY_END__
 
-  override def updateAndRead(entity: __BEAN__): __MONAD__[__BEAN__] =
+  override def updateAndRead(entity: __BEAN__)__EXECUTION_CONTEXT__: __MONAD__[__BEAN__] =
 __TRY_START__
   __CONTEXT_TRANSACTION_START__
         context.updateAndRead[__ID__, __BEAN__](entity)
   __CONTEXT_TRANSACTION_END__
 __TRY_END__
 
-  override def delete(id: __ID__): __MONAD__[__UPDATE__] =
+  override def delete(id: __ID__)__EXECUTION_CONTEXT__: __MONAD__[__UPDATE__] =
 __TRY_START__
       context.delete[__ID__, __BEAN__](id)
 __TRY_END__
 
-   override def deleteAll: __MONAD__[__UPDATE__] =
+   override def deleteAll__EXECUTION_CONTEXT__: __MONAD__[__UPDATE__] =
    __TRY_START__
          context.deleteAll
   __TRY_END__
