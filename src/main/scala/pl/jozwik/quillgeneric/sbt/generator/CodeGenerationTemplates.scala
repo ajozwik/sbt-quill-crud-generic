@@ -33,4 +33,6 @@ trait CodeGenerationTemplates {
   val CreateOrUpdateAndRead          = "__CREATE_OR_UPDATE_AND_READ__"
   val ExecutionContextImport         = "__EXECUTION_CONTEXT_IMPORT__"
   val ExecutionContext               = "__EXECUTION_CONTEXT__"
+  val ImplicitParameters             = "__IMPLICIT_PARAMETERS__"
+  val ImplicitTransactionParameters  = "__IMPLICIT_TRANSACTION_PARAMETERS__"
 }

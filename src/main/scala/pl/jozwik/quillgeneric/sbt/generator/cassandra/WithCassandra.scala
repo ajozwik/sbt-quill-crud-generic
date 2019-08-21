@@ -1,4 +1,6 @@
-package pl.jozwik.quillgeneric.sbt.generator
+package pl.jozwik.quillgeneric.sbt.generator.cassandra
+
+import pl.jozwik.quillgeneric.sbt.generator.CodeGenerationTemplates
 
 trait WithCassandra {
   protected def update                     = "Unit"

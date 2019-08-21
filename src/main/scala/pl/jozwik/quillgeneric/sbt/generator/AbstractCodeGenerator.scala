@@ -21,6 +21,8 @@ abstract class AbstractCodeGenerator extends Generator with CodeGenerationTempla
 
   private val headerFile = "$header$.txt"
 
+  private val header: String = readTemplate(headerFile)
+
   private def macroRepositoryWithGeneric(key: KeyType.Value) = {
     val repo = key match {
       case KeyType.Composite =>
@@ -41,7 +43,6 @@ abstract class AbstractCodeGenerator extends Generator with CodeGenerationTempla
   def generate(rootPath: File)(description: RepositoryDescription): (File, String) = {
     import description._
     val templateFile = chooseTemplate(generateId)
-    val header       = readTemplate(headerFile)
     val content      = readTemplate(templateFile)
     val path         = Paths.get(rootPath.getAbsolutePath, packageName: _*)
     val dir          = path.toFile
@@ -52,10 +53,8 @@ abstract class AbstractCodeGenerator extends Generator with CodeGenerationTempla
     val importCtx     = toImportContext(columnMapping)
     val (repositoryTraitSimpleClassName, repositoryImport, defaultRepositoryImport) =
       toRepositoryTraitImport(repositoryTrait, packageName, repositoryPackageName, repositoryTraitSimpleClassNameOpt, generateId, beanIdClass.keyType)
-    val result = content
-      .replace(AliasGenericDeclaration, aliasGenericDeclaration)
-      .replace(GenericDeclaration, genericDeclaration)
-      .replace(RepositoryMacroTraitImport, importMacroTraitRepository)
+    val genericContent = toGenericContent(content)
+    val result = genericContent
       .replace(RepositoryTraitSimpleClassName, repositoryTraitSimpleClassName)
       .replace(RepositoryTraitImport, repositoryImport)
       .replace(PackageTemplate, pName)
@@ -83,8 +82,16 @@ abstract class AbstractCodeGenerator extends Generator with CodeGenerationTempla
       .replace(CreateOrUpdateAndRead, createOrUpdateAndRead)
       .replace(ExecutionContext, executionContext)
       .replace(ExecutionContextImport, executionContextImport)
+      .replace(ImplicitParameters, implicitParameters)
+      .replace(ImplicitTransactionParameters, implicitTransactionParameters)
     (file, s"$header\n$result")
   }
+
+  private def toGenericContent(content: String) =
+    content
+      .replace(AliasGenericDeclaration, aliasGenericDeclaration)
+      .replace(GenericDeclaration, genericDeclaration)
+      .replace(RepositoryMacroTraitImport, importMacroTraitRepository)
 
   private def toPackageName(packageName: Seq[String]): String =
     packageName match {

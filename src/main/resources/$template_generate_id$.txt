@@ -25,15 +25,15 @@ final class __REPOSITORY_NAME____ALIAS_GENERIC_DECLARATION__(
 
   override def all__EXECUTION_CONTEXT__: __MONAD__[Seq[__BEAN__]] =
 __TRY_START__
-      context.all[__BEAN__]
+      context.all[__BEAN__]__IMPLICIT_PARAMETERS__
 __TRY_END__
 
   override def create(entity: __BEAN__, generateId: Boolean = true)__EXECUTION_CONTEXT__: __MONAD__[__ID__] =
 __TRY_START__
         if (generateId) {
-          context.createAndGenerateId[__ID__, __BEAN__](entity)
+          context.createAndGenerateId[__ID__, __BEAN__](entity)__IMPLICIT_PARAMETERS__
         } else {
-          context.create[__ID__, __BEAN__](entity)
+          context.create[__ID__, __BEAN__](entity)__IMPLICIT_PARAMETERS__
         }
 __TRY_END__
 
@@ -41,9 +41,9 @@ __TRY_END__
 __TRY_START__
   __CONTEXT_TRANSACTION_START__
         if (generateId) {
-          context.createWithGenerateIdAndRead[__ID__, __BEAN__](entity)
+          context.createWithGenerateIdAndRead[__ID__, __BEAN__](entity)__IMPLICIT_TRANSACTION_PARAMETERS__
         } else {
-          context.createAndRead[__ID__, __BEAN__](entity)
+          context.createAndRead[__ID__, __BEAN__](entity)__IMPLICIT_TRANSACTION_PARAMETERS__
         }
   __CONTEXT_TRANSACTION_END__
 __TRY_END__
@@ -52,9 +52,9 @@ __TRY_END__
 __TRY_START__
   __CONTEXT_TRANSACTION_START__
           if (generateId) {
-            context.createAndGenerateIdOrUpdate[__ID__, __BEAN__](entity)
+            context.createAndGenerateIdOrUpdate[__ID__, __BEAN__](entity)__IMPLICIT_TRANSACTION_PARAMETERS__
           } else {
-             context.createOrUpdate[__ID__, __BEAN__](entity)
+             context.createOrUpdate[__ID__, __BEAN__](entity)__IMPLICIT_TRANSACTION_PARAMETERS__
           }
   __CONTEXT_TRANSACTION_END__
 __TRY_END__
@@ -63,43 +63,43 @@ __TRY_END__
 __TRY_START__
   __CONTEXT_TRANSACTION_START__
           if (generateId) {
-            context.createWithGenerateIdOrUpdateAndRead[__ID__, __BEAN__](entity)
+            context.createWithGenerateIdOrUpdateAndRead[__ID__, __BEAN__](entity)__IMPLICIT_TRANSACTION_PARAMETERS__
           } else {
-             context.createOrUpdateAndRead[__ID__, __BEAN__](entity)
+             context.createOrUpdateAndRead[__ID__, __BEAN__](entity)__IMPLICIT_TRANSACTION_PARAMETERS__
           }
   __CONTEXT_TRANSACTION_END__
 __TRY_END__
 
   override def read(id: __ID__)__EXECUTION_CONTEXT__: __MONAD__[Option[__BEAN__]] =
 __TRY_START__
-      context.read[__ID__, __BEAN__](id)
+      context.read[__ID__, __BEAN__](id)__IMPLICIT_PARAMETERS__
 __TRY_END__
 
   override def readUnsafe(id: __ID__)__EXECUTION_CONTEXT__: __MONAD__[__BEAN__] =
 __TRY_START__
-        context.readUnsafe[__ID__, __BEAN__](id)
+        context.readUnsafe[__ID__, __BEAN__](id)__IMPLICIT_PARAMETERS__
 __TRY_END__
 
   override def update(entity: __BEAN__)__EXECUTION_CONTEXT__: __MONAD__[__UPDATE__] =
 __TRY_START__
-      context.update[__ID__, __BEAN__](entity)
+      context.update[__ID__, __BEAN__](entity)__IMPLICIT_PARAMETERS__
 __TRY_END__
 
   override def updateAndRead(entity: __BEAN__)__EXECUTION_CONTEXT__: __MONAD__[__BEAN__] =
 __TRY_START__
   __CONTEXT_TRANSACTION_START__
-        context.updateAndRead[__ID__, __BEAN__](entity)
+        context.updateAndRead[__ID__, __BEAN__](entity)__IMPLICIT_TRANSACTION_PARAMETERS__
   __CONTEXT_TRANSACTION_END__
 __TRY_END__
 
   override def delete(id: __ID__)__EXECUTION_CONTEXT__: __MONAD__[__UPDATE__] =
 __TRY_START__
-      context.delete[__ID__, __BEAN__](id)
+      context.delete[__ID__, __BEAN__](id)__IMPLICIT_PARAMETERS__
 __TRY_END__
 
    override def deleteAll__EXECUTION_CONTEXT__: __MONAD__[__UPDATE__] =
    __TRY_START__
-         context.deleteAll
+         context.deleteAll__IMPLICIT_PARAMETERS__
   __TRY_END__
 
 }

@@ -4,7 +4,9 @@ import sbt.Keys._
 import sbt._
 import sbt.plugins.JvmPlugin
 import DependencyHelper._
-import pl.jozwik.quillgeneric.sbt.generator.{ CassandraMonixCodeGenerator, CassandraSyncCodeGenerator, Generator, MonixJdbcCodeGenerator, SyncCodeGenerator }
+import pl.jozwik.quillgeneric.sbt.generator.cassandra.{ CassandraAsyncCodeGenerator, CassandraMonixCodeGenerator, CassandraSyncCodeGenerator }
+import pl.jozwik.quillgeneric.sbt.generator.jdbc.{ MonixJdbcCodeGenerator, SyncCodeGenerator }
+import pl.jozwik.quillgeneric.sbt.generator.Generator
 
 object QuillRepositoryPlugin extends AutoPlugin {
 
@@ -30,13 +32,18 @@ object QuillRepositoryPlugin extends AutoPlugin {
                 generate(generateDescription.value, rootPath, SyncCodeGenerator) ++
                   generate(generateMonixRepositories.value, rootPath, MonixJdbcCodeGenerator) ++
                   generate(generateCassandraSyncRepositories.value, rootPath, CassandraSyncCodeGenerator) ++
+                  generate(generateCassandraAsyncRepositories.value, rootPath, CassandraAsyncCodeGenerator) ++
                   generate(generateCassandraMonixRepositories.value, rootPath, CassandraMonixCodeGenerator)
               }.taskValue,
           libraryDependencies ++=
               addImport(true, "macro-quill", quillMacroVersion.value).toSeq ++
-                  addImport(generateDescription.value.nonEmpty, "quill-jdbc-macro", quillMacroVersion.value) ++
+                  addImport(generateDescription.value.nonEmpty || generateAsyncDescription.value.nonEmpty, "quill-jdbc-macro", quillMacroVersion.value) ++
                   addImport(generateMonixRepositories.value.nonEmpty, "quill-jdbc-monix-macro", quillMacroVersion.value) ++
-                  addImport(generateCassandraSyncRepositories.value.nonEmpty, "quill-cassandra-macro", quillMacroVersion.value) ++
+                  addImport(
+                    generateCassandraSyncRepositories.value.nonEmpty || generateCassandraAsyncRepositories.value.nonEmpty,
+                    "quill-cassandra-macro",
+                    quillMacroVersion.value
+                  ) ++
                   addImport(generateCassandraMonixRepositories.value.nonEmpty, "quill-cassandra-monix-macro", quillMacroVersion.value)
         )
 

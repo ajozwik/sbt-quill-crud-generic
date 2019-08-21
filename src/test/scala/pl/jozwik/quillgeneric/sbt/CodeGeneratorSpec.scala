@@ -2,15 +2,21 @@ package pl.jozwik.quillgeneric.sbt
 
 import java.io.File
 
-import pl.jozwik.quillgeneric.sbt.generator.{ CassandraMonixCodeGenerator, CassandraSyncCodeGenerator, Generator, MonixJdbcCodeGenerator, SyncCodeGenerator }
+import pl.jozwik.quillgeneric.sbt.generator.Generator
+import pl.jozwik.quillgeneric.sbt.generator.cassandra.{ CassandraAsyncCodeGenerator, CassandraMonixCodeGenerator, CassandraSyncCodeGenerator }
+import pl.jozwik.quillgeneric.sbt.generator.jdbc.{ AsyncCodeGenerator, MonixJdbcCodeGenerator, SyncCodeGenerator }
 
 class SyncGeneratorCodeSpec extends AbstractCodeGeneratorSpec(SyncCodeGenerator)
-//
+
+class AsyncGeneratorCodeSpec extends AbstractCodeGeneratorSpec(AsyncCodeGenerator)
+
 class MonixGeneratorCodeSpec extends AbstractCodeGeneratorSpec(MonixJdbcCodeGenerator)
 
 class CassandraMonixGeneratorCodeSpec extends AbstractCodeGeneratorSpec(CassandraMonixCodeGenerator, "[Naming]", false)
-//
+
 class CassandraSyncGeneratorCodeSpec extends AbstractCodeGeneratorSpec(CassandraSyncCodeGenerator, "[Naming]", false)
+
+class CassandraAsyncGeneratorCodeSpec extends AbstractCodeGeneratorSpec(CassandraAsyncCodeGenerator, "[Naming]", false)
 
 abstract class AbstractCodeGeneratorSpec(generator: Generator, generic: String = "[Dialect, Naming]", generatedId: Boolean = true) extends AbstractSpec {
 

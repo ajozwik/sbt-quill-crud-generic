@@ -1,4 +1,6 @@
-package pl.jozwik.quillgeneric.sbt.generator
+package pl.jozwik.quillgeneric.sbt.generator.jdbc
+
+import pl.jozwik.quillgeneric.sbt.generator.{ AbstractCodeGenerator, WithJdbc, WithTry }
 
 object SyncCodeGenerator extends AbstractCodeGenerator with WithJdbc with WithTry {
   protected def genericPackage               = "pl.jozwik.quillgeneric.quillmacro.sync"
