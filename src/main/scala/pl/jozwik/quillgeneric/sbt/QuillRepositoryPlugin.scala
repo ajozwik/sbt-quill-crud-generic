@@ -37,8 +37,14 @@ object QuillRepositoryPlugin extends AutoPlugin {
               }.taskValue,
           libraryDependencies ++=
               addImport(true, "macro-quill", quillMacroVersion.value).toSeq ++
-                  addImport(generateDescription.value.nonEmpty || generateAsyncDescription.value.nonEmpty, "quill-jdbc-macro", quillMacroVersion.value) ++
+                  addImport(generateDescription.value.nonEmpty, "quill-jdbc-macro", quillMacroVersion.value) ++
+                  addImport(generateAsyncDescription.value.nonEmpty, "quill-async-jdbc-macro", quillMacroVersion.value) ++
                   addImport(generateMonixRepositories.value.nonEmpty, "quill-jdbc-monix-macro", quillMacroVersion.value) ++
+                  addImport(
+                    generateCassandraSyncRepositories.value.nonEmpty || generateCassandraAsyncRepositories.value.nonEmpty,
+                    "quill-cassandra-macro",
+                    quillMacroVersion.value
+                  ) ++
                   addImport(
                     generateCassandraSyncRepositories.value.nonEmpty || generateCassandraAsyncRepositories.value.nonEmpty,
                     "quill-cassandra-macro",
