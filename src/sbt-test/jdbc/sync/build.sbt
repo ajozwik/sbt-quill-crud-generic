@@ -102,7 +102,7 @@ lazy val sync = projectWithName("sync", file("sync"))
             false,
             None,
             None,
-            Map("id.fk1" -> "productId", "id.fk2" -> "personId")
+            Map("id.fk1" -> "PRODUCT_ID", "id.fk2" -> "PERSON_ID")
           )
         )
   )
