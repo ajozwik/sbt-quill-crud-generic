@@ -30,11 +30,13 @@ __TRY_END__
 
   override def create(entity: __BEAN__, generateId: Boolean = true)__EXECUTION_CONTEXT__: __MONAD__[__ID__] =
 __TRY_START__
+  __CONTEXT_TRANSACTION_START__
         if (generateId) {
           context.createAndGenerateId[__ID__, __BEAN__](entity)__IMPLICIT_PARAMETERS__
         } else {
           context.create[__ID__, __BEAN__](entity)__IMPLICIT_PARAMETERS__
         }
+  __CONTEXT_TRANSACTION_END__
 __TRY_END__
 
   override def createAndRead(entity: __BEAN__, generateId: Boolean = true)__EXECUTION_CONTEXT__: __MONAD__[__BEAN__] =
@@ -82,7 +84,9 @@ __TRY_END__
 
   override def update(entity: __BEAN__)__EXECUTION_CONTEXT__: __MONAD__[__UPDATE__] =
 __TRY_START__
-      context.update[__ID__, __BEAN__](entity)__IMPLICIT_PARAMETERS__
+  __CONTEXT_TRANSACTION_START__
+        context.update[__ID__, __BEAN__](entity)__IMPLICIT_PARAMETERS__
+  __CONTEXT_TRANSACTION_END__
 __TRY_END__
 
   override def updateAndRead(entity: __BEAN__)__EXECUTION_CONTEXT__: __MONAD__[__BEAN__] =
@@ -94,12 +98,16 @@ __TRY_END__
 
   override def delete(id: __ID__)__EXECUTION_CONTEXT__: __MONAD__[__UPDATE__] =
 __TRY_START__
-      context.delete[__ID__, __BEAN__](id)__IMPLICIT_PARAMETERS__
+  __CONTEXT_TRANSACTION_START__
+        context.delete[__ID__, __BEAN__](id)__IMPLICIT_PARAMETERS__
+  __CONTEXT_TRANSACTION_END__
 __TRY_END__
 
-   override def deleteAll__EXECUTION_CONTEXT__: __MONAD__[__UPDATE__] =
-   __TRY_START__
+  override def deleteAll__EXECUTION_CONTEXT__: __MONAD__[__UPDATE__] =
+__TRY_START__
+  __CONTEXT_TRANSACTION_START__
          context.deleteAll__IMPLICIT_PARAMETERS__
-  __TRY_END__
+  __CONTEXT_TRANSACTION_END__
+__TRY_END__
 
 }
