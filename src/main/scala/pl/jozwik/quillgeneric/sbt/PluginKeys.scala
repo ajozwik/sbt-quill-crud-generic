@@ -19,6 +19,6 @@ trait PluginKeys {
       generateCassandraAsyncRepositories := Seq.empty,
       generateMonixRepositories := Seq.empty,
       generateAsyncDescription := Seq.empty,
-      quillMacroVersion := "0.8.5"
+      quillMacroVersion := "0.8.6"
     )
 }
