@@ -6,8 +6,9 @@ resolvers += Resolver.sonatypeRepo("releases")
 
 resolvers += Resolver.sonatypeRepo("snapshots")
 
+val targetJdk = "1.8"
+
 ThisBuild / scalacOptions ++= Seq(
-  "-target:jvm-1.8",
   "-encoding",
   "UTF-8",
   "-deprecation",         // warning and location for usages of deprecated APIs
@@ -19,10 +20,11 @@ ThisBuild / scalacOptions ++= Seq(
   "-Ywarn-inaccessible",
   "-Ywarn-dead-code",
   "-language:reflectiveCalls",
-  "-Ydelambdafy:method"
+  "-Ydelambdafy:method",
+  s"-target:jvm-$targetJdk"
 )
 
-javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
+ThisBuild / javacOptions ++= Seq("-Xlint:deprecation", "-Xdiags:verbose", "-source", targetJdk, "-target", targetJdk)
 
 ThisBuild / scalaVersion := "2.12.10"
 
