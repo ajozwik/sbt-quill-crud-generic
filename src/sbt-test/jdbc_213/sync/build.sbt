@@ -1,6 +1,6 @@
 import pl.jozwik.quillgeneric.sbt._
 
-val `scalaVersion_2.12` = "2.12.10"
+val `scalaVersion_2.13` = "2.13.1"
 
 name := "quill-macro-example"
 
@@ -8,7 +8,7 @@ resolvers += Resolver.sonatypeRepo("releases")
 
 resolvers += Resolver.sonatypeRepo("snapshots")
 
-ThisBuild / scalaVersion := `scalaVersion_2.12`
+ThisBuild / scalaVersion := `scalaVersion_2.13`
 
 ThisBuild / organization := "pl.jozwik.demo"
 

@@ -1,6 +1,6 @@
 import pl.jozwik.quillgeneric.sbt._
 
-val `scalaVersion_2.12` = "2.12.10"
+val `scalaVersion_2.13` = "2.13.1"
 
 name := "quill-macro-example"
 
@@ -8,7 +8,7 @@ resolvers += Resolver.sonatypeRepo("releases")
 
 resolvers += Resolver.sonatypeRepo("snapshots")
 
-ThisBuild / scalaVersion := `scalaVersion_2.12`
+ThisBuild / scalaVersion := `scalaVersion_2.13`
 
 ThisBuild / organization := "pl.jozwik.demo"
 
@@ -48,25 +48,26 @@ val domainModelPackage = s"$basePackage.domain.model"
 lazy val common = projectWithName("common", file("common"))
   .settings(libraryDependencies ++= Seq("com.github.ajozwik" %% "macro-quill" % readQuillMacroVersionSbt))
 
-val generateRepositoryPackage = s"$basePackage.repository"
-val repositoryPackage         = s"$basePackage.sync.impl"
+val monixPackage                   = s"$basePackage.monix"
+val monixRepositoryPackage         = s"$monixPackage.impl"
+val generateMonixRepositoryPackage = s"$monixPackage.repository"
 
-lazy val sync = projectWithName("sync", file("sync"))
+lazy val monix = projectWithName("monix", file("monix"))
   .settings(
-    generateDescription := Seq(
+    generateMonixRepositories ++= Seq(
           RepositoryDescription(
             s"$domainModelPackage.Address",
             BeanIdClass(s"$domainModelPackage.AddressId"),
-            s"$generateRepositoryPackage.AddressRepositoryGen",
+            s"$generateMonixRepositoryPackage.AddressRepositoryGen",
             true,
-            Option(s"$repositoryPackage.AddressRepositoryImpl[Dialect, Naming]"),
+            Option(s"$monixRepositoryPackage.AddressRepositoryImpl[Dialect, Naming]"),
             None,
             Map("city" -> "city")
           ),
           RepositoryDescription(
             s"$domainModelPackage.Cell4d",
             BeanIdClass(s"$domainModelPackage.Cell4dId", KeyType.Composite),
-            s"$generateRepositoryPackage.Cell4dRepositoryGen",
+            s"$generateMonixRepositoryPackage.Cell4dRepositoryGen",
             false,
             None,
             None,
@@ -75,7 +76,7 @@ lazy val sync = projectWithName("sync", file("sync"))
           RepositoryDescription(
             s"$domainModelPackage.Configuration",
             BeanIdClass(s"$domainModelPackage.ConfigurationId"),
-            s"$basePackage.ConfigurationRepositoryGen",
+            s"$generateMonixRepositoryPackage.ConfigurationRepositoryGen",
             false,
             None,
             None,
@@ -84,21 +85,22 @@ lazy val sync = projectWithName("sync", file("sync"))
           RepositoryDescription(
             s"$domainModelPackage.Person",
             BeanIdClass(s"$domainModelPackage.PersonId"),
-            s"$generateRepositoryPackage.PersonRepositoryGen",
+            s"$generateMonixRepositoryPackage.PersonRepositoryGen",
             true,
-            Option(s"$repositoryPackage.PersonRepositoryImpl[Dialect, Naming]"),
-            None
+            Option(s"$monixRepositoryPackage.PersonRepositoryImpl[Dialect, Naming]"),
+            None,
+            Map("birthDate" -> "dob")
           ),
           RepositoryDescription(
             s"$domainModelPackage.Product",
             BeanIdClass(s"$domainModelPackage.ProductId"),
-            s"$generateRepositoryPackage.ProductRepositoryGen",
+            s"$generateMonixRepositoryPackage.ProductRepositoryGen",
             true
           ),
           RepositoryDescription(
             s"$domainModelPackage.Sale",
             BeanIdClass(s"$domainModelPackage.SaleId", KeyType.Composite),
-            s"$generateRepositoryPackage.SaleRepositoryGen",
+            s"$generateMonixRepositoryPackage.SaleRepositoryGen",
             false,
             None,
             None,
@@ -107,6 +109,7 @@ lazy val sync = projectWithName("sync", file("sync"))
         )
   )
   .dependsOn(common, common % "test -> test")
+  .enablePlugins(QuillRepositoryPlugin)
 
 def projectWithName(name: String, file: File): Project =
   Project(name, file)
@@ -117,6 +120,6 @@ def projectWithName(name: String, file: File): Project =
             `com.typesafe.scala-logging_scala-logging`,
             `ch.qos.logback_logback-classic`,
             `com.h2database_h2` % Test
-          )
+          ),
+      sources in (Compile, doc) := Seq.empty
     )
-    .enablePlugins(QuillRepositoryPlugin)

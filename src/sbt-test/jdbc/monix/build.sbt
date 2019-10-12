@@ -1,6 +1,6 @@
 import pl.jozwik.quillgeneric.sbt._
 
-val `scalaVersion_2.12` = "2.12.9"
+val `scalaVersion_2.12` = "2.12.10"
 
 name := "quill-macro-example"
 
