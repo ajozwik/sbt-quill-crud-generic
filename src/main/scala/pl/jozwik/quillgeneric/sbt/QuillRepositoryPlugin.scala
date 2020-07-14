@@ -5,7 +5,7 @@ import sbt._
 import sbt.plugins.JvmPlugin
 import DependencyHelper._
 import pl.jozwik.quillgeneric.sbt.generator.cassandra.{ CassandraAsyncCodeGenerator, CassandraMonixCodeGenerator, CassandraSyncCodeGenerator }
-import pl.jozwik.quillgeneric.sbt.generator.jdbc.{ MonixJdbcCodeGenerator, SyncCodeGenerator }
+import pl.jozwik.quillgeneric.sbt.generator.jdbc.{ AsyncCodeGenerator, MonixJdbcCodeGenerator, SyncCodeGenerator }
 import pl.jozwik.quillgeneric.sbt.generator.Generator
 
 object QuillRepositoryPlugin extends AutoPlugin {
@@ -30,6 +30,7 @@ object QuillRepositoryPlugin extends AutoPlugin {
           sourceGenerators in Compile += Def.task {
                 val rootPath = (sourceManaged in Compile).value
                 generate(generateDescription.value, rootPath, SyncCodeGenerator) ++
+                  generate(generateAsyncDescription.value, rootPath, AsyncCodeGenerator) ++
                   generate(generateMonixRepositories.value, rootPath, MonixJdbcCodeGenerator) ++
                   generate(generateCassandraSyncRepositories.value, rootPath, CassandraSyncCodeGenerator) ++
                   generate(generateCassandraAsyncRepositories.value, rootPath, CassandraAsyncCodeGenerator) ++
