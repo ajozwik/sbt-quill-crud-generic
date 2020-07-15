@@ -1,6 +1,6 @@
 import pl.jozwik.quillgeneric.sbt._
 
-val `scalaVersion_2.13` = "2.13.1"
+val `scalaVersion_2.13` = "2.13.3"
 
 name := "quill-macro-example"
 
@@ -40,7 +40,7 @@ val `com.typesafe.scala-logging_scala-logging` = "com.typesafe.scala-logging" %%
 
 val `ch.qos.logback_logback-classic` = "ch.qos.logback" % "logback-classic" % "1.2.3"
 
-val `com.h2database_h2` = "com.h2database" % "h2" % "1.4.199"
+val `com.h2database_h2` = "com.h2database" % "h2" % "1.4.200"
 
 val basePackage        = "pl.jozwik.example"
 val domainModelPackage = s"$basePackage.domain.model"
