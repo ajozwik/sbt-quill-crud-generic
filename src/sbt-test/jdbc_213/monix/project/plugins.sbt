@@ -5,3 +5,5 @@ sys.props.get("plugin.version") match {
     sys.error("""|The system property 'plugin.version' is not defined.
                   |Specify this property using the scriptedLaunchOpts -D.""".stripMargin)
 }
+
+resolvers += Resolver.sonatypeRepo("snapshots")
