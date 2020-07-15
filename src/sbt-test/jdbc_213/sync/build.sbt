@@ -4,9 +4,9 @@ val `scalaVersion_2.13` = "2.13.3"
 
 name := "quill-macro-example"
 
-resolvers += Resolver.sonatypeRepo("releases")
+ThisBuild / resolvers += Resolver.sonatypeRepo("releases")
 
-resolvers += Resolver.sonatypeRepo("snapshots")
+ThisBuild / resolvers += Resolver.sonatypeRepo("snapshots")
 
 ThisBuild / scalaVersion := `scalaVersion_2.13`
 

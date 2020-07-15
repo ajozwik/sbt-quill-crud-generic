@@ -27,6 +27,7 @@ trait Generator {
   protected def executionContextImport: String = ""
   protected def implicitParameters: String     = "(dSchema)"
   protected def implicitTransactionParameters  = ""
+  protected def connectionImport               = ""
 
   def generate(rootPath: File)(description: RepositoryDescription): (File, String)
 }

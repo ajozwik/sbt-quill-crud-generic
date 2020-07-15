@@ -9,6 +9,7 @@ import sbt._
 import scala.io.Source
 
 abstract class AbstractCodeGenerator extends Generator with CodeGenerationTemplates {
+  private val Connection                   = "Connection"
   private val Dialect                      = "Dialect"
   private val Naming                       = "Naming"
   protected def template                   = "$template$.txt"
@@ -68,6 +69,7 @@ abstract class AbstractCodeGenerator extends Generator with CodeGenerationTempla
       .replace(TableNamePattern, toTableName)
       .replace(RepositoryImport, defaultRepositoryImport)
       .replace(DialectTemplate, Dialect)
+      .replace(ConnectionTemplate, Connection)
       .replace(NamingTemplate, Naming)
       .replace(ContextAlias, aliasName)
       .replace(Update, update)
@@ -84,6 +86,7 @@ abstract class AbstractCodeGenerator extends Generator with CodeGenerationTempla
       .replace(ExecutionContextImport, executionContextImport)
       .replace(ImplicitParameters, implicitParameters)
       .replace(ImplicitTransactionParameters, implicitTransactionParameters)
+      .replace(ConnectionImport, connectionImport)
     (file, s"$header\n$result")
   }
 

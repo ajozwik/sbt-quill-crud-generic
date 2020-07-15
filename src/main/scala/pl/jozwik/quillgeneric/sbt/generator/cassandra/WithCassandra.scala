@@ -8,7 +8,7 @@ trait WithCassandra {
   protected def contextTransactionEnd      = ""
   protected def sqlIdiomImport             = ""
   protected def genericDeclaration: String = CodeGenerationTemplates.NamingTemplate
-  protected def aliasGenericDeclaration    = s"[$genericDeclaration <: NamingStrategy]"
+  protected def aliasGenericDeclaration    = s"$genericDeclaration <: NamingStrategy"
   protected def createOrUpdate             = "create"
   protected def createOrUpdateAndRead      = "createAndRead"
 }

@@ -2,9 +2,9 @@ name := "sbt-quill-crud-generic"
 
 organization := "com.github.ajozwik"
 
-resolvers += Resolver.sonatypeRepo("releases")
+ThisBuild / resolvers += Resolver.sonatypeRepo("releases")
 
-resolvers += Resolver.sonatypeRepo("snapshots")
+ThisBuild / resolvers += Resolver.sonatypeRepo("snapshots")
 
 val targetJdk = "1.8"
 
