@@ -80,6 +80,7 @@ sbt compile
 
 The generated repositories are in:
 ```
-target/scala-2.12/src_managed/main/
+target/scala-<version>/src_managed/main/
 ```
 
+[Example of usage are here](/src/sbt-test/all/all)
