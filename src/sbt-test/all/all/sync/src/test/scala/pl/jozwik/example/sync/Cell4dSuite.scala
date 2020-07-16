@@ -10,15 +10,15 @@ trait Cell4dSuite extends AbstractSyncSpec {
   private val repository: SyncRepository[Cell4dId, Cell4d] = new Cell4dRepositoryGen(ctx)
 
   "Cell4dSuite " should {
-      "Call crud operations " in {
-        val id     = Cell4dId(0, 1, 0, 1)
-        val entity = Cell4d(id, false)
-        repository.createOrUpdateAndRead(entity) shouldBe Success(entity)
-        repository.readUnsafe(id).success.get shouldBe entity
-        repository.delete(id) shouldBe Success(1)
-        intercept[RuntimeException] {
-          repository.readUnsafe(id).success.get
-        }
+    "Call crud operations " in {
+      val id     = Cell4dId(0, 1, 0, 1)
+      val entity = Cell4d(id, false)
+      repository.createOrUpdateAndRead(entity) shouldBe Success(entity)
+      repository.readUnsafe(id).success.value shouldBe entity
+      repository.delete(id) shouldBe Success(1)
+      intercept[RuntimeException] {
+        repository.readUnsafe(id).success.value
       }
     }
+  }
 }

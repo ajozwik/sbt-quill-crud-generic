@@ -11,23 +11,23 @@ trait SaleRepositorySuite extends AbstractSyncSpec {
   private val personRepository  = new PersonRepositoryGen(ctx, "Person2")
   private val productRepository = new ProductRepositoryGen(ctx, "Product")
   "Sale Repository " should {
-      "Call all operations on Sale" in {
-        repository.all shouldBe Success(Seq())
-        val personWithoutId  = Person(PersonId.empty, "firstName", "lastName", today)
-        val person           = personRepository.createAndRead(personWithoutId).success.get
-        val productWithoutId = Product(ProductId.empty, "productName")
-        val product          = productRepository.createAndRead(productWithoutId).success.get
-        val saleId           = SaleId(product.id, person.id)
-        val sale             = Sale(saleId, now)
-        repository.createAndRead(sale).success.get shouldBe sale
+    "Call all operations on Sale" in {
+      repository.all shouldBe Success(Seq())
+      val personWithoutId  = Person(PersonId.empty, "firstName", "lastName", today)
+      val person           = personRepository.createAndRead(personWithoutId).success.value
+      val productWithoutId = Product(ProductId.empty, "productName")
+      val product          = productRepository.createAndRead(productWithoutId).success.value
+      val saleId           = SaleId(product.id, person.id)
+      val sale             = Sale(saleId, now)
+      repository.createAndRead(sale).success.value shouldBe sale
 
-        repository.createOrUpdateAndRead(sale) shouldBe Symbol("success")
+      repository.createOrUpdateAndRead(sale) shouldBe Symbol("success")
 
-        repository.read(saleId).success.get shouldBe Option(sale)
-        repository.delete(saleId) shouldBe Symbol("success")
-        productRepository.delete(product.id)
-        personRepository.delete(person.id)
-      }
+      repository.read(saleId).success.value shouldBe Option(sale)
+      repository.delete(saleId) shouldBe Symbol("success")
+      productRepository.delete(product.id)
+      personRepository.delete(person.id)
     }
+  }
 
 }
