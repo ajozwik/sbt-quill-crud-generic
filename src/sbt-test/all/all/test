@@ -1,0 +1,5 @@
+# check if repository created
+> eval sys.props("quill.macro.log") = false.toString()
+> +clean
+> +test:compile
+> +test
