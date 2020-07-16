@@ -1,14 +1,18 @@
 import pl.jozwik.quillgeneric.sbt._
 
-val `scalaVersion_2.12` = "2.12.12"
-
-name := "quill-macro-example"
-
 ThisBuild / resolvers += Resolver.sonatypeRepo("releases")
 
 ThisBuild / resolvers += Resolver.sonatypeRepo("snapshots")
 
+val `scalaVersion_2.13` = "2.13.3"
+
+val `scalaVersion_2.12` = "2.12.12"
+
+name := "quill-macro-example"
+
 ThisBuild / scalaVersion := `scalaVersion_2.12`
+
+ThisBuild / crossScalaVersions := Seq(`scalaVersion_2.13`, `scalaVersion_2.12`)
 
 ThisBuild / organization := "pl.jozwik.demo"
 

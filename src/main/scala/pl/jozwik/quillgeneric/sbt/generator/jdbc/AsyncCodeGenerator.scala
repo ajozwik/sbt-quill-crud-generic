@@ -17,7 +17,7 @@ object AsyncCodeGenerator extends AbstractCodeGenerator with WithJdbc with WithF
 
   override protected def contextTransactionStart =
     s"""{
-       |     import context.toFuture 
+       |     import context.toFuture
        |     context.transaction { $asyncTransaction =>""".stripMargin
 
   override protected def contextTransactionEnd =
