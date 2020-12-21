@@ -34,9 +34,9 @@ val `com.typesafe.scala-logging_scala-logging` = "com.typesafe.scala-logging" %%
 
 val `ch.qos.logback_logback-classic` = "ch.qos.logback" % "logback-classic" % "1.2.3"
 
-val `org.scalatest_scalatest` = "org.scalatest" %% "scalatest" % "3.2.2" % Test
+val `org.scalatest_scalatest` = "org.scalatest" %% "scalatest" % "3.2.3" % Test
 
-val `org.scalacheck_scalacheck` = "org.scalacheck" %% "scalacheck" % "1.14.3" % Test
+val `org.scalacheck_scalacheck` = "org.scalacheck" %% "scalacheck" % "1.15.2" % Test
 
 val `com.github.ajozwik_macro-quill` = "com.github.ajozwik" %% "quill-jdbc-macro" % quillMacroVersion
 
