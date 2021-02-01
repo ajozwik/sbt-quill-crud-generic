@@ -1,7 +1,7 @@
 # sbt-quill-crud-generic
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/76974955a39d4373b990b656fb1c9de5)](https://app.codacy.com/manual/ajozwik/sbt-quill-crud-generic?utm_source=github.com&utm_medium=referral&utm_content=ajozwik/sbt-quill-crud-generic&utm_campaign=Badge_Grade_Dashboard)
-[![Build Status](https://travis-ci.org/ajozwik/sbt-quill-crud-generic.svg?branch=master)](https://travis-ci.org/ajozwik/sbt-quill-crud-generic)
+[![Build Status](https://travis-ci.com/ajozwik/sbt-quill-crud-generic.svg?branch=master)](https://travis-ci.com/ajozwik/sbt-quill-crud-generic)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.ajozwik/sbt-quill-crud-generic/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.ajozwik/sbt-quill-crud-generic)
 [![Coverage Status](https://coveralls.io/repos/github/ajozwik/sbt-quill-crud-generic/badge.svg?branch=master)](https://coveralls.io/github/ajozwik/sbt-quill-crud-generic?branch=master)
 

@@ -17,7 +17,7 @@ ThisBuild / resolvers += Resolver.sonatypeRepo("snapshots")
 
 val `scalaVersion_2.13` = "2.13.4"
 
-val `scalaVersion_2.12` = "2.12.13"
+val `scalaVersion_2.12` = "2.12.12"
 
 name := "quill-macro-example"
 
