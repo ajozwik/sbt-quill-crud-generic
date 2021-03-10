@@ -1,6 +1,6 @@
 import sbtrelease.ReleaseStateTransformations._
 
-ThisScope / crossSbtVersions := Seq("1.3.0")
+ThisScope / crossSbtVersions := Seq("1.4.7")
 
 ThisScope / sbtrelease.ReleasePlugin.autoImport.releasePublishArtifactsAction := PgpKeys.publishSigned.value
 ThisScope / sbtrelease.ReleasePlugin.autoImport.releaseCrossBuild := true

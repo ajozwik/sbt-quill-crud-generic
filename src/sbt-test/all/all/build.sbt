@@ -15,7 +15,7 @@ ThisBuild / resolvers += Resolver.sonatypeRepo("releases")
 
 ThisBuild / resolvers += Resolver.sonatypeRepo("snapshots")
 
-val `scalaVersion_2.13` = "2.13.4"
+val `scalaVersion_2.13` = "2.13.5"
 
 val `scalaVersion_2.12` = "2.12.12"
 
@@ -25,7 +25,7 @@ ThisBuild / scalaVersion := `scalaVersion_2.12`
 
 ThisBuild / crossScalaVersions := Seq(`scalaVersion_2.13`, `scalaVersion_2.12`)
 
-ThisBuild / scapegoatVersion := "1.4.7"
+ThisBuild / scapegoatVersion := "1.4.8"
 
 ThisBuild / organization := "pl.jozwik.demo"
 
@@ -41,9 +41,13 @@ ThisBuild / scalacOptions ++= Seq(
   "-language:postfixOps"
 )
 
-val `org.scalatest_scalatest` = "org.scalatest" %% "scalatest" % "3.2.0" % "test"
+val scalaTestVersion = "3.2.6"
 
-val `org.scalacheck_scalacheck` = "org.scalacheck" %% "scalacheck" % "1.14.3" % "test"
+val `org.scalatest_scalatest` = "org.scalatest" %% "scalatest" % scalaTestVersion % Test
+
+val `org.scalacheck_scalacheck` = "org.scalacheck" %% "scalacheck" % "1.15.3" % Test
+
+val `org.scalatestplus_scalacheck-1-15` = "org.scalatestplus" %% "scalacheck-1-15" % s"$scalaTestVersion.0" % Test
 
 val `com.typesafe.scala-logging_scala-logging` = "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2"
 
@@ -260,6 +264,7 @@ def projectWithName(name: String, file: File): Project =
       libraryDependencies ++= Seq(
         `org.scalatest_scalatest`,
         `org.scalacheck_scalacheck`,
+        `org.scalatestplus_scalacheck-1-15`,
         `com.typesafe.scala-logging_scala-logging`,
         `ch.qos.logback_logback-classic`,
         `com.h2database_h2` % Test
