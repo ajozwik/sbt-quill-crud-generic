@@ -26,15 +26,15 @@ ThisBuild / scalacOptions ++= Seq(
 
 ThisBuild / javacOptions ++= Seq("-Xlint:deprecation", "-Xdiags:verbose", "-source", targetJdk, "-target", targetJdk)
 
-ThisBuild / scalaVersion := "2.12.12"
+ThisBuild / scalaVersion := "2.12.13"
 
-val quillMacroVersion = "0.9.2"
+val quillMacroVersion = "0.9.3"
 
 val `com.typesafe.scala-logging_scala-logging` = "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2"
 
 val `ch.qos.logback_logback-classic` = "ch.qos.logback" % "logback-classic" % "1.2.3"
 
-val `org.scalatest_scalatest` = "org.scalatest" %% "scalatest" % "3.2.5" % Test
+val `org.scalatest_scalatest` = "org.scalatest" %% "scalatest" % "3.2.7" % Test
 
 val `org.scalacheck_scalacheck` = "org.scalacheck" %% "scalacheck" % "1.15.3" % Test
 

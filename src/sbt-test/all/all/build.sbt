@@ -17,7 +17,7 @@ ThisBuild / resolvers += Resolver.sonatypeRepo("snapshots")
 
 val `scalaVersion_2.13` = "2.13.5"
 
-val `scalaVersion_2.12` = "2.12.12"
+val `scalaVersion_2.12` = "2.12.13"
 
 name := "quill-macro-example"
 
@@ -229,7 +229,7 @@ lazy val cassandra = projectWithCassandra("cassandra", file("cassandra"))
         s"$generateCassandraAsyncRepositoryPackage.AddressRepositoryGen"
       )
     ),
-    parallelExecution in Test := false
+    Test / parallelExecution := false
   )
 
 val generateCassandraMonixRepositoryPackage = s"$cassandraPackage.monix.repository"
@@ -269,5 +269,5 @@ def projectWithName(name: String, file: File): Project =
         `ch.qos.logback_logback-classic`,
         `com.h2database_h2` % Test
       ),
-      sources in (Compile, doc) := Seq.empty
+      Compile / doc / sources := Seq.empty
     )

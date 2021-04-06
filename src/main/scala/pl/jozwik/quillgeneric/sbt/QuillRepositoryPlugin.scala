@@ -27,31 +27,31 @@ object QuillRepositoryPlugin extends AutoPlugin {
 
   override lazy val projectSettings: Seq[Def.Setting[_]] =
     defaultSettings ++ Seq(
-          sourceGenerators in Compile += Def.task {
-                val rootPath = (sourceManaged in Compile).value
-                generate(generateDescription.value, rootPath, SyncCodeGenerator) ++
-                  generate(generateAsyncDescription.value, rootPath, AsyncCodeGenerator) ++
-                  generate(generateMonixRepositories.value, rootPath, MonixJdbcCodeGenerator) ++
-                  generate(generateCassandraSyncRepositories.value, rootPath, CassandraSyncCodeGenerator) ++
-                  generate(generateCassandraAsyncRepositories.value, rootPath, CassandraAsyncCodeGenerator) ++
-                  generate(generateCassandraMonixRepositories.value, rootPath, CassandraMonixCodeGenerator)
-              }.taskValue,
-          libraryDependencies ++=
-              addImport(true, "macro-quill", quillMacroVersion.value).toSeq ++
-                  addImport(generateDescription.value.nonEmpty, "quill-jdbc-macro", quillMacroVersion.value) ++
-                  addImport(generateAsyncDescription.value.nonEmpty, "quill-async-jdbc-macro", quillMacroVersion.value) ++
-                  addImport(generateMonixRepositories.value.nonEmpty, "quill-jdbc-monix-macro", quillMacroVersion.value) ++
-                  addImport(
-                    generateCassandraSyncRepositories.value.nonEmpty || generateCassandraAsyncRepositories.value.nonEmpty,
-                    "quill-cassandra-macro",
-                    quillMacroVersion.value
-                  ) ++
-                  addImport(
-                    generateCassandraSyncRepositories.value.nonEmpty || generateCassandraAsyncRepositories.value.nonEmpty,
-                    "quill-cassandra-macro",
-                    quillMacroVersion.value
-                  ) ++
-                  addImport(generateCassandraMonixRepositories.value.nonEmpty, "quill-cassandra-monix-macro", quillMacroVersion.value)
-        )
+      Compile / sourceGenerators += Def.task {
+        val rootPath = (Compile / sourceManaged).value
+        generate(generateDescription.value, rootPath, SyncCodeGenerator) ++
+          generate(generateAsyncDescription.value, rootPath, AsyncCodeGenerator) ++
+          generate(generateMonixRepositories.value, rootPath, MonixJdbcCodeGenerator) ++
+          generate(generateCassandraSyncRepositories.value, rootPath, CassandraSyncCodeGenerator) ++
+          generate(generateCassandraAsyncRepositories.value, rootPath, CassandraAsyncCodeGenerator) ++
+          generate(generateCassandraMonixRepositories.value, rootPath, CassandraMonixCodeGenerator)
+      }.taskValue,
+      libraryDependencies ++=
+        addImport(true, "macro-quill", quillMacroVersion.value).toSeq ++
+          addImport(generateDescription.value.nonEmpty, "quill-jdbc-macro", quillMacroVersion.value) ++
+          addImport(generateAsyncDescription.value.nonEmpty, "quill-async-jdbc-macro", quillMacroVersion.value) ++
+          addImport(generateMonixRepositories.value.nonEmpty, "quill-jdbc-monix-macro", quillMacroVersion.value) ++
+          addImport(
+            generateCassandraSyncRepositories.value.nonEmpty || generateCassandraAsyncRepositories.value.nonEmpty,
+            "quill-cassandra-macro",
+            quillMacroVersion.value
+          ) ++
+          addImport(
+            generateCassandraSyncRepositories.value.nonEmpty || generateCassandraAsyncRepositories.value.nonEmpty,
+            "quill-cassandra-macro",
+            quillMacroVersion.value
+          ) ++
+          addImport(generateCassandraMonixRepositories.value.nonEmpty, "quill-cassandra-monix-macro", quillMacroVersion.value)
+    )
 
 }
