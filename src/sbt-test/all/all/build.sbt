@@ -15,7 +15,7 @@ ThisBuild / resolvers += Resolver.sonatypeRepo("releases")
 
 ThisBuild / resolvers += Resolver.sonatypeRepo("snapshots")
 
-val `scalaVersion_2.13` = "2.13.5"
+val `scalaVersion_2.13` = "2.13.6"
 
 val `scalaVersion_2.12` = "2.12.13"
 
@@ -25,7 +25,7 @@ ThisBuild / scalaVersion := `scalaVersion_2.12`
 
 ThisBuild / crossScalaVersions := Seq(`scalaVersion_2.13`, `scalaVersion_2.12`)
 
-ThisBuild / scapegoatVersion := "1.4.8"
+ThisBuild / scapegoatVersion := "1.4.9"
 
 ThisBuild / organization := "pl.jozwik.demo"
 
@@ -41,15 +41,15 @@ ThisBuild / scalacOptions ++= Seq(
   "-language:postfixOps"
 )
 
-val scalaTestVersion = "3.2.6"
+val scalaTestVersion = "3.2.9"
 
 val `org.scalatest_scalatest` = "org.scalatest" %% "scalatest" % scalaTestVersion % Test
 
-val `org.scalacheck_scalacheck` = "org.scalacheck" %% "scalacheck" % "1.15.3" % Test
+val `org.scalacheck_scalacheck` = "org.scalacheck" %% "scalacheck" % "1.15.4" % Test
 
 val `org.scalatestplus_scalacheck-1-15` = "org.scalatestplus" %% "scalacheck-1-15" % s"$scalaTestVersion.0" % Test
 
-val `com.typesafe.scala-logging_scala-logging` = "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2"
+val `com.typesafe.scala-logging_scala-logging` = "com.typesafe.scala-logging" %% "scala-logging" % "3.9.4"
 
 val `ch.qos.logback_logback-classic` = "ch.qos.logback" % "logback-classic" % "1.2.3"
 
