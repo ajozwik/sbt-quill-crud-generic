@@ -17,7 +17,7 @@ ThisBuild / resolvers += Resolver.sonatypeRepo("snapshots")
 
 val `scalaVersion_2.13` = "2.13.6"
 
-val `scalaVersion_2.12` = "2.12.13"
+val `scalaVersion_2.12` = "2.12.14"
 
 name := "quill-macro-example"
 
@@ -51,13 +51,13 @@ val `org.scalatestplus_scalacheck-1-15` = "org.scalatestplus" %% "scalacheck-1-1
 
 val `com.typesafe.scala-logging_scala-logging` = "com.typesafe.scala-logging" %% "scala-logging" % "3.9.4"
 
-val `ch.qos.logback_logback-classic` = "ch.qos.logback" % "logback-classic" % "1.2.3"
+val `ch.qos.logback_logback-classic` = "ch.qos.logback" % "logback-classic" % "1.2.5"
 
 val `com.h2database_h2` = "com.h2database" % "h2" % "1.4.200"
 
 val `org.cassandraunit_cassandra-unit` = "org.cassandraunit" % "cassandra-unit" % "3.11.2.0"
 
-val `com.datastax.cassandra_cassandra-driver-extras` = "com.datastax.cassandra" % "cassandra-driver-extras" % "3.9.0"
+val `com.datastax.cassandra_cassandra-driver-extras` = "com.datastax.cassandra" % "cassandra-driver-extras" % "3.11.0"
 
 val basePackage        = "pl.jozwik.example"
 val domainModelPackage = s"$basePackage.domain.model"
@@ -249,13 +249,13 @@ lazy val cassandraMonix = projectWithCassandra("cassandra-monix", file("cassandr
 def projectWithCassandra(name: String, file: File): Project =
   projectWithSbtPlugin(name, file)
     .settings(
-      Test / fork := true,
       libraryDependencies ++= Seq(`org.cassandraunit_cassandra-unit` % Test, `com.datastax.cassandra_cassandra-driver-extras` % Test)
     )
 
 def projectWithSbtPlugin(name: String, file: File): Project =
   projectWithName(name, file)
     .dependsOn(common, common % "test -> test")
+    .settings(Test / fork := true)
     .enablePlugins(QuillRepositoryPlugin)
 
 def projectWithName(name: String, file: File): Project =

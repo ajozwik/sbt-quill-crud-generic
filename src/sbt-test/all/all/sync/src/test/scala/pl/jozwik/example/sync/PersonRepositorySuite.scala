@@ -12,7 +12,7 @@ trait PersonRepositorySuite extends AbstractSyncSpec {
   "Person uses fixed id " should {
       "Call all operations on Person" in {
 
-        val address     = Address(addressId, "Poland", "Warsaw", Option("Podbipiety"))
+        val address     = Address(addressId, "Poland", "Rakow", Option("Listopadowa"))
         val person      = Person(PersonId(1), "firstName", "lastName", today.minusYears(2), Option(addressId))
         val notExisting = Person(PersonId(2), "firstName", "lastName", today, Option(addressId))
         ctx.transaction {
