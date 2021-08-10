@@ -1,7 +1,5 @@
 import sbtrelease.ReleaseStateTransformations._
 
-ThisScope / crossSbtVersions := Seq("1.5.5")
-
 ThisScope / sbtrelease.ReleasePlugin.autoImport.releasePublishArtifactsAction := PgpKeys.publishSigned.value
 ThisScope / sbtrelease.ReleasePlugin.autoImport.releaseCrossBuild := true
 
@@ -37,13 +35,7 @@ ThisBuild / publishTo := {
   }
 }
 
-ThisBuild / publishMavenStyle := true
-
 Test / publishArtifact := false
-
-ThisBuild / pomIncludeRepository := { _ =>
-  false
-}
 
 ThisBuild / licenses := Seq("MIT License" -> url("http://www.opensource.org/licenses/mit-license.php"))
 
