@@ -25,7 +25,12 @@ ThisBuild / scalaVersion := `scalaVersion_2.12`
 
 ThisBuild / crossScalaVersions := Seq(`scalaVersion_2.13`, `scalaVersion_2.12`)
 
-ThisBuild / scapegoatVersion := "1.4.9"
+ThisBuild / scapegoatVersion := 
+  CrossVersion.partialVersion(scalaVersion.value) match {
+    case Some((2, n)) if n >= 13 => "1.4.9"
+    case _                       => "1.4.8"
+  }
+
 
 ThisBuild / organization := "pl.jozwik.demo"
 
