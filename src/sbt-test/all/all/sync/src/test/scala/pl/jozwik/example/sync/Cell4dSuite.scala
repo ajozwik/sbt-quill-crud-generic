@@ -7,7 +7,7 @@ import org.scalatest.TryValues._
 import scala.util.Success
 
 trait Cell4dSuite extends AbstractSyncSpec {
-  private val repository: SyncRepository[Cell4dId, Cell4d] = new Cell4dRepositoryGen(ctx)
+  private val repository: SyncRepository[Cell4dId, Cell4d, Long] = new Cell4dRepositoryGen(ctx)
 
   "Cell4dSuite " should {
     "Call crud operations " in {

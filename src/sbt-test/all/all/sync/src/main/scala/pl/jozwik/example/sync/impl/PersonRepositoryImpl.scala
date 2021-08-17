@@ -12,7 +12,7 @@ import scala.util.Try
 
 trait PersonRepositoryImpl[Dialect <: SqlIdiom, Naming <: NamingStrategy]
   extends JdbcRepositoryWithGeneratedId[PersonId, Person, Dialect, Naming]
-  with PersonRepository {
+  with PersonRepository[Try] {
 
   def searchByFirstName(name: String)(offset: Int, limit: Int): Try[Seq[Person]] = Try {
     import context._

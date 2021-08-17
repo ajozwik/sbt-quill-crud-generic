@@ -11,7 +11,7 @@ import pl.jozwik.quillgeneric.quillmacro.monix.jdbc.MonixJdbcRepositoryWithGener
 
 trait PersonRepositoryImpl[Dialect <: SqlIdiom, Naming <: NamingStrategy]
   extends MonixJdbcRepositoryWithGeneratedId[PersonId, Person, Dialect, Naming]
-  with PersonRepository {
+  with PersonRepository[Task] {
 
   def searchByFirstName(name: String)(offset: Int, limit: Int): Task[Seq[Person]] = {
     import context._

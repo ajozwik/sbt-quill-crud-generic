@@ -12,7 +12,7 @@ import scala.util.Try
 
 trait AddressRepositoryImpl[Dialect <: SqlIdiom, Naming <: NamingStrategy]
   extends JdbcRepositoryWithGeneratedId[AddressId, Address, Dialect, Naming]
-  with AddressRepository {
+  with AddressRepository[Try] {
 
   def setCountryIfCity(city: String, country: String): Try[Long] = Try {
     import context._

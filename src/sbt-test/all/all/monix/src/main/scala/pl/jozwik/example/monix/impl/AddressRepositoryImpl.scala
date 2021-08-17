@@ -11,7 +11,7 @@ import pl.jozwik.quillgeneric.quillmacro.monix.jdbc.MonixJdbcRepositoryWithGener
 
 trait AddressRepositoryImpl[Dialect <: SqlIdiom, Naming <: NamingStrategy]
   extends MonixJdbcRepositoryWithGeneratedId[AddressId, Address, Dialect, Naming]
-  with AddressRepository {
+  with AddressRepository[Task] {
 
   def setCountryIfCity(city: String, country: String): Task[Long] = {
     import context._

@@ -5,7 +5,7 @@ import java.time.LocalDate
 import pl.jozwik.example.domain.model.{ Person, PersonId }
 import pl.jozwik.quillgeneric.quillmacro.RepositoryWithGeneratedId
 
-trait PersonRepository extends RepositoryWithGeneratedId[PersonId, Person] {
+trait PersonRepository[F[_]] extends RepositoryWithGeneratedId[F, PersonId, Person, Long] {
 
   def count: F[Long]
 

@@ -7,7 +7,7 @@ import pl.jozwik.quillgeneric.quillmacro.async.AsyncRepositoryWithGeneratedId
 
 import scala.concurrent.{ ExecutionContext, Future }
 
-trait PersonRepository extends AsyncRepositoryWithGeneratedId[PersonId, Person] {
+trait PersonRepository extends AsyncRepositoryWithGeneratedId[PersonId, Person, Long] {
 
   def count(implicit ex: ExecutionContext): Future[Long]
 
