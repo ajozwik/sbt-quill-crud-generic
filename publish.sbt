@@ -50,6 +50,8 @@ ThisBuild / scmInfo := Option(
   )
 )
 
+ThisBuild / versionScheme := Option("strict")
+
 ThisBuild / organizationHomepage := Option(url(organizationUrl))
 
 ThisBuild / homepage := Option(url(projectUrl))
