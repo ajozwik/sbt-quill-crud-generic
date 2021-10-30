@@ -53,6 +53,7 @@ ThisScope / sbtPlugin := true
 lazy val root = (project in file("."))
   .settings(
     scriptedLaunchOpts += ("-Dplugin.version=" + version.value),
-    scriptedBufferLog := false
+    scriptedBufferLog := false,
+    Compile / compile / wartremoverWarnings ++= Warts.allBut(Wart.ImplicitParameter, Wart.DefaultArguments, Wart.Enumeration)
   )
   .enablePlugins(SbtPlugin)

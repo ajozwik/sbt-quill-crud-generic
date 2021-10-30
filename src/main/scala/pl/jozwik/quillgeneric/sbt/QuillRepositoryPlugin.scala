@@ -25,8 +25,9 @@ object QuillRepositoryPlugin extends AutoPlugin {
       file
     }
 
-  override lazy val projectSettings: Seq[Def.Setting[_]] =
-    defaultSettings ++ Seq(
+  @SuppressWarnings(Array("org.wartremover.warts.Any", "org.wartremover.warts.Nothing"))
+  override lazy val projectSettings: Seq[Def.Setting[_]] = {
+    defaultSettings ++ Seq[Def.Setting[_]](
       Compile / sourceGenerators += Def.task {
         val rootPath = (Compile / sourceManaged).value
         generate(generateDescription.value, rootPath, SyncCodeGenerator) ++
@@ -37,7 +38,8 @@ object QuillRepositoryPlugin extends AutoPlugin {
           generate(generateCassandraMonixRepositories.value, rootPath, CassandraMonixCodeGenerator)
       }.taskValue,
       libraryDependencies ++=
-        addImport(true, "macro-quill", quillMacroVersion.value).toSeq ++
+
+        addImport(true, "macro-quill", quillMacroVersion.value) ++
           addImport(generateDescription.value.nonEmpty, "quill-jdbc-macro", quillMacroVersion.value) ++
           addImport(generateAsyncDescription.value.nonEmpty, "quill-async-jdbc-macro", quillMacroVersion.value) ++
           addImport(generateMonixRepositories.value.nonEmpty, "quill-jdbc-monix-macro", quillMacroVersion.value) ++
@@ -53,5 +55,6 @@ object QuillRepositoryPlugin extends AutoPlugin {
           ) ++
           addImport(generateCassandraMonixRepositories.value.nonEmpty, "quill-cassandra-monix-macro", quillMacroVersion.value)
     )
+  }
 
 }

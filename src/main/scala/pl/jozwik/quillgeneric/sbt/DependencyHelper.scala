@@ -4,10 +4,10 @@ import sbt._
 
 object DependencyHelper {
 
-  def addImport(add: Boolean, module: String, version: String): Option[ModuleID] =
+  def addImport(add: Boolean, module: String, version: String): Seq[ModuleID] =
     if (add) {
-      Option("com.github.ajozwik" %% module % version)
+      Seq("com.github.ajozwik" %% module % version)
     } else {
-      None
+      Seq.empty[ModuleID]
     }
 }

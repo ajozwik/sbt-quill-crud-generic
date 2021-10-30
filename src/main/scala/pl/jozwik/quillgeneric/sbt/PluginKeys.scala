@@ -13,12 +13,12 @@ trait PluginKeys {
 
   val defaultSettings: Seq[Def.Setting[_]] =
     Seq(
-      generateDescription := Seq.empty,
-      generateCassandraMonixRepositories := Seq.empty,
-      generateCassandraSyncRepositories := Seq.empty,
-      generateCassandraAsyncRepositories := Seq.empty,
-      generateMonixRepositories := Seq.empty,
-      generateAsyncDescription := Seq.empty,
+      generateDescription := Seq.empty[RepositoryDescription],
+      generateCassandraMonixRepositories := Seq.empty[RepositoryDescription],
+      generateCassandraSyncRepositories := Seq.empty[RepositoryDescription],
+      generateCassandraAsyncRepositories := Seq.empty[RepositoryDescription],
+      generateMonixRepositories := Seq.empty[RepositoryDescription],
+      generateAsyncDescription := Seq.empty[RepositoryDescription],
       quillMacroVersion := "1.0.1"
     )
 }

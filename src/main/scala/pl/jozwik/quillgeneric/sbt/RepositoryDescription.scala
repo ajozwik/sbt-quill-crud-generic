@@ -1,7 +1,8 @@
 package pl.jozwik.quillgeneric.sbt
 
 object KeyType extends Enumeration {
-  val Single, Composite = Value
+  type KeyType = Value
+  val Single, Composite: KeyType = Value
 }
 
 final case class BeanIdClass(name: String, keyType: KeyType.Value = KeyType.Single)
@@ -13,14 +14,14 @@ final case class RepositoryDescription(
     generateId: Boolean = false,
     repositoryTrait: Option[String] = None,
     tableName: Option[String] = None,
-    mapping: Map[String, String] = Map.empty
+    mapping: Map[String, String] = Map.empty[String, String]
 ) {
 
-  val (packageName, repositorySimpleClassName)   = toPackageNameSimpleClass(repositoryClassName)
-  val (beanPackageName, beanSimpleClassName)     = toPackageNameSimpleClass(beanClass)
-  val (beanIdPackageName, beanIdSimpleClassName) = toPackageNameSimpleClass(beanIdClass.name)
+  val (packageName: Seq[String], repositorySimpleClassName: String)   = toPackageNameSimpleClass(repositoryClassName)
+  val (beanPackageName: Seq[String], beanSimpleClassName: String)     = toPackageNameSimpleClass(beanClass)
+  val (beanIdPackageName: Seq[String], beanIdSimpleClassName: String) = toPackageNameSimpleClass(beanIdClass.name)
 
-  val (repositoryPackageName, repositoryTraitSimpleClassNameOpt) =
+  val (repositoryPackageName: Seq[String], repositoryTraitSimpleClassNameOpt: String) =
     toPackageNameSimpleClass(repositoryTrait.getOrElse(""))
 
   lazy val toTableName: String = tableName

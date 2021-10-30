@@ -2,11 +2,10 @@ package pl.jozwik.quillgeneric.sbt.generator
 
 import java.io.File
 import java.nio.file.Paths
-
 import pl.jozwik.quillgeneric.sbt.{ KeyType, RepositoryDescription }
 import sbt._
 
-import scala.io.Source
+import scala.io.{ Codec, Source }
 
 abstract class AbstractCodeGenerator extends Generator with CodeGenerationTemplates {
   private val Connection                   = "Connection"
@@ -47,7 +46,7 @@ abstract class AbstractCodeGenerator extends Generator with CodeGenerationTempla
     val content      = readTemplate(templateFile)
     val path         = Paths.get(rootPath.getAbsolutePath, packageName: _*)
     val dir          = path.toFile
-    dir.mkdirs()
+    mkdirs(dir)
     val pName         = toPackageName(packageName)
     val file          = dir / s"$repositorySimpleClassName.scala"
     val columnMapping = toColumnMapping(mapping)
@@ -133,13 +132,13 @@ abstract class AbstractCodeGenerator extends Generator with CodeGenerationTempla
     }
 
   private def createImport(packageNameSeq: Seq[String], packageNameBean: Seq[String], className: String) =
-    if (packageNameSeq == packageNameBean) "" else s"import $className"
+    if (packageNameSeq.sameElements(packageNameBean)) { "" }
+    else { s"import $className" }
 
   private def toColumnMapping(mapping: Map[String, String]) = {
     val columnMapping = {
-      val map = mapping.map {
-        case (k, v) =>
-          s"""alias(_.$k, "$v")"""
+      val map = mapping.map { case (k, v) =>
+        s"""alias(_.$k, "$v")"""
       }
       if (map.isEmpty) {
         ""
@@ -163,9 +162,12 @@ abstract class AbstractCodeGenerator extends Generator with CodeGenerationTempla
     val input = Option(getClass.getClassLoader.getResourceAsStream(templateResource))
       .getOrElse(getClass.getClassLoader.getResourceAsStream(s"/$templateResource"))
     try {
-      Source.fromInputStream(input).mkString
+      Source.fromInputStream(input)(Codec.UTF8).mkString
     } finally {
       input.close()
     }
   }
+
+  private def mkdirs(dir: File): Unit = if (dir.isDirectory) { () }
+  else { if (!dir.mkdirs()) { sys.error(s"${dir.getAbsolutePath} can not be created") } }
 }
