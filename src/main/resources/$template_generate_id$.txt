@@ -19,7 +19,7 @@ final class __REPOSITORY_NAME__[__ALIAS_GENERIC_DECLARATION__](
 
   protected def dynamicSchema: context.DynamicEntityQuery[__BEAN__] = dSchema
 
-  private implicit val dSchema: context.DynamicEntityQuery[__BEAN__] = {
+  private implicit def dSchema: context.DynamicEntityQuery[__BEAN__] = {
       __IMPORT_CONTEXT__
       context.dynamicQuerySchema[__BEAN__](tableName__COLUMN_MAPPING__)
   }

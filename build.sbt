@@ -2,9 +2,9 @@ name := "sbt-quill-crud-generic"
 
 organization := "com.github.ajozwik"
 
-ThisBuild / resolvers += Resolver.sonatypeRepo("releases")
+ThisBuild / resolvers ++= Resolver.sonatypeOssRepos("releases")
 
-ThisBuild / resolvers += Resolver.sonatypeRepo("snapshots")
+ThisBuild / resolvers ++= Resolver.sonatypeOssRepos("snapshots")
 
 val targetJdk = "1.8"
 
@@ -26,17 +26,17 @@ ThisBuild / scalacOptions ++= Seq(
 
 ThisBuild / javacOptions ++= Seq("-Xlint:deprecation", "-Xdiags:verbose", "-source", targetJdk, "-target", targetJdk)
 
-ThisBuild / scalaVersion := "2.12.12"
+ThisBuild / scalaVersion := "2.12.17"
 
 val quillMacroVersion = "1.0.1"
 
-val `com.typesafe.scala-logging_scala-logging` = "com.typesafe.scala-logging" %% "scala-logging" % "3.9.4"
+val `com.typesafe.scala-logging_scala-logging` = "com.typesafe.scala-logging" %% "scala-logging" % "3.9.5"
 
-val `ch.qos.logback_logback-classic` = "ch.qos.logback" % "logback-classic" % "1.2.5"
+val `ch.qos.logback_logback-classic` = "ch.qos.logback" % "logback-classic" % "1.4.4"
 
-val `org.scalatest_scalatest` = "org.scalatest" %% "scalatest" % "3.2.9" % Test
+val `org.scalatest_scalatest` = "org.scalatest" %% "scalatest" % "3.2.14" % Test
 
-val `org.scalacheck_scalacheck` = "org.scalacheck" %% "scalacheck" % "1.15.4" % Test
+val `org.scalacheck_scalacheck` = "org.scalacheck" %% "scalacheck" % "1.17.0" % Test
 
 val `com.github.ajozwik_macro-quill` = "com.github.ajozwik" %% "quill-jdbc-macro" % quillMacroVersion
 
