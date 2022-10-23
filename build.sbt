@@ -28,11 +28,11 @@ ThisBuild / javacOptions ++= Seq("-Xlint:deprecation", "-Xdiags:verbose", "-sour
 
 ThisBuild / scalaVersion := "2.12.17"
 
-val quillMacroVersion = "1.0.1"
+val quillMacroVersion = "1.1.0"
 
 val `com.typesafe.scala-logging_scala-logging` = "com.typesafe.scala-logging" %% "scala-logging" % "3.9.5"
 
-val `ch.qos.logback_logback-classic` = "ch.qos.logback" % "logback-classic" % "1.4.4"
+val `ch.qos.logback_logback-classic` = "ch.qos.logback" % "logback-classic" % "1.2.11"
 
 val `org.scalatest_scalatest` = "org.scalatest" %% "scalatest" % "3.2.14" % Test
 
