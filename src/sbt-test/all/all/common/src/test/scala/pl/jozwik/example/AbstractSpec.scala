@@ -10,7 +10,7 @@ import org.scalatest.wordspec.AnyWordSpecLike
 import pl.jozwik.example.domain.model.AddressId
 
 trait AbstractSpec extends AnyWordSpecLike with TimeLimitedTests with Matchers with StrictLogging {
-  val TIMEOUT_SECONDS              = 6
+  val TIMEOUT_SECONDS              = 60
   val timeLimit                    = Span(TIMEOUT_SECONDS, Seconds)
   protected val now: LocalDateTime = LocalDateTime.now()
   protected val today: LocalDate   = now.toLocalDate

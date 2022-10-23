@@ -9,7 +9,7 @@ import pl.jozwik.quillgeneric.quillmacro.async.AsyncCrudWithContext.AsyncCrudWit
 import scala.concurrent.ExecutionContext
 
 trait AbstractAsyncSpec extends AbstractCassandraSpec with ScalaFutures {
-  protected lazy val ctx = new CassandraAsyncContext(SnakeCase, "cassandra") with AsyncCrudWithContextUnit
+  protected lazy val ctx = new CassandraAsyncContext(SnakeCase, "ctx") with AsyncCrudWithContextUnit
   private val sleep      = 15
 
   protected implicit val defaultPatience: PatienceConfig =

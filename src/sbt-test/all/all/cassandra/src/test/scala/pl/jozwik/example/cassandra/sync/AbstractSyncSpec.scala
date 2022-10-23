@@ -5,5 +5,5 @@ import pl.jozwik.example.cassandra.AbstractCassandraSpec
 import pl.jozwik.quillgeneric.quillmacro.sync.CrudWithContext.CrudWithContextDateQuotesUnit
 
 trait AbstractSyncSpec extends AbstractCassandraSpec {
-  protected lazy val ctx = new CassandraSyncContext(SnakeCase, "cassandra") with CrudWithContextDateQuotesUnit
+  protected lazy val ctx = new CassandraSyncContext(SnakeCase, "ctx") with CrudWithContextDateQuotesUnit
 }
