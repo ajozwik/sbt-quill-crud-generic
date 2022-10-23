@@ -1,6 +1,6 @@
 *.class
 *.log
-
+.bsp
 target
 project/project
 project/target
