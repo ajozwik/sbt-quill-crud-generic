@@ -11,7 +11,7 @@ import pl.jozwik.quillgeneric.quillmacro.async.AsyncJdbcRepositoryWithGeneratedI
 
 import scala.concurrent.{ ExecutionContext, Future }
 
-trait PersonRepositoryImpl[Dialect <: SqlIdiom, Naming <: NamingStrategy, C <: ConcreteConnection]
+trait PersonRepositoryImpl[Dialect <: SqlIdiom, +Naming <: NamingStrategy, C <: ConcreteConnection]
   extends AsyncJdbcRepositoryWithGeneratedId[PersonId, Person, Dialect, Naming, C]
   with PersonRepository {
 

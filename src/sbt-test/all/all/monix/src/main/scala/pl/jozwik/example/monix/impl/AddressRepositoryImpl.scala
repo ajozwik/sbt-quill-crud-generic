@@ -9,7 +9,7 @@ import pl.jozwik.example.domain.model.{ Address, AddressId }
 import pl.jozwik.example.domain.repository.AddressRepository
 import pl.jozwik.quillgeneric.quillmacro.monix.jdbc.MonixJdbcRepositoryWithGeneratedId
 
-trait AddressRepositoryImpl[Dialect <: SqlIdiom, Naming <: NamingStrategy]
+trait AddressRepositoryImpl[+Dialect <: SqlIdiom, +Naming <: NamingStrategy]
   extends MonixJdbcRepositoryWithGeneratedId[AddressId, Address, Dialect, Naming]
   with AddressRepository[Task] {
 

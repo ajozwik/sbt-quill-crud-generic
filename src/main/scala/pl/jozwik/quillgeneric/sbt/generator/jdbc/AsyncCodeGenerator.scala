@@ -28,4 +28,6 @@ object AsyncCodeGenerator extends AbstractCodeGenerator with WithJdbc with WithF
   override protected def executionContext: String       = s"(implicit $ec: ExecutionContext)"
   override protected def executionContextImport: String = "import concurrent.ExecutionContext"
   override protected def connectionImport: String       = "import com.github.jasync.sql.db.ConcreteConnection"
+
+  override val aliasGenericDeclarationPlus: Boolean = false
 }

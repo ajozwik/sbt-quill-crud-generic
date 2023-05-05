@@ -4,7 +4,7 @@ lazy val readQuillMacroVersionSbt = sys.props.get("plugin.version") match {
   case Some(pluginVersion) =>
     pluginVersion
   case _ =>
-    "1.1.1"
+    "1.1.2"
 }
 
 def init(): Unit = {

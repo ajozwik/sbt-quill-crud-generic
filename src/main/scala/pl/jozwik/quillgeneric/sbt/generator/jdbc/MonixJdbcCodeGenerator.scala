@@ -8,4 +8,6 @@ object MonixJdbcCodeGenerator extends AbstractCodeGenerator with WithJdbc with W
   protected def macroRepository: String      = "MonixJdbcRepository"
   protected def repositoryCompositeKey       = "MonixJdbcRepositoryCompositeKey"
   protected def macroRepositoryWithGenerated = "MonixJdbcRepositoryWithGeneratedId"
+
+  override val aliasGenericDeclarationPlus: Boolean = true
 }
