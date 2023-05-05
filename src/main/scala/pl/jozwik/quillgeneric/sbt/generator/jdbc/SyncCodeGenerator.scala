@@ -8,4 +8,6 @@ object SyncCodeGenerator extends AbstractCodeGenerator with WithJdbc with WithTr
   protected def macroRepository: String      = "JdbcRepository"
   protected def repositoryCompositeKey       = "JdbcRepositoryCompositeKey"
   protected def macroRepositoryWithGenerated = "JdbcRepositoryWithGeneratedId"
+
+  override val aliasGenericDeclarationPlus: Boolean = true
 }

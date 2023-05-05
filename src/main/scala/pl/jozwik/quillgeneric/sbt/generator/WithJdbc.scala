@@ -6,8 +6,17 @@ trait WithJdbc {
   protected def contextTransactionEnd   = "}"
   protected def sqlIdiomImport          = "import io.getquill.context.sql.idiom.SqlIdiom"
 
-  protected def aliasGenericDeclaration =
-    s"${CodeGenerationTemplates.DialectTemplate} <: SqlIdiom, ${CodeGenerationTemplates.NamingTemplate} <: NamingStrategy"
+  protected def aliasGenericDeclaration = {
+    val plus = if (aliasGenericDeclarationPlus) {
+      "+"
+    } else {
+      ""
+    }
+    s"$plus${CodeGenerationTemplates.DialectTemplate} <: SqlIdiom, +${CodeGenerationTemplates.NamingTemplate} <: NamingStrategy"
+  }
+
+  protected def aliasGenericDeclarationPlus: Boolean
+
   protected def genericDeclaration    = s"${CodeGenerationTemplates.DialectTemplate}, ${CodeGenerationTemplates.NamingTemplate}"
   protected def createOrUpdate        = "createOrUpdate"
   protected def createOrUpdateAndRead = "createOrUpdateAndRead"

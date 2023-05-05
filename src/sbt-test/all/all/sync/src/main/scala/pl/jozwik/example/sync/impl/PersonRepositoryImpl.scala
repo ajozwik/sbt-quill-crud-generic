@@ -10,7 +10,7 @@ import pl.jozwik.quillgeneric.quillmacro.sync.JdbcRepositoryWithGeneratedId
 
 import scala.util.Try
 
-trait PersonRepositoryImpl[Dialect <: SqlIdiom, Naming <: NamingStrategy]
+trait PersonRepositoryImpl[+Dialect <: SqlIdiom, +Naming <: NamingStrategy]
   extends JdbcRepositoryWithGeneratedId[PersonId, Person, Dialect, Naming]
   with PersonRepository[Try] {
 
