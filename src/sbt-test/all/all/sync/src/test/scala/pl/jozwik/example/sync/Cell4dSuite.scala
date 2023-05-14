@@ -2,12 +2,13 @@ package pl.jozwik.example.sync
 
 import pl.jozwik.example.domain.model.{ Cell4d, Cell4dId }
 import pl.jozwik.example.repository.Cell4dRepositoryGen
-import pl.jozwik.quillgeneric.quillmacro.sync.SyncRepository
 import org.scalatest.TryValues._
-import scala.util.Success
+import pl.jozwik.quillgeneric.repository.Repository
 
-trait Cell4dSuite extends AbstractSyncSpec {
-  private val repository: SyncRepository[Cell4dId, Cell4d, Long] = new Cell4dRepositoryGen(ctx)
+import scala.util.{ Success, Try }
+
+class Cell4dSuite extends AbstractSyncSpec {
+  private val repository: Repository[Try, Cell4dId, Cell4d, Long] = new Cell4dRepositoryGen(ctx)
 
   "Cell4dSuite " should {
     "Call crud operations " in {

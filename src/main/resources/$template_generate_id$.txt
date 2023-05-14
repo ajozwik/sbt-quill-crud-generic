@@ -14,101 +14,64 @@ __CONNECTION_IMPORT__
 final class __REPOSITORY_NAME__[__ALIAS_GENERIC_DECLARATION__](
     protected val context: __CONTEXT_ALIAS__[__GENERIC_DECLARATION__],
     protected val tableName: String = "__TABLE_NAME__"
-)
+)__IMPLICIT_BASE_VARIABLE__
   extends __REPOSITORY_TRAIT_SIMPLE_NAME__ {
 
-  protected def dynamicSchema: context.DynamicEntityQuery[__BEAN__] = dSchema
+  __IMPORT_CONTEXT__
 
-  private implicit def dSchema: context.DynamicEntityQuery[__BEAN__] = {
-      __IMPORT_CONTEXT__
+  protected lazy val dynamicSchema: context.DynamicEntityQuery[__BEAN__] = {
       context.dynamicQuerySchema[__BEAN__](tableName__COLUMN_MAPPING__)
   }
 
-  override def all__EXECUTION_CONTEXT__: __MONAD__[Seq[__BEAN__]] =
-   __TRY_START__
-      context.all[__BEAN__]__IMPLICIT_PARAMETERS__
-   __TRY_END__
+  private def find(id: __ID__) = {
+      dynamicSchema.__FIND_BY_KEY__
+  }
 
-  override def create(entity: __BEAN__, generateId: Boolean = true)__EXECUTION_CONTEXT__: __MONAD__[__ID__] =
-   __TRY_START__
-    __CONTEXT_TRANSACTION_START__
-      if (generateId) {
-        context.createAndGenerateId[__ID__, __BEAN__](entity)__IMPLICIT_PARAMETERS__
-      } else {
-        context.create[__ID__, __BEAN__](entity)__IMPLICIT_PARAMETERS__
+  override def all: __MONAD__[Seq[__BEAN__]] =
+      for {
+        all <- __TRY_START__run(dynamicSchema)__TRY_END__
+      } yield {
+        all
       }
-    __CONTEXT_TRANSACTION_END__
-   __TRY_END__
 
-  override def createAndRead(entity: __BEAN__, generateId: Boolean = true)__EXECUTION_CONTEXT__: __MONAD__[__BEAN__] =
-   __TRY_START__
-    __CONTEXT_TRANSACTION_START__
-      if (generateId) {
-        context.createWithGenerateIdAndRead[__ID__, __BEAN__](entity)__IMPLICIT_TRANSACTION_PARAMETERS__
-      } else {
-        context.createAndRead[__ID__, __BEAN__](entity)__IMPLICIT_TRANSACTION_PARAMETERS__
-      }
-    __CONTEXT_TRANSACTION_END__
-   __TRY_END__
+ override def create(entity: __BEAN__, generateId: Boolean = true): __MONAD__[__ID__] =
+     __TRY_START__if (generateId) {
+       run(dynamicSchema.insertValue(entity).returningGenerated(_.id))
+     } else {
+       run(dynamicSchema.insertValue(entity).returning(_.id))
+     }__TRY_END__
 
-  override def createOrUpdate(entity: __BEAN__, generateId: Boolean = true)__EXECUTION_CONTEXT__: __MONAD__[__ID__] =
-   __TRY_START__
-    __CONTEXT_TRANSACTION_START__
-        if (generateId) {
-          context.createAndGenerateIdOrUpdate[__ID__, __BEAN__](entity)__IMPLICIT_TRANSACTION_PARAMETERS__
-        } else {
-           context.createOrUpdate[__ID__, __BEAN__](entity)__IMPLICIT_TRANSACTION_PARAMETERS__
-        }
-    __CONTEXT_TRANSACTION_END__
-   __TRY_END__
+   override def createOrUpdate(entity: __BEAN__, generateId: Boolean = true): __MONAD__[__ID__] = {
+     context.transaction { __IMPLICIT_CONTEXT__
+       for {
+         el <- __TRY_START__run(find(entity.id).updateValue(entity))__TRY_END__
+         id <- el match {
+           case 0 =>
+             create(entity, generateId)
+           case _ =>
+             pure(entity.id)
+           }
+       } yield {
+         id
+       }
+     }
+   }
 
-  override def createOrUpdateAndRead(entity: __BEAN__, generateId: Boolean = true)__EXECUTION_CONTEXT__: __MONAD__[__BEAN__] =
-  __TRY_START__
-    __CONTEXT_TRANSACTION_START__
-      if (generateId) {
-        context.createWithGenerateIdOrUpdateAndRead[__ID__, __BEAN__](entity)__IMPLICIT_TRANSACTION_PARAMETERS__
-      } else {
-         context.createOrUpdateAndRead[__ID__, __BEAN__](entity)__IMPLICIT_TRANSACTION_PARAMETERS__
-      }
-    __CONTEXT_TRANSACTION_END__
-   __TRY_END__
+  override def read(id: __BEAN__Id): __MONAD__[Option[__BEAN__]] =
+    for {
+      seq <- __TRY_START__run(find(id))__TRY_END__
+    } yield {
+      seq.headOption
+    }
 
-  override def read(id: __ID__)__EXECUTION_CONTEXT__: __MONAD__[Option[__BEAN__]] =
-   __TRY_START__
-      context.read[__ID__, __BEAN__](id)__IMPLICIT_PARAMETERS__
-   __TRY_END__
+  override def update(entity: __BEAN__): __MONAD__[__UP__] =
+    __TRY_START__run(find(entity.id).updateValue(entity))__TRY_END__
 
-  override def readUnsafe(id: __ID__)__EXECUTION_CONTEXT__: __MONAD__[__BEAN__] =
-   __TRY_START__
-        context.readUnsafe[__ID__, __BEAN__](id)__IMPLICIT_PARAMETERS__
-   __TRY_END__
+  override def delete(id: __ID__): __MONAD__[__UP__] =
+    __TRY_START__run(find(id).delete)__TRY_END__
 
-  override def update(entity: __BEAN__)__EXECUTION_CONTEXT__: __MONAD__[__UPDATE__] =
-   __TRY_START__
-    __CONTEXT_TRANSACTION_START__
-        context.update[__ID__, __BEAN__](entity)__IMPLICIT_PARAMETERS__
-    __CONTEXT_TRANSACTION_END__
-   __TRY_END__
+  override def deleteAll: __MONAD__[__UP__] =
+    __TRY_START__run(dynamicSchema.delete)__TRY_END__
 
-  override def updateAndRead(entity: __BEAN__)__EXECUTION_CONTEXT__: __MONAD__[__BEAN__] =
-   __TRY_START__
-    __CONTEXT_TRANSACTION_START__
-        context.updateAndRead[__ID__, __BEAN__](entity)__IMPLICIT_TRANSACTION_PARAMETERS__
-    __CONTEXT_TRANSACTION_END__
-   __TRY_END__
-
-  override def delete(id: __ID__)__EXECUTION_CONTEXT__: __MONAD__[__UPDATE__] =
-   __TRY_START__
-    __CONTEXT_TRANSACTION_START__
-        context.delete[__ID__, __BEAN__](id)__IMPLICIT_PARAMETERS__
-    __CONTEXT_TRANSACTION_END__
-   __TRY_END__
-
-  override def deleteAll__EXECUTION_CONTEXT__: __MONAD__[__UPDATE__] =
-   __TRY_START__
-    __CONTEXT_TRANSACTION_START__
-         context.deleteAll__IMPLICIT_PARAMETERS__
-    __CONTEXT_TRANSACTION_END__
-   __TRY_END__
 
 }

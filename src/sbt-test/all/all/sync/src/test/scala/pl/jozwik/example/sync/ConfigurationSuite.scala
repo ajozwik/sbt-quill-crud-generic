@@ -2,14 +2,14 @@ package pl.jozwik.example.sync
 
 import pl.jozwik.example.ConfigurationRepositoryGen
 import pl.jozwik.example.domain.model.{ Configuration, ConfigurationId }
-import pl.jozwik.quillgeneric.quillmacro.sync.SyncRepository
 
 import scala.util.{ Success, Try }
 import org.scalatest.TryValues._
+import pl.jozwik.quillgeneric.repository.Repository
 
 trait ConfigurationSuite extends AbstractSyncSpec {
 
-  private lazy val repository: SyncRepository[ConfigurationId, Configuration, Long] = new ConfigurationRepositoryGen(ctx)
+  private lazy val repository: Repository[Try, ConfigurationId, Configuration, Long] = new ConfigurationRepositoryGen(ctx)
 
   "Configuration " should {
     "Call all operation " in {

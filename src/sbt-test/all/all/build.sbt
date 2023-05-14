@@ -4,7 +4,7 @@ lazy val readQuillMacroVersionSbt = sys.props.get("plugin.version") match {
   case Some(pluginVersion) =>
     pluginVersion
   case _ =>
-    "1.1.2"
+    "1.2.0"
 }
 
 def init(): Unit = {
@@ -15,7 +15,7 @@ def init(): Unit = {
 val fake: Unit = init()
 
 lazy val common = projectWithName("common", file("common"))
-  .settings(libraryDependencies ++= Seq("com.github.ajozwik" %% "macro-quill" % readQuillMacroVersionSbt))
+  .settings(libraryDependencies ++= Seq("com.github.ajozwik" %% "repository" % readQuillMacroVersionSbt))
 
 ThisBuild / resolvers ++= Resolver.sonatypeOssRepos("releases")
 
@@ -25,9 +25,9 @@ val `scalaVersion_2.13` = "2.13.10"
 
 val `scalaVersion_2.12` = "2.12.17"
 
-name := "quill-macro-example"
+name := "quill-generic-example"
 
-ThisBuild / scalaVersion := `scalaVersion_2.12`
+ThisBuild / scalaVersion := `scalaVersion_2.13`
 
 ThisBuild / crossScalaVersions := Seq(`scalaVersion_2.13`, `scalaVersion_2.12`)
 
@@ -46,7 +46,8 @@ ThisBuild / scalacOptions ++= Seq(
   "-language:implicitConversions",
   "-language:higherKinds",
   "-language:existentials",
-  "-language:postfixOps"
+  "-language:postfixOps",
+  "-Xsource:3"
 )
 
 val scalaTestVersion = "3.2.14"
@@ -113,7 +114,7 @@ lazy val sync = projectWithSbtPlugin("sync", file("sync"))
       ),
       RepositoryDescription(
         s"$domainModelPackage.Cell4d",
-        BeanIdClass(s"$domainModelPackage.Cell4dId", KeyType.Composite),
+        BeanIdClass(s"$domainModelPackage.Cell4dId", Option(4)),
         s"$generateRepositoryPackage.Cell4dRepositoryGen",
         false,
         None,
@@ -145,7 +146,7 @@ lazy val sync = projectWithSbtPlugin("sync", file("sync"))
       ),
       RepositoryDescription(
         s"$domainModelPackage.Sale",
-        BeanIdClass(s"$domainModelPackage.SaleId", KeyType.Composite),
+        BeanIdClass(s"$domainModelPackage.SaleId", Option(2)),
         s"$generateRepositoryPackage.SaleRepositoryGen",
         false,
         None,
@@ -173,7 +174,7 @@ lazy val monix = projectWithSbtPlugin("monix", file("monix"))
       ),
       RepositoryDescription(
         s"$domainModelPackage.Cell4d",
-        BeanIdClass(s"$domainModelPackage.Cell4dId", KeyType.Composite),
+        BeanIdClass(s"$domainModelPackage.Cell4dId", Option(4)),
         s"$generateMonixRepositoryPackage.Cell4dRepositoryGen",
         false,
         None,
@@ -206,7 +207,7 @@ lazy val monix = projectWithSbtPlugin("monix", file("monix"))
       ),
       RepositoryDescription(
         s"$domainModelPackage.Sale",
-        BeanIdClass(s"$domainModelPackage.SaleId", KeyType.Composite),
+        BeanIdClass(s"$domainModelPackage.SaleId", Option(2)),
         s"$generateMonixRepositoryPackage.SaleRepositoryGen",
         false,
         None,

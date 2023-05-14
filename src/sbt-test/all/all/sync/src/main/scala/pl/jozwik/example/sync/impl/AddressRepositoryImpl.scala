@@ -1,17 +1,16 @@
 package pl.jozwik.example.sync.impl
 
 import java.time.LocalDateTime
-
 import io.getquill.NamingStrategy
 import io.getquill.context.sql.idiom.SqlIdiom
-import pl.jozwik.example.domain.model.{ Address, AddressId }
+import pl.jozwik.example.domain.model.{Address, AddressId}
 import pl.jozwik.example.domain.repository.AddressRepository
-import pl.jozwik.quillgeneric.quillmacro.sync.JdbcRepositoryWithGeneratedId
+import pl.jozwik.quillgeneric.monad.TryJdbcRepositoryWithGeneratedId
 
 import scala.util.Try
 
-trait AddressRepositoryImpl[+Dialect <: SqlIdiom, +Naming <: NamingStrategy]
-  extends JdbcRepositoryWithGeneratedId[AddressId, Address, Dialect, Naming]
+trait AddressRepositoryImpl[Dialect <: SqlIdiom, Naming <: NamingStrategy]
+  extends TryJdbcRepositoryWithGeneratedId[AddressId, Address, Dialect, Naming]
   with AddressRepository[Try] {
 
   def setCountryIfCity(city: String, country: String): Try[Long] = Try {

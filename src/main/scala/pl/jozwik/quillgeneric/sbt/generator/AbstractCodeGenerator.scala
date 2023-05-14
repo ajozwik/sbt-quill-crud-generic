@@ -2,7 +2,7 @@ package pl.jozwik.quillgeneric.sbt.generator
 
 import java.io.File
 import java.nio.file.Paths
-import pl.jozwik.quillgeneric.sbt.{ KeyType, RepositoryDescription }
+import pl.jozwik.quillgeneric.sbt.RepositoryDescription
 import sbt._
 
 import scala.io.{ Codec, Source }
@@ -13,24 +13,20 @@ abstract class AbstractCodeGenerator extends Generator with CodeGenerationTempla
   private val Naming                       = "Naming"
   protected def template                   = "$template$.txt"
   protected def templateWithGeneratedId    = "$template_generate_id$.txt"
-  protected def importMacroTraitRepository = s"import $genericPackage.$macroRepository.$ContextAlias"
+  protected def importMacroTraitRepository = s"import $genericPackage.$domainRepository.$ContextAlias"
 
-  private def macroRepositoryWithGeneratedWithGeneric = s"$macroRepositoryWithGenerated[$BeanIdTemplate, $BeanTemplate, $DialectTemplate, $NamingTemplate]"
+  private def repositoryWithGeneratedWithGeneric =
+    s"$domainRepositoryWithGenerated[$BeanIdTemplate, $BeanTemplate, $DialectTemplate, $NamingTemplate]"
 
-  private def macroRepositoryWithGeneratedImport = s"import $genericPackage.$macroRepositoryWithGenerated"
+  private def repositoryWithGeneratedImport = s"import $genericPackage.$domainRepositoryWithGenerated"
 
   private val headerFile = "$header$.txt"
 
   private val header: String = readTemplate(headerFile)
 
-  private def macroRepositoryWithGeneric(key: KeyType.Value) = {
-    val repo = key match {
-      case KeyType.Composite =>
-        repositoryCompositeKey
-      case _ =>
-        macroRepository
-    }
-    (s"$repo[$BeanIdTemplate, $BeanTemplate, $genericDeclaration]", s"import $genericPackage.$repo")
+  private def repositoryWithGeneric = {
+
+    (s"$domainRepository[$BeanIdTemplate, $BeanTemplate, $genericDeclaration]()", s"import $genericPackage.$domainRepository")
   }
 
   private def chooseTemplate(generateId: Boolean): String =
@@ -50,10 +46,11 @@ abstract class AbstractCodeGenerator extends Generator with CodeGenerationTempla
     val pName         = toPackageName(packageName)
     val file          = dir / s"$repositorySimpleClassName.scala"
     val columnMapping = toColumnMapping(mapping)
-    val importCtx     = toImportContext(columnMapping)
+    val importCtx     = toImportContext
     val (repositoryTraitSimpleClassName, repositoryImport, defaultRepositoryImport) =
-      toRepositoryTraitImport(repositoryTrait, packageName, repositoryPackageName, repositoryTraitSimpleClassNameOpt, generateId, beanIdClass.keyType)
+      toRepositoryTraitImport(repositoryTrait, packageName, repositoryPackageName, repositoryTraitSimpleClassNameOpt, generateId)
     val genericContent = toGenericContent(content)
+    val findByKey      = toFindByKey(description.beanIdClass.keyLength)
     val result = genericContent
       .replace(RepositoryTraitSimpleClassName, repositoryTraitSimpleClassName)
       .replace(RepositoryTraitImport, repositoryImport)
@@ -76,6 +73,7 @@ abstract class AbstractCodeGenerator extends Generator with CodeGenerationTempla
       .replace(ContextTransactionStart, contextTransactionStart)
       .replace(ContextTransactionEnd, contextTransactionEnd)
       .replace(MonadImport, monadImport)
+      .replace(FindByKey, findByKey)
       .replace(TryStart, tryStart)
       .replace(TryEnd, tryEnd)
       .replace(SqlIdiomImport, sqlIdiomImport)
@@ -83,6 +81,7 @@ abstract class AbstractCodeGenerator extends Generator with CodeGenerationTempla
       .replace(CreateOrUpdateAndRead, createOrUpdateAndRead)
       .replace(ExecutionContext, executionContext)
       .replace(ExecutionContextImport, executionContextImport)
+      .replace(ImplicitContext, implicitContext)
       .replace(ImplicitParameters, implicitParameters)
       .replace(ImplicitTransactionParameters, implicitTransactionParameters)
       .replace(ConnectionImport, connectionImport)
@@ -91,6 +90,8 @@ abstract class AbstractCodeGenerator extends Generator with CodeGenerationTempla
 
   private def toGenericContent(content: String) =
     content
+      .replace(ImplicitBaseVariable, implicitBaseVariable)
+      .replace(CreateOrUpdate, createOrUpdate)
       .replace(AliasGenericDeclaration, aliasGenericDeclaration)
       .replace(GenericDeclaration, genericDeclaration)
       .replace(RepositoryMacroTraitImport, importMacroTraitRepository)
@@ -108,14 +109,13 @@ abstract class AbstractCodeGenerator extends Generator with CodeGenerationTempla
       packageName: Seq[String],
       repositoryPackageName: Seq[String],
       repositoryTraitSimpleClassNameOpt: String,
-      generateId: Boolean,
-      keyType: KeyType.Value
+      generateId: Boolean
   ) =
     if (repositoryTraitSimpleClassNameOpt.isEmpty) {
       val (repository, repositoryImport) = if (generateId) {
-        (macroRepositoryWithGeneratedWithGeneric, macroRepositoryWithGeneratedImport)
+        (repositoryWithGeneratedWithGeneric, repositoryWithGeneratedImport)
       } else {
-        macroRepositoryWithGeneric(keyType)
+        repositoryWithGeneric
       }
       (s"$repository", "", repositoryImport)
 
@@ -149,14 +149,8 @@ abstract class AbstractCodeGenerator extends Generator with CodeGenerationTempla
     columnMapping
   }
 
-  private def toImportContext(toColumnMapping: String) = {
-    val importCtx = if (toColumnMapping.isEmpty) {
-      ""
-    } else {
-      "import context._"
-    }
-    importCtx
-  }
+  private val toImportContext =
+    "import context.*"
 
   private def readTemplate(templateResource: String): String = {
     val input = Option(getClass.getClassLoader.getResourceAsStream(templateResource))
@@ -170,4 +164,22 @@ abstract class AbstractCodeGenerator extends Generator with CodeGenerationTempla
 
   private def mkdirs(dir: File): Unit = if (dir.isDirectory) { () }
   else { if (!dir.mkdirs()) { sys.error(s"${dir.getAbsolutePath} can not be created") } }
+
+  private def toFindByKey(keyLength: Option[Byte]) = {
+    keyLength match {
+      case Some(l) if l > 1 =>
+        createFindByKey(l)
+      case _ =>
+        "filter(_.id == lift(id))"
+    }
+  }
+
+  private def createFindByKey(l: Byte) =
+    (1 to l)
+      .map { i =>
+        findBy(i)
+      }
+      .mkString(".")
+
+  private def findBy(key: Int) = s"filter(_.id.fk$key == lift(id.fk$key))"
 }

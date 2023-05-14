@@ -19,7 +19,10 @@ trait CodeGenerationTemplates {
   val DialectTemplate                = "__DIALECT__"
   val ExecutionContext               = "__EXECUTION_CONTEXT__"
   val ExecutionContextImport         = "__EXECUTION_CONTEXT_IMPORT__"
+  val FindByKey                      = "__FIND_BY_KEY__"
   val GenericDeclaration             = "__GENERIC_DECLARATION__"
+  val ImplicitBaseVariable           = "__IMPLICIT_BASE_VARIABLE__"
+  val ImplicitContext                = "__IMPLICIT_CONTEXT__"
   val ImplicitParameters             = "__IMPLICIT_PARAMETERS__"
   val ImplicitTransactionParameters  = "__IMPLICIT_TRANSACTION_PARAMETERS__"
   val ImportContext                  = "__IMPORT_CONTEXT__"
@@ -36,5 +39,5 @@ trait CodeGenerationTemplates {
   val TableNamePattern               = "__TABLE_NAME__"
   val TryEnd                         = "__TRY_END__"
   val TryStart                       = "__TRY_START__"
-  val Update                         = "__UPDATE__"
+  val Update                         = "__UP__"
 }

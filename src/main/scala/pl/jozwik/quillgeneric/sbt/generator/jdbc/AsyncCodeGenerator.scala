@@ -5,11 +5,11 @@ import pl.jozwik.quillgeneric.sbt.generator.{ AbstractCodeGenerator, CodeGenerat
 object AsyncCodeGenerator extends AbstractCodeGenerator with WithJdbc with WithFuture {
   private val asyncTransaction               = "f"
   private val ec                             = "ec"
-  protected def genericPackage               = "pl.jozwik.quillgeneric.quillmacro.async"
+  protected def genericPackage               = "pl.jozwik.quillgeneric.async"
   protected def aliasName                    = "AsyncJdbcContextDateQuotes"
-  protected def macroRepository: String      = "AsyncJdbcRepository"
+  protected def domainRepository: String      = "AsyncJdbcRepository"
   protected def repositoryCompositeKey       = "AsyncJdbcRepositoryCompositeKey"
-  protected def macroRepositoryWithGenerated = "AsyncJdbcRepositoryWithGeneratedId"
+  protected def domainRepositoryWithGenerated = "AsyncJdbcRepositoryWithGeneratedId"
 
   override protected def aliasGenericDeclaration =
     s"${super.aliasGenericDeclaration}, ${CodeGenerationTemplates.ConnectionTemplate} <: ConcreteConnection"
@@ -29,5 +29,4 @@ object AsyncCodeGenerator extends AbstractCodeGenerator with WithJdbc with WithF
   override protected def executionContextImport: String = "import concurrent.ExecutionContext"
   override protected def connectionImport: String       = "import com.github.jasync.sql.db.ConcreteConnection"
 
-  override val aliasGenericDeclarationPlus: Boolean = false
 }

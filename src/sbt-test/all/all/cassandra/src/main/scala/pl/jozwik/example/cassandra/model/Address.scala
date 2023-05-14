@@ -2,7 +2,7 @@ package pl.jozwik.example.cassandra.model
 
 import java.util.{ Date, UUID }
 
-import pl.jozwik.quillgeneric.quillmacro.WithId
+import pl.jozwik.quillgeneric.repository.WithId
 
 object AddressId {
   val random: AddressId = AddressId(UUID.randomUUID())

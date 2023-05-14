@@ -1,8 +1,8 @@
 package pl.jozwik.quillgeneric.sbt.model
 
-import java.time.LocalDate
+import pl.jozwik.quillgeneric.repository.WithId
 
-import pl.jozwik.quillgeneric.quillmacro.WithId
+import java.time.LocalDate
 
 final case class PersonId(value: Int) extends AnyVal
 

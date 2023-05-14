@@ -3,11 +3,10 @@ package pl.jozwik.quillgeneric.sbt.generator.jdbc
 import pl.jozwik.quillgeneric.sbt.generator.{ AbstractCodeGenerator, WithJdbc, WithTry }
 
 object SyncCodeGenerator extends AbstractCodeGenerator with WithJdbc with WithTry {
-  protected def genericPackage               = "pl.jozwik.quillgeneric.quillmacro.sync"
+  protected def genericPackage               = "pl.jozwik.quillgeneric.monad"
   protected def aliasName                    = "JdbcContextDateQuotes"
-  protected def macroRepository: String      = "JdbcRepository"
-  protected def repositoryCompositeKey       = "JdbcRepositoryCompositeKey"
-  protected def macroRepositoryWithGenerated = "JdbcRepositoryWithGeneratedId"
+  protected def domainRepository: String      = "TryJdbcRepository"
+  protected def repositoryCompositeKey       = "TryJdbcRepositoryCompositeKey"
+  protected def domainRepositoryWithGenerated = "TryJdbcRepositoryWithGeneratedId"
 
-  override val aliasGenericDeclarationPlus: Boolean = true
 }

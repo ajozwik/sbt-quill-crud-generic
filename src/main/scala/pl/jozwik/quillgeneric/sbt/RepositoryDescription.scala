@@ -1,11 +1,6 @@
 package pl.jozwik.quillgeneric.sbt
 
-object KeyType extends Enumeration {
-  type KeyType = Value
-  val Single, Composite: KeyType = Value
-}
-
-final case class BeanIdClass(name: String, keyType: KeyType.Value = KeyType.Single)
+final case class BeanIdClass(name: String, keyLength: Option[Byte] = None)
 
 final case class RepositoryDescription(
     beanClass: String,

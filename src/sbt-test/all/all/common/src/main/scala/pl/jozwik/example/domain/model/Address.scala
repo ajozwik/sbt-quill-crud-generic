@@ -2,7 +2,7 @@ package pl.jozwik.example.domain.model
 
 import java.time.LocalDateTime
 
-import pl.jozwik.quillgeneric.quillmacro.WithId
+import pl.jozwik.quillgeneric.repository.WithId
 
 object AddressId {
   val empty: AddressId = AddressId(0)

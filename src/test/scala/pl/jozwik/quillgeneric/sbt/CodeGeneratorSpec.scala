@@ -63,7 +63,7 @@ abstract class AbstractCodeGeneratorSpec(generator: Generator, generic: String =
       }
 
       "Generate code for Sale" in {
-        val description                   = RepositoryDescription("Sale", BeanIdClass("SaleId", KeyType.Composite), "SaleRepository")
+        val description                   = RepositoryDescription("Sale", BeanIdClass("SaleId", Option(2)), "SaleRepository")
         val (file: File, content: String) = generateAndLog(description)
         file.exists() shouldBe false
         content should include(description.beanSimpleClassName)

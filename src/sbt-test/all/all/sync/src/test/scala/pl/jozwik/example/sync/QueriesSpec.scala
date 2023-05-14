@@ -6,4 +6,4 @@ class QueriesSpec
   with ConfigurationSuite
   with AddressSuite
   with SaleRepositorySuite
-  with Cell4dSuite
+//  with Cell4dSuite

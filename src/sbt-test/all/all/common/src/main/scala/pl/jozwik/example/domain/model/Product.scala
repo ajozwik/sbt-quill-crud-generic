@@ -1,6 +1,6 @@
 package pl.jozwik.example.domain.model
 
-import pl.jozwik.quillgeneric.quillmacro.WithId
+import pl.jozwik.quillgeneric.repository.WithId
 
 object ProductId {
   val empty = ProductId(0)

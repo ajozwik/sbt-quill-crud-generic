@@ -1,4 +1,13 @@
 package pl.jozwik.quillgeneric.sbt.generator
+import pl.jozwik.quillgeneric.sbt.generator.CodeGenerationTemplates.*
+import pl.jozwik.quillgeneric.sbt.generator.jdbc.SyncCodeGenerator.{
+  BeanIdTemplate,
+  BeanTemplate,
+  ContextTransactionEnd,
+  ContextTransactionStart,
+  TryEnd,
+  TryStart
+}
 
 trait WithJdbc {
   protected def update                  = "Long"
@@ -6,18 +15,25 @@ trait WithJdbc {
   protected def contextTransactionEnd   = "}"
   protected def sqlIdiomImport          = "import io.getquill.context.sql.idiom.SqlIdiom"
 
-  protected def aliasGenericDeclaration = {
-    val plus = if (aliasGenericDeclarationPlus) {
-      "+"
-    } else {
-      ""
-    }
-    s"$plus${CodeGenerationTemplates.DialectTemplate} <: SqlIdiom, +${CodeGenerationTemplates.NamingTemplate} <: NamingStrategy"
-  }
+  protected def aliasGenericDeclaration =
+    s"${CodeGenerationTemplates.DialectTemplate} <: SqlIdiom, ${CodeGenerationTemplates.NamingTemplate} <: NamingStrategy"
 
-  protected def aliasGenericDeclarationPlus: Boolean
+  protected def genericDeclaration = s"${CodeGenerationTemplates.DialectTemplate}, ${CodeGenerationTemplates.NamingTemplate}"
 
-  protected def genericDeclaration    = s"${CodeGenerationTemplates.DialectTemplate}, ${CodeGenerationTemplates.NamingTemplate}"
-  protected def createOrUpdate        = "createOrUpdate"
+  protected def createOrUpdate: String =
+    s"""  override def createOrUpdate(entity: $BeanTemplate): $Monad[$BeanIdTemplate] =
+       |    $ContextTransactionStart $ImplicitContext
+       |      for {
+       |        el <- ${TryStart}run(find(entity.id).updateValue(entity))$TryEnd
+       |        id <- el match {
+       |          case 0 =>
+       |            create(entity)
+       |          case _ =>
+       |            pure(entity.id)
+       |          }
+       |      } yield {
+       |        id
+       |      }
+       |   $ContextTransactionEnd""".stripMargin
   protected def createOrUpdateAndRead = "createOrUpdateAndRead"
 }

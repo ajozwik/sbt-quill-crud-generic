@@ -1,15 +1,14 @@
 package pl.jozwik.example.monix.impl
 
 import java.time.LocalDateTime
-
 import io.getquill.NamingStrategy
 import io.getquill.context.sql.idiom.SqlIdiom
 import monix.eval.Task
 import pl.jozwik.example.domain.model.{ Address, AddressId }
 import pl.jozwik.example.domain.repository.AddressRepository
-import pl.jozwik.quillgeneric.quillmacro.monix.jdbc.MonixJdbcRepositoryWithGeneratedId
+import pl.jozwik.quillgeneric.monix.jdbc.MonixJdbcRepositoryWithGeneratedId
 
-trait AddressRepositoryImpl[+Dialect <: SqlIdiom, +Naming <: NamingStrategy]
+trait AddressRepositoryImpl[Dialect <: SqlIdiom, Naming <: NamingStrategy]
   extends MonixJdbcRepositoryWithGeneratedId[AddressId, Address, Dialect, Naming]
   with AddressRepository[Task] {
 
