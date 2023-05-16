@@ -6,6 +6,5 @@ object CassandraSyncCodeGenerator extends AbstractCodeGenerator with WithCassand
   protected def genericPackage               = "pl.jozwik.quillgeneric.cassandra.sync"
   protected def aliasName                    = "CassandraContextDateQuotes"
   protected def domainRepository: String      = "CassandraRepository"
-  protected def repositoryCompositeKey       = "CassandraRepositoryCompositeKey"
   protected def domainRepositoryWithGenerated = domainRepository
 }

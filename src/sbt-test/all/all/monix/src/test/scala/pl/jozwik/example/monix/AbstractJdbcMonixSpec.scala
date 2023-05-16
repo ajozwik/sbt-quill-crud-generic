@@ -4,7 +4,6 @@ import io.getquill.H2MonixJdbcContext
 import monix.execution.Scheduler
 import org.scalatest.BeforeAndAfterAll
 import pl.jozwik.example.AbstractSpec
-import pl.jozwik.example.monix.repository.AddressRepositoryGen
 import pl.jozwik.quillgeneric.repository.DateQuotes
 
 trait AbstractJdbcMonixSpec extends AbstractSpec with BeforeAndAfterAll {

@@ -1,10 +1,11 @@
-package pl.jozwik.example.monix
+package pl.jozwik.example.zio
 
 import monix.eval.Task
 import pl.jozwik.example.domain.model.{ Configuration, ConfigurationId }
+import pl.jozwik.example.monix.repository.ConfigurationRepositoryGen
 import pl.jozwik.quillgeneric.repository.Repository
 
-trait ConfigurationSuite extends AbstractJdbcMonixSpec {
+trait ConfigurationSuite extends AbstractZioMonixSpec {
 
   private lazy val repository: Repository[Task, ConfigurationId, Configuration, Long] = new ConfigurationRepositoryGen(ctx)
 

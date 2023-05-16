@@ -1,8 +1,9 @@
-package pl.jozwik.example.monix
+package pl.jozwik.example.zio
 
 import pl.jozwik.example.domain.model.{ Person, PersonId }
+import pl.jozwik.example.monix.repository.PersonRepositoryGen
 
-trait PersonRepositorySuite extends AbstractJdbcMonixSpec {
+trait PersonRepositorySuite extends AbstractZioMonixSpec {
   "PersonRepository " should {
       "Call all operations on Person with auto generated id and custom field" in {
         val repository = new PersonRepositoryGen(ctx, "Person3")

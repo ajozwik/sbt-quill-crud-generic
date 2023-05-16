@@ -11,8 +11,8 @@ abstract class AbstractCodeGenerator extends Generator with CodeGenerationTempla
   private val Connection                   = "Connection"
   private val Dialect                      = "Dialect"
   private val Naming                       = "Naming"
-  protected def template                   = "$template$.txt"
-  protected def templateWithGeneratedId    = "$template_generate_id$.txt"
+  private val template                     = "$template$.txt"
+  private val templateWithGeneratedId      = "$template_generate_id$.txt"
   protected def importMacroTraitRepository = s"import $genericPackage.$domainRepository.$ContextAlias"
 
   private def repositoryWithGeneratedWithGeneric =
@@ -24,10 +24,8 @@ abstract class AbstractCodeGenerator extends Generator with CodeGenerationTempla
 
   private val header: String = readTemplate(headerFile)
 
-  private def repositoryWithGeneric = {
-
+  private def repositoryWithGeneric =
     (s"$domainRepository[$BeanIdTemplate, $BeanTemplate, $genericDeclaration]()", s"import $genericPackage.$domainRepository")
-  }
 
   private def chooseTemplate(generateId: Boolean): String =
     if (generateId) {
@@ -40,7 +38,7 @@ abstract class AbstractCodeGenerator extends Generator with CodeGenerationTempla
     import description._
     val templateFile = chooseTemplate(generateId)
     val content      = readTemplate(templateFile)
-    val path         = Paths.get(rootPath.getAbsolutePath, packageName: _*)
+    val path         = Paths.get(rootPath.getAbsolutePath, packageName*)
     val dir          = path.toFile
     mkdirs(dir)
     val pName         = toPackageName(packageName)

@@ -1,16 +1,17 @@
 package pl.jozwik.quillgeneric.sbt
 
 import java.io.File
-
 import pl.jozwik.quillgeneric.sbt.generator.Generator
-import pl.jozwik.quillgeneric.sbt.generator.cassandra.{ CassandraAsyncCodeGenerator, CassandraMonixCodeGenerator, CassandraSyncCodeGenerator }
-import pl.jozwik.quillgeneric.sbt.generator.jdbc.{ AsyncCodeGenerator, MonixJdbcCodeGenerator, SyncCodeGenerator }
+import pl.jozwik.quillgeneric.sbt.generator.cassandra.{CassandraAsyncCodeGenerator, CassandraMonixCodeGenerator, CassandraSyncCodeGenerator}
+import pl.jozwik.quillgeneric.sbt.generator.jdbc.{AsyncCodeGenerator, MonixJdbcCodeGenerator, SyncCodeGenerator, ZioJdbcCodeGenerator}
 
 class SyncGeneratorCodeSpec extends AbstractCodeGeneratorSpec(SyncCodeGenerator)
 
 class AsyncGeneratorCodeSpec extends AbstractCodeGeneratorSpec(AsyncCodeGenerator)
 
 class MonixGeneratorCodeSpec extends AbstractCodeGeneratorSpec(MonixJdbcCodeGenerator)
+
+class ZioGeneratorCodeSpec extends AbstractCodeGeneratorSpec(ZioJdbcCodeGenerator)
 
 class CassandraMonixGeneratorCodeSpec extends AbstractCodeGeneratorSpec(CassandraMonixCodeGenerator, "[Naming]", false)
 

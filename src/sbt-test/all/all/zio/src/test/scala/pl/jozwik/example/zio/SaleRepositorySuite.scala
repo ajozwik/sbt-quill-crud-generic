@@ -1,8 +1,9 @@
-package pl.jozwik.example.monix
+package pl.jozwik.example.zio
 
 import pl.jozwik.example.domain.model._
+import pl.jozwik.example.monix.repository.{ PersonRepositoryGen, ProductRepositoryGen, SaleRepositoryGen }
 
-trait SaleRepositorySuite extends AbstractJdbcMonixSpec {
+trait SaleRepositorySuite extends AbstractZioMonixSpec {
 
   private val repository        = new SaleRepositoryGen(ctx, "Sale")
   private val personRepository  = new PersonRepositoryGen(ctx, "Person3")

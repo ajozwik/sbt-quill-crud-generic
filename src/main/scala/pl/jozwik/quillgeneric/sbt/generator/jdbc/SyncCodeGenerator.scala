@@ -6,7 +6,6 @@ object SyncCodeGenerator extends AbstractCodeGenerator with WithJdbc with WithTr
   protected def genericPackage               = "pl.jozwik.quillgeneric.monad"
   protected def aliasName                    = "JdbcContextDateQuotes"
   protected def domainRepository: String      = "TryJdbcRepository"
-  protected def repositoryCompositeKey       = "TryJdbcRepositoryCompositeKey"
   protected def domainRepositoryWithGenerated = "TryJdbcRepositoryWithGeneratedId"
 
 }

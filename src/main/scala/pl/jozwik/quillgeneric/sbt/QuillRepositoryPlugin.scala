@@ -1,11 +1,11 @@
 package pl.jozwik.quillgeneric.sbt
 
-import sbt.Keys._
-import sbt._
+import sbt.Keys.*
+import sbt.*
 import sbt.plugins.JvmPlugin
-import DependencyHelper._
+import DependencyHelper.*
 import pl.jozwik.quillgeneric.sbt.generator.cassandra.{ CassandraAsyncCodeGenerator, CassandraMonixCodeGenerator, CassandraSyncCodeGenerator }
-import pl.jozwik.quillgeneric.sbt.generator.jdbc.{ AsyncCodeGenerator, MonixJdbcCodeGenerator, SyncCodeGenerator }
+import pl.jozwik.quillgeneric.sbt.generator.jdbc.{ AsyncCodeGenerator, MonixJdbcCodeGenerator, SyncCodeGenerator, ZioJdbcCodeGenerator }
 import pl.jozwik.quillgeneric.sbt.generator.Generator
 
 object QuillRepositoryPlugin extends AutoPlugin {
@@ -33,6 +33,7 @@ object QuillRepositoryPlugin extends AutoPlugin {
         generate(generateDescription.value, rootPath, SyncCodeGenerator) ++
           generate(generateAsyncDescription.value, rootPath, AsyncCodeGenerator) ++
           generate(generateMonixRepositories.value, rootPath, MonixJdbcCodeGenerator) ++
+          generate(generateZioRepositories.value, rootPath, ZioJdbcCodeGenerator) ++
           generate(generateCassandraSyncRepositories.value, rootPath, CassandraSyncCodeGenerator) ++
           generate(generateCassandraAsyncRepositories.value, rootPath, CassandraAsyncCodeGenerator) ++
           generate(generateCassandraMonixRepositories.value, rootPath, CassandraMonixCodeGenerator)
@@ -43,6 +44,7 @@ object QuillRepositoryPlugin extends AutoPlugin {
           addImport(generateDescription.value.nonEmpty, "repository-jdbc-monad", quillMacroVersion.value) ++
           addImport(generateAsyncDescription.value.nonEmpty, "quill-async-jdbc", quillMacroVersion.value) ++
           addImport(generateMonixRepositories.value.nonEmpty, "quill-jdbc-monix", quillMacroVersion.value) ++
+          addImport(generateZioRepositories.value.nonEmpty, "quill-jdbc-zio", quillMacroVersion.value) ++
           addImport(
             generateCassandraSyncRepositories.value.nonEmpty || generateCassandraAsyncRepositories.value.nonEmpty,
             "repository-cassandra",

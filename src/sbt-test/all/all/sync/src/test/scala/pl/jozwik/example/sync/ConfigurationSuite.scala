@@ -1,6 +1,6 @@
 package pl.jozwik.example.sync
 
-import pl.jozwik.example.ConfigurationRepositoryGen
+import pl.jozwik.example.repository.ConfigurationRepositoryGen
 import pl.jozwik.example.domain.model.{ Configuration, ConfigurationId }
 
 import scala.util.{ Success, Try }

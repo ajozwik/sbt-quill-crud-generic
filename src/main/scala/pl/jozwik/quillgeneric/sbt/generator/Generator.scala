@@ -10,7 +10,6 @@ trait Generator {
   protected def monadImport: String
   protected def update: String
   protected def domainRepository: String
-  protected def repositoryCompositeKey: String
   protected def domainRepositoryWithGenerated: String
   protected def genericPackage: String
   protected def contextTransactionStart: String

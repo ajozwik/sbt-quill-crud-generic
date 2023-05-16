@@ -6,7 +6,6 @@ object MonixJdbcCodeGenerator extends AbstractCodeGenerator with WithJdbc with W
   protected def genericPackage               = "pl.jozwik.quillgeneric.monix.jdbc"
   protected def aliasName                    = "MonixJdbcContextDateQuotes"
   protected def domainRepository: String      = "MonixJdbcRepository"
-  protected def repositoryCompositeKey       = "MonixJdbcRepositoryCompositeKey"
   protected def domainRepositoryWithGenerated = "MonixJdbcRepositoryWithGeneratedId"
 
 }
