@@ -13,7 +13,7 @@ trait PersonRepositorySuite extends AbstractSyncSpec {
       "Call all operations on Person" in {
 
         val address     = Address(addressId, "Poland", "Rakow", Option("Listopadowa"))
-        val person      = Person(PersonId(1), "firstName", "lastName", today.minusYears(2), Option(addressId))
+        val person      = Person(PersonId(11), "firstName", "lastName", today.minusYears(2), Option(addressId))
         val notExisting = Person(PersonId(2), "firstName", "lastName", today, Option(addressId))
         ctx.transaction {
           repository.all shouldBe Success(Seq())

@@ -4,7 +4,7 @@ lazy val readQuillMacroVersionSbt = sys.props.get("plugin.version") match {
   case Some(pluginVersion) =>
     pluginVersion
   case _ =>
-    "1.2.1-SNAPSHOT"
+    "1.2.1"
 }
 
 def init(): Unit = {
@@ -129,6 +129,15 @@ def repositories(generatePackage: String, repositoryImplPackage: String) = {
     RepositoryDescription(
       s"$domainModelPackage.Person",
       BeanIdClass(s"$domainModelPackage.PersonId"),
+      s"$generatePackage.Person3RepositoryGen",
+      true,
+      Option(s"$repositoryImplPackage.PersonRepositoryImpl[Dialect, Naming]"),
+      None,
+      Map("birthDate" -> "dob")
+    ),
+    RepositoryDescription(
+      s"$domainModelPackage.Person",
+      BeanIdClass(s"$domainModelPackage.PersonId"),
       s"$generatePackage.PersonRepositoryGen",
       true,
       Option(s"$repositoryImplPackage.PersonRepositoryImpl[Dialect, Naming]"),
@@ -170,7 +179,6 @@ lazy val monix = projectWithSbtPlugin("monix", file("monix"))
     generateMonixRepositories ++= repositories(monixGenerateRepositoryPackage, monixImplPackage)
   )
 
-
 val zioPackage                   = s"$basePackage.zio"
 val zioImplPackage               = s"$zioPackage.impl"
 val zioGenerateRepositoryPackage = s"$zioPackage.repository"
@@ -179,6 +187,7 @@ lazy val zio = projectWithSbtPlugin("zio", file("zio"))
   .settings(
     generateZioRepositories ++= repositories(zioGenerateRepositoryPackage, zioImplPackage)
   )
+  .dependsOn(sync % "test->test")
 
 val cassandraPackage                        = s"$basePackage.cassandra"
 val cassandraModelPackage                   = s"$cassandraPackage.model"

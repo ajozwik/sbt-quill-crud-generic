@@ -29,7 +29,7 @@ ThisBuild / javacOptions ++= Seq("-Xlint:deprecation", "-Xdiags:verbose", "-sour
 
 ThisBuild / scalaVersion := "2.12.17"
 
-val quillMacroVersion = "1.2.1-SNAPSHOT"
+val quillMacroVersion = "1.2.1"
 
 val `com.typesafe.scala-logging_scala-logging` = "com.typesafe.scala-logging" %% "scala-logging" % "3.9.5"
 

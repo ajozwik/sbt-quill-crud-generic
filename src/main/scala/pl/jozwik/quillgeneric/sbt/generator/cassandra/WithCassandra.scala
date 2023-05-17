@@ -1,9 +1,10 @@
 package pl.jozwik.quillgeneric.sbt.generator.cassandra
 
 import pl.jozwik.quillgeneric.sbt.generator.CodeGenerationTemplates.*
-import pl.jozwik.quillgeneric.sbt.generator.jdbc.SyncCodeGenerator.{BeanIdTemplate, BeanTemplate}
+import pl.jozwik.quillgeneric.sbt.generator.WithNoTask
+import pl.jozwik.quillgeneric.sbt.generator.jdbc.SyncCodeGenerator.{ BeanIdTemplate, BeanTemplate }
 
-trait WithCassandra {
+trait WithCassandra extends WithNoTask {
   protected def update                     = "Unit"
   protected def contextTransactionStart    = ""
   protected def contextTransactionEnd      = ""
@@ -25,5 +26,5 @@ trait WithCassandra {
        |        entity.id
        |      }
        |""".stripMargin
-  protected def createOrUpdateAndRead      = "createAndRead"
+  protected def createOrUpdateAndRead = "createAndRead"
 }

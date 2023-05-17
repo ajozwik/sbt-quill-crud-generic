@@ -1,11 +1,11 @@
 package pl.jozwik.example.zio
 
-import monix.eval.Task
+import zio.Task
 import pl.jozwik.example.domain.model.{ Configuration, ConfigurationId }
-import pl.jozwik.example.monix.repository.ConfigurationRepositoryGen
+import pl.jozwik.example.zio.repository.ConfigurationRepositoryGen
 import pl.jozwik.quillgeneric.repository.Repository
-
-trait ConfigurationSuite extends AbstractZioMonixSpec {
+import zio.interop.catz.*
+trait ConfigurationSuite extends AbstractZioSpec {
 
   private lazy val repository: Repository[Task, ConfigurationId, Configuration, Long] = new ConfigurationRepositoryGen(ctx)
 

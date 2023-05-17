@@ -7,24 +7,25 @@ import scala.util.Success
 
 trait SaleRepositorySuite extends AbstractSyncSpec {
 
-  private val repository        = new SaleRepositoryGen(ctx, "Sale")
-  private val personRepository  = new PersonRepositoryGen(ctx, "Person2")
+  private val saleRepository    = new SaleRepositoryGen(ctx, "Sale")
+  private val personRepository  = new PersonRepositoryGen(ctx, "Person3")
   private val productRepository = new ProductRepositoryGen(ctx, "Product")
   "Sale Repository " should {
     "Call all operations on Sale" in {
-      repository.all shouldBe Success(Seq())
+      saleRepository.all shouldBe Success(Seq())
       val personWithoutId  = Person(PersonId.empty, "firstName", "lastName", today)
       val person           = personRepository.createAndRead(personWithoutId).success.value
       val productWithoutId = Product(ProductId.empty, "productName")
       val product          = productRepository.createAndRead(productWithoutId).success.value
       val saleId           = SaleId(product.id, person.id)
       val sale             = Sale(saleId, now)
-      repository.createAndRead(sale).success.value shouldBe sale
+      saleRepository.createAndRead(sale).success.value shouldBe sale
+      saleRepository.update(sale).success.value shouldBe 1
+      val modSale = sale.copy(saleDate = sale.saleDate.plusDays(1))
+      saleRepository.createOrUpdateAndRead(modSale).success.value shouldBe modSale
 
-      repository.createOrUpdateAndRead(sale) shouldBe Symbol("success")
-
-      repository.read(saleId).success.value shouldBe Option(sale)
-      repository.delete(saleId) shouldBe Symbol("success")
+      saleRepository.read(saleId).success.value shouldBe Option(modSale)
+      saleRepository.delete(saleId).success.value shouldBe 1
       productRepository.delete(product.id)
       personRepository.delete(person.id)
     }

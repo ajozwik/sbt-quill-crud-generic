@@ -1,6 +1,7 @@
 package pl.jozwik.example.monix
 
-import pl.jozwik.example.domain.model.{ Person, PersonId }
+import pl.jozwik.example.domain.model.{Person, PersonId}
+import pl.jozwik.example.monix.repository.PersonRepositoryGen
 
 trait PersonRepositorySuite extends AbstractJdbcMonixSpec {
   "PersonRepository " should {

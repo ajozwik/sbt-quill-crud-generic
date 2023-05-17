@@ -2,7 +2,7 @@ package pl.jozwik.quillgeneric.sbt.generator
 
 import pl.jozwik.quillgeneric.sbt.generator.CodeGenerationTemplates.Monad
 
-trait WithTry {
+trait WithTry extends WithNoTask {
   protected def monad: String = "Try"
   protected def monadImport: String =
     s"""import util.$monad

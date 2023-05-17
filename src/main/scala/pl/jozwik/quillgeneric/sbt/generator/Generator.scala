@@ -31,5 +31,8 @@ trait Generator {
 
   protected def implicitBaseVariable: String
 
+  protected def toTask: String
+  protected def toTaskEnd: String
+
   def generate(rootPath: File)(description: RepositoryDescription): (File, String)
 }

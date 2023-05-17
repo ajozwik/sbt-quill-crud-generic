@@ -37,6 +37,8 @@ trait CodeGenerationTemplates {
   val RepositoryTraitSimpleClassName = "__REPOSITORY_TRAIT_SIMPLE_NAME__"
   val SqlIdiomImport                 = "__SQL_IDIOM_IMPORT__"
   val TableNamePattern               = "__TABLE_NAME__"
+  val ToTask                         = "__TO_TASK__"
+  val ToTaskEnd                      = "__TO_TASK_END__"
   val TryEnd                         = "__TRY_END__"
   val TryStart                       = "__TRY_START__"
   val Update                         = "__UP__"

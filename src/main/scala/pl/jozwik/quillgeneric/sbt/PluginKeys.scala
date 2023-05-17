@@ -21,6 +21,6 @@ trait PluginKeys {
       generateDescription := Seq.empty[RepositoryDescription],
       generateMonixRepositories := Seq.empty[RepositoryDescription],
       generateZioRepositories := Seq.empty[RepositoryDescription],
-      quillMacroVersion := "1.2.1-SNAPSHOT"
+      quillMacroVersion := "1.2.1"
     )
 }

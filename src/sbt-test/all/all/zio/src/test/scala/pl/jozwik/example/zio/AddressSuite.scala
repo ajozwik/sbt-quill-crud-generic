@@ -2,7 +2,7 @@ package pl.jozwik.example.zio
 
 import pl.jozwik.example.domain.model.{ Address, AddressId }
 
-trait AddressSuite extends AbstractZioMonixSpec {
+trait AddressSuite extends AbstractZioSpec {
   "Address " should {
       "Batch update address " in {
         val city = "Rakow"

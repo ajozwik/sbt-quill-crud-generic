@@ -90,6 +90,8 @@ abstract class AbstractCodeGenerator extends Generator with CodeGenerationTempla
     content
       .replace(ImplicitBaseVariable, implicitBaseVariable)
       .replace(CreateOrUpdate, createOrUpdate)
+      .replace(ToTask, toTask)
+      .replace(ToTaskEnd, toTaskEnd)
       .replace(AliasGenericDeclaration, aliasGenericDeclaration)
       .replace(GenericDeclaration, genericDeclaration)
       .replace(RepositoryMacroTraitImport, importMacroTraitRepository)

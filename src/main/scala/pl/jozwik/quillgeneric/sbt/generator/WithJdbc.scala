@@ -11,7 +11,7 @@ import pl.jozwik.quillgeneric.sbt.generator.jdbc.SyncCodeGenerator.{
 
 trait WithJdbc {
   protected def update                  = "Long"
-  protected def contextTransactionStart = "context.transaction {"
+  protected def contextTransactionStart = "inTransaction {"
   protected def contextTransactionEnd   = "}"
   protected def sqlIdiomImport          = "import io.getquill.context.sql.idiom.SqlIdiom"
 
@@ -22,7 +22,7 @@ trait WithJdbc {
 
   protected def createOrUpdate: String =
     s"""  override def createOrUpdate(entity: $BeanTemplate): $Monad[$BeanIdTemplate] =
-       |    $ContextTransactionStart $ImplicitContext
+       |    $ContextTransactionStart $ImplicitContext $ToTask
        |      for {
        |        el <- ${TryStart}run(find(entity.id).updateValue(entity))$TryEnd
        |        id <- el match {
@@ -34,6 +34,6 @@ trait WithJdbc {
        |      } yield {
        |        id
        |      }
-       |   $ContextTransactionEnd""".stripMargin
+       |   $ToTaskEnd $ContextTransactionEnd""".stripMargin
   protected def createOrUpdateAndRead = "createOrUpdateAndRead"
 }

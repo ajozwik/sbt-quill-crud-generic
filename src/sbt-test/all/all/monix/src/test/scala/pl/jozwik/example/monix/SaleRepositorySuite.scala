@@ -1,6 +1,7 @@
 package pl.jozwik.example.monix
 
-import pl.jozwik.example.domain.model._
+import pl.jozwik.example.domain.model.*
+import pl.jozwik.example.monix.repository.{PersonRepositoryGen, ProductRepositoryGen, SaleRepositoryGen}
 
 trait SaleRepositorySuite extends AbstractJdbcMonixSpec {
 

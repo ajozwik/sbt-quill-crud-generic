@@ -17,20 +17,14 @@ trait PersonRepositoryImplSuite extends AbstractSyncSpec {
     "Call all operations on Person2 with auto generated id" in {
 
       repository.all shouldBe Success(Seq())
-      val personId = repository.create(person) match {
-        case Failure(th) =>
-          logger.error("", th)
-          fail(th.getMessage, th)
-        case Success(value) =>
-          value
-      }
+      val personId = repository.create(person).success.value
       val createdPatron = repository.read(personId).success.value.getOrElse(fail())
       repository.update(createdPatron) shouldBe Symbol("success")
       repository.all shouldBe Success(Seq(createdPatron))
 
       repository.delete(createdPatron.id) shouldBe Symbol("success")
       repository.read(createdPatron.id).success.value shouldBe empty
-      repository.all shouldBe Success(Seq())
+      repository.all.success.value shouldBe empty
     }
 
     "Use create/update and read" in {
