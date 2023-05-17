@@ -7,7 +7,6 @@ object CassandraAsyncCodeGenerator extends AbstractCodeGenerator with WithCassan
   protected def genericPackage                          = "pl.jozwik.quillgeneric.cassandra.async"
   protected def aliasName                               = "CassandraAsyncContextDateQuotes"
   protected def domainRepository: String                 = "CassandraAsyncRepository"
-  protected def repositoryCompositeKey                  = "CassandraAsyncRepositoryCompositeKey"
   protected def domainRepositoryWithGenerated            = domainRepository
   override protected def implicitParameters: String     = s"(dSchema, $ec)"
   override protected def executionContext: String       = s"(implicit $ec: ExecutionContext)"

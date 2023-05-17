@@ -10,7 +10,6 @@ trait Generator {
   protected def monadImport: String
   protected def update: String
   protected def domainRepository: String
-  protected def repositoryCompositeKey: String
   protected def domainRepositoryWithGenerated: String
   protected def genericPackage: String
   protected def contextTransactionStart: String
@@ -31,6 +30,9 @@ trait Generator {
   protected def implicitContext: String
 
   protected def implicitBaseVariable: String
+
+  protected def toTask: String
+  protected def toTaskEnd: String
 
   def generate(rootPath: File)(description: RepositoryDescription): (File, String)
 }

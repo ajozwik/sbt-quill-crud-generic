@@ -4,7 +4,7 @@ lazy val readQuillMacroVersionSbt = sys.props.get("plugin.version") match {
   case Some(pluginVersion) =>
     pluginVersion
   case _ =>
-    "1.2.0"
+    "1.2.1"
 }
 
 def init(): Unit = {
@@ -97,125 +97,97 @@ lazy val async = projectWithSbtPlugin("async", file("async"))
     )
   )
 
+def repositories(generatePackage: String, repositoryImplPackage: String) = {
+  Seq(
+    RepositoryDescription(
+      s"$domainModelPackage.Address",
+      BeanIdClass(s"$domainModelPackage.AddressId"),
+      s"$generatePackage.AddressRepositoryGen",
+      true,
+      Option(s"$repositoryImplPackage.AddressRepositoryImpl[Dialect, Naming]"),
+      None,
+      Map("city" -> "city")
+    ),
+    RepositoryDescription(
+      s"$domainModelPackage.Cell4d",
+      BeanIdClass(s"$domainModelPackage.Cell4dId", Option(4)),
+      s"$generatePackage.Cell4dRepositoryGen",
+      false,
+      None,
+      None,
+      Map("id.fk1" -> "x", "id.fk2" -> "y", "id.fk3" -> "z", "id.fk4" -> "t")
+    ),
+    RepositoryDescription(
+      s"$domainModelPackage.Configuration",
+      BeanIdClass(s"$domainModelPackage.ConfigurationId"),
+      s"$generatePackage.ConfigurationRepositoryGen",
+      false,
+      None,
+      None,
+      Map("id" -> "key")
+    ),
+    RepositoryDescription(
+      s"$domainModelPackage.Person",
+      BeanIdClass(s"$domainModelPackage.PersonId"),
+      s"$generatePackage.Person3RepositoryGen",
+      true,
+      Option(s"$repositoryImplPackage.PersonRepositoryImpl[Dialect, Naming]"),
+      None,
+      Map("birthDate" -> "dob")
+    ),
+    RepositoryDescription(
+      s"$domainModelPackage.Person",
+      BeanIdClass(s"$domainModelPackage.PersonId"),
+      s"$generatePackage.PersonRepositoryGen",
+      true,
+      Option(s"$repositoryImplPackage.PersonRepositoryImpl[Dialect, Naming]"),
+      None,
+      Map("birthDate" -> "dob")
+    ),
+    RepositoryDescription(
+      s"$domainModelPackage.Product",
+      BeanIdClass(s"$domainModelPackage.ProductId"),
+      s"$generatePackage.ProductRepositoryGen",
+      true
+    ),
+    RepositoryDescription(
+      s"$domainModelPackage.Sale",
+      BeanIdClass(s"$domainModelPackage.SaleId", Option(2)),
+      s"$generatePackage.SaleRepositoryGen",
+      false,
+      None,
+      None,
+      Map("id.fk1" -> "PRODUCT_ID", "id.fk2" -> "PERSON_ID")
+    )
+  )
+}
+
 val generateRepositoryPackage = s"$basePackage.repository"
 val repositoryPackage         = s"$basePackage.sync.impl"
 
 lazy val sync = projectWithSbtPlugin("sync", file("sync"))
   .settings(
-    generateDescription := Seq(
-      RepositoryDescription(
-        s"$domainModelPackage.Address",
-        BeanIdClass(s"$domainModelPackage.AddressId"),
-        s"$generateRepositoryPackage.AddressRepositoryGen",
-        true,
-        Option(s"$repositoryPackage.AddressRepositoryImpl[Dialect, Naming]"),
-        None,
-        Map("city" -> "city")
-      ),
-      RepositoryDescription(
-        s"$domainModelPackage.Cell4d",
-        BeanIdClass(s"$domainModelPackage.Cell4dId", Option(4)),
-        s"$generateRepositoryPackage.Cell4dRepositoryGen",
-        false,
-        None,
-        None,
-        Map("id.fk1" -> "x", "id.fk2" -> "y", "id.fk3" -> "z", "id.fk4" -> "t")
-      ),
-      RepositoryDescription(
-        s"$domainModelPackage.Configuration",
-        BeanIdClass(s"$domainModelPackage.ConfigurationId"),
-        s"$basePackage.ConfigurationRepositoryGen",
-        false,
-        None,
-        None,
-        Map("id" -> "key")
-      ),
-      RepositoryDescription(
-        s"$domainModelPackage.Person",
-        BeanIdClass(s"$domainModelPackage.PersonId"),
-        s"$generateRepositoryPackage.PersonRepositoryGen",
-        true,
-        Option(s"$repositoryPackage.PersonRepositoryImpl[Dialect, Naming]"),
-        None
-      ),
-      RepositoryDescription(
-        s"$domainModelPackage.Product",
-        BeanIdClass(s"$domainModelPackage.ProductId"),
-        s"$generateRepositoryPackage.ProductRepositoryGen",
-        true
-      ),
-      RepositoryDescription(
-        s"$domainModelPackage.Sale",
-        BeanIdClass(s"$domainModelPackage.SaleId", Option(2)),
-        s"$generateRepositoryPackage.SaleRepositoryGen",
-        false,
-        None,
-        None,
-        Map("id.fk1" -> "PRODUCT_ID", "id.fk2" -> "PERSON_ID")
-      )
-    )
+    generateDescription := repositories(generateRepositoryPackage, repositoryPackage)
   )
 
 val monixPackage                   = s"$basePackage.monix"
-val monixRepositoryPackage         = s"$monixPackage.impl"
-val generateMonixRepositoryPackage = s"$monixPackage.repository"
+val monixImplPackage               = s"$monixPackage.impl"
+val monixGenerateRepositoryPackage = s"$monixPackage.repository"
 
 lazy val monix = projectWithSbtPlugin("monix", file("monix"))
   .settings(
-    generateMonixRepositories ++= Seq(
-      RepositoryDescription(
-        s"$domainModelPackage.Address",
-        BeanIdClass(s"$domainModelPackage.AddressId"),
-        s"$generateMonixRepositoryPackage.AddressRepositoryGen",
-        true,
-        Option(s"$monixRepositoryPackage.AddressRepositoryImpl[Dialect, Naming]"),
-        None,
-        Map("city" -> "city")
-      ),
-      RepositoryDescription(
-        s"$domainModelPackage.Cell4d",
-        BeanIdClass(s"$domainModelPackage.Cell4dId", Option(4)),
-        s"$generateMonixRepositoryPackage.Cell4dRepositoryGen",
-        false,
-        None,
-        None,
-        Map("id.fk1" -> "x", "id.fk2" -> "y", "id.fk3" -> "z", "id.fk4" -> "t")
-      ),
-      RepositoryDescription(
-        s"$domainModelPackage.Configuration",
-        BeanIdClass(s"$domainModelPackage.ConfigurationId"),
-        s"$generateMonixRepositoryPackage.ConfigurationRepositoryGen",
-        false,
-        None,
-        None,
-        Map("id" -> "key")
-      ),
-      RepositoryDescription(
-        s"$domainModelPackage.Person",
-        BeanIdClass(s"$domainModelPackage.PersonId"),
-        s"$generateMonixRepositoryPackage.PersonRepositoryGen",
-        true,
-        Option(s"$monixRepositoryPackage.PersonRepositoryImpl[Dialect, Naming]"),
-        None,
-        Map("birthDate" -> "dob")
-      ),
-      RepositoryDescription(
-        s"$domainModelPackage.Product",
-        BeanIdClass(s"$domainModelPackage.ProductId"),
-        s"$generateMonixRepositoryPackage.ProductRepositoryGen",
-        true
-      ),
-      RepositoryDescription(
-        s"$domainModelPackage.Sale",
-        BeanIdClass(s"$domainModelPackage.SaleId", Option(2)),
-        s"$generateMonixRepositoryPackage.SaleRepositoryGen",
-        false,
-        None,
-        None,
-        Map("id.fk1" -> "PRODUCT_ID", "id.fk2" -> "PERSON_ID")
-      )
-    )
+    generateMonixRepositories ++= repositories(monixGenerateRepositoryPackage, monixImplPackage)
   )
+
+val zioPackage                   = s"$basePackage.zio"
+val zioImplPackage               = s"$zioPackage.impl"
+val zioGenerateRepositoryPackage = s"$zioPackage.repository"
+
+lazy val zio = projectWithSbtPlugin("zio", file("zio"))
+  .settings(
+    generateZioRepositories ++= repositories(zioGenerateRepositoryPackage, zioImplPackage)
+  )
+  .dependsOn(sync % "test->test")
 
 val cassandraPackage                        = s"$basePackage.cassandra"
 val cassandraModelPackage                   = s"$cassandraPackage.model"

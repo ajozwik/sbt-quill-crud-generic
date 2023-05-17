@@ -1,7 +1,7 @@
 package pl.jozwik.example.monix
 
 import monix.eval.Task
-import pl.jozwik.example.domain.model.{ Configuration, ConfigurationId }
+import pl.jozwik.example.domain.model.{Configuration, ConfigurationId}
 import pl.jozwik.example.monix.repository.ConfigurationRepositoryGen
 import pl.jozwik.quillgeneric.repository.Repository
 

@@ -1,7 +1,7 @@
 package pl.jozwik.example.monix
 
 import monix.eval.Task
-import pl.jozwik.example.domain.model.{ Cell4d, Cell4dId }
+import pl.jozwik.example.domain.model.{Cell4d, Cell4dId}
 import pl.jozwik.example.monix.repository.Cell4dRepositoryGen
 import pl.jozwik.quillgeneric.repository.Repository
 

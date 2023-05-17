@@ -1,6 +1,6 @@
 package pl.jozwik.quillgeneric.sbt.generator
 import CodeGenerationTemplates.*
-trait WithMonix {
+trait WithMonix extends WithNoTask {
   protected def monad: String = "Task"
   protected def monadImport: String =
     s"""import monix.eval.$monad

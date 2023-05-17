@@ -6,6 +6,5 @@ object CassandraMonixCodeGenerator extends AbstractCodeGenerator with WithCassan
   protected def genericPackage               = "pl.jozwik.quillgeneric.cassandra.monix"
   protected def aliasName                    = "CassandraMonixContextDateQuotes"
   protected def domainRepository: String      = "CassandraMonixRepository"
-  protected def repositoryCompositeKey       = "CassandraMonixRepositoryCompositeKey"
   protected def domainRepositoryWithGenerated = domainRepository
 }

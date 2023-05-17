@@ -1,14 +1,13 @@
 package pl.jozwik.quillgeneric.sbt.generator.jdbc
 
-import pl.jozwik.quillgeneric.sbt.generator.{ AbstractCodeGenerator, CodeGenerationTemplates, WithFuture, WithJdbc }
+import pl.jozwik.quillgeneric.sbt.generator.{ AbstractCodeGenerator, CodeGenerationTemplates, WithFuture, WithJdbc, WithNoTask }
 
-object AsyncCodeGenerator extends AbstractCodeGenerator with WithJdbc with WithFuture {
-  private val asyncTransaction               = "f"
-  private val ec                             = "ec"
-  protected def genericPackage               = "pl.jozwik.quillgeneric.async"
-  protected def aliasName                    = "AsyncJdbcContextDateQuotes"
+object AsyncCodeGenerator extends AbstractCodeGenerator with WithJdbc with WithFuture with WithNoTask {
+  private val asyncTransaction                = "f"
+  private val ec                              = "ec"
+  protected def genericPackage                = "pl.jozwik.quillgeneric.async"
+  protected def aliasName                     = "AsyncJdbcContextDateQuotes"
   protected def domainRepository: String      = "AsyncJdbcRepository"
-  protected def repositoryCompositeKey       = "AsyncJdbcRepositoryCompositeKey"
   protected def domainRepositoryWithGenerated = "AsyncJdbcRepositoryWithGeneratedId"
 
   override protected def aliasGenericDeclaration =
