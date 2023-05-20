@@ -1,18 +1,16 @@
 package pl.jozwik.example.zio
 
 import io.getquill.H2ZioJdbcContext
-import io.getquill.context.jdbc.{ObjectGenericTimeDecoders, ObjectGenericTimeEncoders}
+import io.getquill.context.jdbc.{ ObjectGenericTimeDecoders, ObjectGenericTimeEncoders }
 import org.scalatest.BeforeAndAfterAll
 import pl.jozwik.example.AbstractSpec
 import pl.jozwik.example.sync.TryHelperSpec
-import pl.jozwik.example.zio.repository.AddressRepositoryGen
 import pl.jozwik.quillgeneric.repository.DateQuotes
-import zio.{Task, Unsafe, ZEnvironment}
-import zio.interop.catz.*
+import zio.{ Task, Unsafe, ZEnvironment }
+
 trait AbstractZioSpec extends AbstractSpec with BeforeAndAfterAll {
 
-  lazy protected val ctx               = new H2ZioJdbcContext(strategy) with ObjectGenericTimeDecoders with ObjectGenericTimeEncoders with DateQuotes
-  protected lazy val addressRepository = new AddressRepositoryGen(ctx)
+  lazy protected val ctx = new H2ZioJdbcContext(strategy) with ObjectGenericTimeDecoders with ObjectGenericTimeEncoders with DateQuotes
 
   override def afterAll(): Unit = {
     ctx.close()
