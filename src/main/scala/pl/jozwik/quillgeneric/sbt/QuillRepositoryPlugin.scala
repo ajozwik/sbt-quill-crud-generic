@@ -4,8 +4,8 @@ import sbt.Keys.*
 import sbt.*
 import sbt.plugins.JvmPlugin
 import DependencyHelper.*
-import pl.jozwik.quillgeneric.sbt.generator.cassandra.{ CassandraAsyncCodeGenerator, CassandraMonixCodeGenerator, CassandraSyncCodeGenerator }
-import pl.jozwik.quillgeneric.sbt.generator.jdbc.{ AsyncCodeGenerator, MonixJdbcCodeGenerator, SyncCodeGenerator, ZioJdbcCodeGenerator }
+import pl.jozwik.quillgeneric.sbt.generator.cassandra.*
+import pl.jozwik.quillgeneric.sbt.generator.jdbc.*
 import pl.jozwik.quillgeneric.sbt.generator.Generator
 
 object QuillRepositoryPlugin extends AutoPlugin {
@@ -16,7 +16,7 @@ object QuillRepositoryPlugin extends AutoPlugin {
 
   object autoImport extends PluginKeys
 
-  import autoImport._
+  import autoImport.*
 
   private def generate(descriptions: Seq[RepositoryDescription], rootPath: File, generator: Generator): Seq[File] =
     descriptions.map { d =>
@@ -26,12 +26,13 @@ object QuillRepositoryPlugin extends AutoPlugin {
     }
 
   @SuppressWarnings(Array("org.wartremover.warts.Any", "org.wartremover.warts.Nothing"))
-  override lazy val projectSettings: Seq[Def.Setting[_]] = {
-    defaultSettings ++ Seq[Def.Setting[_]](
+  override lazy val projectSettings: Seq[Def.Setting[?]] = {
+    defaultSettings ++ Seq[Def.Setting[?]](
       Compile / sourceGenerators += Def.task {
         val rootPath = (Compile / sourceManaged).value
         generate(generateDescription.value, rootPath, SyncCodeGenerator) ++
           generate(generateAsyncDescription.value, rootPath, AsyncCodeGenerator) ++
+          generate(generateDoobieRepositories.value, rootPath, DoobieCodeGenerator) ++
           generate(generateMonixRepositories.value, rootPath, MonixJdbcCodeGenerator) ++
           generate(generateZioRepositories.value, rootPath, ZioJdbcCodeGenerator) ++
           generate(generateCassandraSyncRepositories.value, rootPath, CassandraSyncCodeGenerator) ++
@@ -43,6 +44,7 @@ object QuillRepositoryPlugin extends AutoPlugin {
         addImport(true, "repository", quillMacroVersion.value) ++
           addImport(generateDescription.value.nonEmpty, "repository-jdbc-monad", quillMacroVersion.value) ++
           addImport(generateAsyncDescription.value.nonEmpty, "quill-async-jdbc", quillMacroVersion.value) ++
+          addImport(generateDoobieRepositories.value.nonEmpty, "repository-doobie", quillMacroVersion.value) ++
           addImport(generateMonixRepositories.value.nonEmpty, "quill-jdbc-monix", quillMacroVersion.value) ++
           addImport(generateZioRepositories.value.nonEmpty, "quill-jdbc-zio", quillMacroVersion.value) ++
           addImport(

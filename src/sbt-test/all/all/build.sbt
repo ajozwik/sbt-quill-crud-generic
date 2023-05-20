@@ -4,7 +4,7 @@ lazy val readQuillMacroVersionSbt = sys.props.get("plugin.version") match {
   case Some(pluginVersion) =>
     pluginVersion
   case _ =>
-    "1.2.1"
+    "1.2.2"
 }
 
 def init(): Unit = {
@@ -50,23 +50,17 @@ ThisBuild / scalacOptions ++= Seq(
   "-Xsource:3"
 )
 
-val scalaTestVersion = "3.2.14"
+val scalaTestVersion = "3.2.15"
 
-val `org.scalatest_scalatest` = "org.scalatest" %% "scalatest" % scalaTestVersion % Test
-
-val `org.scalacheck_scalacheck` = "org.scalacheck" %% "scalacheck" % "1.17.0" % Test
-
-val `org.scalatestplus_scalacheck-1-15` = "org.scalatestplus" %% "scalacheck-1-17" % s"$scalaTestVersion.0" % Test
-
-val `com.typesafe.scala-logging_scala-logging` = "com.typesafe.scala-logging" %% "scala-logging" % "3.9.5"
-
-val `ch.qos.logback_logback-classic` = "ch.qos.logback" % "logback-classic" % "1.2.11"
-
-val `com.h2database_h2` = "com.h2database" % "h2" % "1.4.200"
-
-val `org.cassandraunit_cassandra-unit` = "org.cassandraunit" % "cassandra-unit" % "4.3.1.0"
-
-val `com.datastax.cassandra_cassandra-driver-extras` = "com.datastax.cassandra" % "cassandra-driver-extras" % "3.11.3"
+val `ch.qos.logback_logback-classic`                 = "ch.qos.logback"              % "logback-classic"         % "1.2.11"
+val `com.datastax.cassandra_cassandra-driver-extras` = "com.datastax.cassandra"      % "cassandra-driver-extras" % "3.11.3"
+val `com.h2database_h2`                              = "com.h2database"              % "h2"                      % "2.1.214"
+val `com.typesafe.scala-logging_scala-logging`       = "com.typesafe.scala-logging" %% "scala-logging"           % "3.9.5"
+val `org.cassandraunit_cassandra-unit`               = "org.cassandraunit"           % "cassandra-unit"          % "4.3.1.0"
+val `org.scalacheck_scalacheck`                      = "org.scalacheck"             %% "scalacheck"              % "1.17.0"               % Test
+val `org.scalatest_scalatest`                        = "org.scalatest"              %% "scalatest"               % scalaTestVersion       % Test
+val `org.scalatestplus_scalacheck-1-15`              = "org.scalatestplus"          %% "scalacheck-1-17"         % s"$scalaTestVersion.0" % Test
+val `org.tpolecat_doobie-h2`                         = "org.tpolecat"               %% "doobie-h2"               % "1.0.0-RC2"
 
 val basePackage        = "pl.jozwik.example"
 val domainModelPackage = s"$basePackage.domain.model"
@@ -124,7 +118,7 @@ def repositories(generatePackage: String, repositoryImplPackage: String) = {
       false,
       None,
       None,
-      Map("id" -> "key")
+      Map("id" -> "`KEY`", "value" -> "`VALUE`")
     ),
     RepositoryDescription(
       s"$domainModelPackage.Person",
@@ -161,6 +155,17 @@ def repositories(generatePackage: String, repositoryImplPackage: String) = {
     )
   )
 }
+
+val doobiePackage                   = s"$basePackage.doobie"
+val doobieImplPackage               = s"$doobiePackage.impl"
+val doobieGenerateRepositoryPackage = s"$doobiePackage.repository"
+
+lazy val doobie = projectWithSbtPlugin("doobie", file("doobie"))
+  .settings(
+    generateDoobieRepositories ++= repositories(doobieGenerateRepositoryPackage, doobieImplPackage),
+    libraryDependencies ++= Seq(`org.tpolecat_doobie-h2` % Test)
+  )
+  .dependsOn(sync % "test->test")
 
 val generateRepositoryPackage = s"$basePackage.repository"
 val repositoryPackage         = s"$basePackage.sync.impl"
