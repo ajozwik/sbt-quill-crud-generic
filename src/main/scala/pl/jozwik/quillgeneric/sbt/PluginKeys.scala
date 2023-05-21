@@ -23,6 +23,6 @@ trait PluginKeys {
       generateDoobieRepositories := Seq.empty[RepositoryDescription],
       generateMonixRepositories := Seq.empty[RepositoryDescription],
       generateZioRepositories := Seq.empty[RepositoryDescription],
-      quillMacroVersion := "1.2.2"
+      quillMacroVersion := "1.2.3"
     )
 }

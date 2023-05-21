@@ -10,7 +10,7 @@ import pl.jozwik.quillgeneric.sbt.generator.jdbc.SyncCodeGenerator.{
 }
 
 trait WithJdbc {
-  protected def update                  = "Long"
+  protected def updateResult            = "Long"
   protected def contextTransactionStart = "inTransaction {"
   protected def contextTransactionEnd   = "}"
   protected def sqlIdiomImport          = "import io.getquill.context.sql.idiom.SqlIdiom"
@@ -36,4 +36,8 @@ trait WithJdbc {
        |      }
        |   $ToTaskEnd $ContextTransactionEnd""".stripMargin
   protected def createOrUpdateAndRead = "createOrUpdateAndRead"
+
+  protected val update: String =
+    """  override def update(entity: __BEAN__): __MONAD__[__UP__] =
+      |    __TRY_START__run(find(entity.id).updateValue(entity))__TRY_END__""".stripMargin
 }

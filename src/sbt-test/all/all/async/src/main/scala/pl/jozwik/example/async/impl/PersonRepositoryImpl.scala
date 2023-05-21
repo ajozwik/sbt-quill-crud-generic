@@ -5,12 +5,12 @@ import com.github.jasync.sql.db.ConcreteConnection
 import io.getquill.NamingStrategy
 import io.getquill.context.sql.idiom.SqlIdiom
 import pl.jozwik.example.async.PersonRepository
-import pl.jozwik.example.domain.model.{Person, PersonId}
+import pl.jozwik.example.domain.model.{ Person, PersonId }
 import pl.jozwik.quillgeneric.async.AsyncJdbcRepositoryWithGeneratedId
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.{ ExecutionContext, Future }
 
-trait PersonRepositoryImpl[Dialect <: SqlIdiom, +Naming <: NamingStrategy, C <: ConcreteConnection]
+trait PersonRepositoryImpl[Dialect <: SqlIdiom, Naming <: NamingStrategy, C <: ConcreteConnection]
   extends AsyncJdbcRepositoryWithGeneratedId[PersonId, Person, Dialect, Naming, C]
   with PersonRepository {
   import context.*

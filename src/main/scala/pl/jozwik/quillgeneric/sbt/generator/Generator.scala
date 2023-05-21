@@ -8,7 +8,7 @@ trait Generator {
   protected def aliasName: String
   protected def monad: String
   protected def monadImport: String
-  protected def update: String
+  protected def updateResult: String
   protected def domainRepository: String
   protected def domainRepositoryWithGenerated: String
   protected def genericPackage: String
@@ -33,6 +33,8 @@ trait Generator {
 
   protected def toTask: String
   protected def toTaskEnd: String
+
+  protected def update: String
 
   def generate(rootPath: File)(description: RepositoryDescription): (File, String)
 }

@@ -63,8 +63,7 @@ final class __REPOSITORY_NAME__[__ALIAS_GENERIC_DECLARATION__](
       seq.headOption
     }
 
-  override def update(entity: __BEAN__): __MONAD__[__UP__] =
-    __TRY_START__run(find(entity.id).updateValue(entity))__TRY_END__
+__UPDATE__
 
   override def delete(id: __ID__): __MONAD__[__UP__] =
     __TRY_START__run(find(id).delete)__TRY_END__

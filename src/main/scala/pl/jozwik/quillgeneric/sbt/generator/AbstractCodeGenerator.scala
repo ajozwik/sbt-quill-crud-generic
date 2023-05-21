@@ -66,7 +66,7 @@ abstract class AbstractCodeGenerator extends Generator with CodeGenerationTempla
       .replace(ConnectionTemplate, Connection)
       .replace(NamingTemplate, Naming)
       .replace(ContextAlias, aliasName)
-      .replace(Update, update)
+      .replace(UpdateResult, updateResult)
       .replace(Monad, monad)
       .replace(ContextTransactionStart, contextTransactionStart)
       .replace(ContextTransactionEnd, contextTransactionEnd)
@@ -88,6 +88,7 @@ abstract class AbstractCodeGenerator extends Generator with CodeGenerationTempla
 
   private def toGenericContent(content: String) =
     content
+      .replace(Update,update)
       .replace(ImplicitBaseVariable, implicitBaseVariable)
       .replace(CreateOrUpdate, createOrUpdate)
       .replace(ToTask, toTask)

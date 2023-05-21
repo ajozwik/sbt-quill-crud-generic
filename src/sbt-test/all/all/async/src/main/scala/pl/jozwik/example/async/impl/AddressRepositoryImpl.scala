@@ -6,11 +6,12 @@ import io.getquill.context.sql.idiom.SqlIdiom
 import pl.jozwik.example.async.AddressRepository
 import pl.jozwik.example.domain.model.{ Address, AddressId }
 import pl.jozwik.quillgeneric.async.AsyncJdbcRepositoryWithGeneratedId
+import pl.jozwik.quillgeneric.monad.RepositoryMonadWithGeneratedId
 
 import java.time.LocalDateTime
 import scala.concurrent.Future
 
-trait AddressRepositoryImpl[Dialect <: SqlIdiom, +Naming <: NamingStrategy, C <: ConcreteConnection]
+trait AddressRepositoryImpl[Dialect <: SqlIdiom, Naming <: NamingStrategy, C <: ConcreteConnection]
   extends AsyncJdbcRepositoryWithGeneratedId[AddressId, Address, Dialect, Naming, C]
   with AddressRepository {
 

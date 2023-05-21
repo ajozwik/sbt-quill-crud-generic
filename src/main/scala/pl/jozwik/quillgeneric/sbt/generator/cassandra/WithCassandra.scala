@@ -5,7 +5,7 @@ import pl.jozwik.quillgeneric.sbt.generator.WithNoTask
 import pl.jozwik.quillgeneric.sbt.generator.jdbc.SyncCodeGenerator.{ BeanIdTemplate, BeanTemplate }
 
 trait WithCassandra extends WithNoTask {
-  protected def update                     = "Unit"
+  protected def updateResult               = "Unit"
   protected def contextTransactionStart    = ""
   protected def contextTransactionEnd      = ""
   protected def sqlIdiomImport             = ""
@@ -27,4 +27,6 @@ trait WithCassandra extends WithNoTask {
        |      }
        |""".stripMargin
   protected def createOrUpdateAndRead = "createAndRead"
+
+  protected def update: String = ""
 }

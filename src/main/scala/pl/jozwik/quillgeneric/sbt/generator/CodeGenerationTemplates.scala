@@ -41,5 +41,6 @@ trait CodeGenerationTemplates {
   val ToTaskEnd                      = "__TO_TASK_END__"
   val TryEnd                         = "__TRY_END__"
   val TryStart                       = "__TRY_START__"
-  val Update                         = "__UP__"
+  val UpdateResult                   = "__UP__"
+  val Update                         = "__UPDATE__"
 }

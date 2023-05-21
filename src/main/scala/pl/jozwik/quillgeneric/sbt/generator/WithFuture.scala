@@ -10,5 +10,5 @@ trait WithFuture {
 
   protected def implicitContext = "implicit f =>"
 
-  protected def implicitBaseVariable = "(implicit protected val ec: ExecutionContext)"
+  protected def implicitBaseVariable = "(implicit protected val ec: ExecutionContext, protected val monad:Monad[Future])"
 }

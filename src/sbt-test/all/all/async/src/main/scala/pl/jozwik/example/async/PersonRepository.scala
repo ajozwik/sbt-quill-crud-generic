@@ -1,12 +1,12 @@
 package pl.jozwik.example.async
 
 import pl.jozwik.example.domain.model.{ Person, PersonId }
-import pl.jozwik.quillgeneric.repository.AsyncRepositoryWithGeneratedId
+import pl.jozwik.quillgeneric.repository.RepositoryWithGeneratedId
 
 import java.time.LocalDate
 import scala.concurrent.Future
 
-trait PersonRepository extends AsyncRepositoryWithGeneratedId[PersonId, Person, Long] {
+trait PersonRepository extends RepositoryWithGeneratedId[Future, PersonId, Person, Long] {
 
   def count: Future[Long]
 
