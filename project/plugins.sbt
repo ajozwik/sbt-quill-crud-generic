@@ -1,6 +1,6 @@
 resolvers += Classpaths.sbtPluginReleases
 
-addSbtPlugin("org.scalameta" % "sbt-scalafmt" % "2.4.6")
+addSbtPlugin("org.scalameta" % "sbt-scalafmt" % "2.5.0")
 
 addSbtPlugin("com.github.sbt" % "sbt-release" % "1.1.0")
 
@@ -12,4 +12,4 @@ addSbtPlugin("org.scoverage" % "sbt-scoverage" % "2.0.7")
 
 addSbtPlugin("org.scoverage" % "sbt-coveralls" % "1.3.8")
 
-addSbtPlugin("org.wartremover" % "sbt-wartremover" % "3.1.1")
+addSbtPlugin("org.wartremover" % "sbt-wartremover" % "3.1.3")
