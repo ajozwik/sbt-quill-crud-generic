@@ -5,6 +5,8 @@
 [![Coverage Status](https://coveralls.io/repos/github/ajozwik/sbt-quill-crud-generic/badge.svg?branch=master)](https://coveralls.io/github/ajozwik/sbt-quill-crud-generic?branch=master)
 [![Scala CI](https://github.com/ajozwik/sbt-quill-crud-generic/actions/workflows/ci.yml/badge.svg)](https://github.com/ajozwik/sbt-quill-crud-generic/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/ajozwik/sbt-quill-crud-generic/branch/master/graph/badge.svg?token=2DL1VU8F31)](https://codecov.io/gh/ajozwik/sbt-quill-crud-generic)
+
+
 Plugin to create generic repository based on [quill-generic](https://github.com/ajozwik/quill-generic) and [quill](https://github.com/getquill/quill)
 
 See [quill-macro-example](https://github.com/ajozwik/quill-macro-example) for example of usage
