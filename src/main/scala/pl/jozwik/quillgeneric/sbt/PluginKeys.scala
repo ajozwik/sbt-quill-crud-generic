@@ -13,7 +13,7 @@ trait PluginKeys {
   val generateZioRepositories          = settingKey[Seq[RepositoryDescription]]("Zio repositories descriptions")
   val quillMacroVersion                  = settingKey[String]("Quill macro version")
 
-  val defaultSettings: Seq[Def.Setting[_]] =
+  val defaultSettings: Seq[Def.Setting[?]] =
     Seq(
       generateAsyncDescription := Seq.empty[RepositoryDescription],
       generateCassandraAsyncRepositories := Seq.empty[RepositoryDescription],
@@ -23,6 +23,6 @@ trait PluginKeys {
       generateDoobieRepositories := Seq.empty[RepositoryDescription],
       generateMonixRepositories := Seq.empty[RepositoryDescription],
       generateZioRepositories := Seq.empty[RepositoryDescription],
-      quillMacroVersion := "1.2.3"
+      quillMacroVersion := "1.2.4"
     )
 }

@@ -4,7 +4,7 @@ lazy val readQuillMacroVersionSbt = sys.props.get("plugin.version") match {
   case Some(pluginVersion) =>
     pluginVersion
   case _ =>
-    "1.2.3"
+    "1.2.4"
 }
 
 def init(): Unit = {
@@ -21,7 +21,7 @@ ThisBuild / resolvers ++= Resolver.sonatypeOssRepos("releases")
 
 ThisBuild / resolvers ++= Resolver.sonatypeOssRepos("snapshots")
 
-val `scalaVersion_2.13` = "2.13.10"
+val `scalaVersion_2.13` = "2.13.11"
 
 val `scalaVersion_2.12` = "2.12.17"
 
@@ -31,7 +31,7 @@ ThisBuild / scalaVersion := `scalaVersion_2.13`
 
 ThisBuild / crossScalaVersions := Seq(`scalaVersion_2.13`, `scalaVersion_2.12`)
 
-ThisBuild / scapegoatVersion := "2.0.0"
+ThisBuild / scapegoatVersion := "2.1.2"
 
 ThisBuild / organization := "pl.jozwik.demo"
 
@@ -50,17 +50,17 @@ ThisBuild / scalacOptions ++= Seq(
   "-Xsource:3"
 )
 
-val scalaTestVersion = "3.2.15"
+val scalaTestVersion = "3.2.17"
 
 val `ch.qos.logback_logback-classic`                 = "ch.qos.logback"              % "logback-classic"         % "1.2.11"
-val `com.datastax.cassandra_cassandra-driver-extras` = "com.datastax.cassandra"      % "cassandra-driver-extras" % "3.11.3"
-val `com.h2database_h2`                              = "com.h2database"              % "h2"                      % "2.1.214"
+val `com.datastax.cassandra_cassandra-driver-extras` = "com.datastax.cassandra"      % "cassandra-driver-extras" % "3.11.5"
+val `com.h2database_h2`                              = "com.h2database"              % "h2"                      % "2.2.224"
 val `com.typesafe.scala-logging_scala-logging`       = "com.typesafe.scala-logging" %% "scala-logging"           % "3.9.5"
 val `org.cassandraunit_cassandra-unit`               = "org.cassandraunit"           % "cassandra-unit"          % "4.3.1.0"
 val `org.scalacheck_scalacheck`                      = "org.scalacheck"             %% "scalacheck"              % "1.17.0"               % Test
 val `org.scalatest_scalatest`                        = "org.scalatest"              %% "scalatest"               % scalaTestVersion       % Test
 val `org.scalatestplus_scalacheck-1-15`              = "org.scalatestplus"          %% "scalacheck-1-17"         % s"$scalaTestVersion.0" % Test
-val `org.tpolecat_doobie-h2`                         = "org.tpolecat"               %% "doobie-h2"               % "1.0.0-RC2"
+val `org.tpolecat_doobie-h2`                         = "org.tpolecat"               %% "doobie-h2"               % "1.0.0-RC4"
 
 val basePackage        = "pl.jozwik.example"
 val domainModelPackage = s"$basePackage.domain.model"
