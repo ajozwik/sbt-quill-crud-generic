@@ -6,7 +6,7 @@ ThisBuild / resolvers ++= Resolver.sonatypeOssRepos("releases")
 
 ThisBuild / resolvers ++= Resolver.sonatypeOssRepos("snapshots")
 
-val targetJdk = "8"
+val targetJdk = "11"
 
 ThisBuild / scalacOptions ++= Seq(
   "-encoding",
@@ -21,15 +21,15 @@ ThisBuild / scalacOptions ++= Seq(
   "-Ywarn-dead-code",
   "-language:reflectiveCalls",
   "-Ydelambdafy:method",
-  s"-target:jvm-$targetJdk",
+  s"-release:$targetJdk",
   "-Xsource:3"
 )
 
 ThisBuild / javacOptions ++= Seq("-Xlint:deprecation", "-Xdiags:verbose", "-source", targetJdk, "-target", targetJdk)
 
-ThisBuild / scalaVersion := "2.12.17"
+ThisBuild / scalaVersion := "2.12.18"
 
-val quillMacroVersion = "1.2.4"
+val quillMacroVersion = "1.2.5"
 
 val `com.typesafe.scala-logging_scala-logging` = "com.typesafe.scala-logging" %% "scala-logging" % "3.9.5"
 

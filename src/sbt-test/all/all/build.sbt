@@ -4,7 +4,7 @@ lazy val readQuillMacroVersionSbt = sys.props.get("plugin.version") match {
   case Some(pluginVersion) =>
     pluginVersion
   case _ =>
-    "1.2.4"
+    "1.2.5"
 }
 
 def init(): Unit = {
@@ -21,9 +21,9 @@ ThisBuild / resolvers ++= Resolver.sonatypeOssRepos("releases")
 
 ThisBuild / resolvers ++= Resolver.sonatypeOssRepos("snapshots")
 
-val `scalaVersion_2.13` = "2.13.11"
+val `scalaVersion_2.13` = "2.13.12"
 
-val `scalaVersion_2.12` = "2.12.17"
+val `scalaVersion_2.12` = "2.12.18"
 
 name := "quill-generic-example"
 
@@ -31,7 +31,7 @@ ThisBuild / scalaVersion := `scalaVersion_2.13`
 
 ThisBuild / crossScalaVersions := Seq(`scalaVersion_2.13`, `scalaVersion_2.12`)
 
-ThisBuild / scapegoatVersion := "2.1.2"
+ThisBuild / scapegoatVersion := "2.1.3"
 
 ThisBuild / organization := "pl.jozwik.demo"
 
@@ -64,33 +64,6 @@ val `org.tpolecat_doobie-h2`                         = "org.tpolecat"           
 
 val basePackage        = "pl.jozwik.example"
 val domainModelPackage = s"$basePackage.domain.model"
-
-val generateAsyncRepositoryPackage = s"$basePackage.repository.async"
-val repositoryAsyncPackage         = s"$basePackage.async.impl"
-
-lazy val async = projectWithSbtPlugin("async", file("async"))
-  .settings(
-    generateAsyncDescription := Seq(
-      RepositoryDescription(
-        s"$domainModelPackage.Address",
-        BeanIdClass(s"$domainModelPackage.AddressId"),
-        s"$generateAsyncRepositoryPackage.AddressRepositoryGen",
-        true,
-        Option(s"$repositoryAsyncPackage.AddressRepositoryImpl[Dialect, Naming, Connection]"),
-        None,
-        Map("city" -> "city")
-      ),
-      RepositoryDescription(
-        s"$domainModelPackage.Person",
-        BeanIdClass(s"$domainModelPackage.PersonId"),
-        s"$generateAsyncRepositoryPackage.PersonRepositoryGen",
-        true,
-        Option(s"$repositoryAsyncPackage.PersonRepositoryImpl[Dialect, Naming, Connection]"),
-        None
-      )
-    )
-  )
-
 def repositories(generatePackage: String, repositoryImplPackage: String) = {
   Seq(
     RepositoryDescription(
