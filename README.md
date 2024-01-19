@@ -1,7 +1,7 @@
 # sbt-quill-crud-generic
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/76974955a39d4373b990b656fb1c9de5)](https://app.codacy.com/manual/ajozwik/sbt-quill-crud-generic?utm_source=github.com&utm_medium=referral&utm_content=ajozwik/sbt-quill-crud-generic&utm_campaign=Badge_Grade_Dashboard)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.ajozwik/sbt-quill-crud-generic/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.ajozwik/sbt-quill-crud-generic)
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.ajozwik/sbt-quill-crud-generic_2.12_1.0.svg?label=latest%20release)](https://img.shields.io/maven-central/v/com.github.ajozwik/sbt-quill-crud-generic_2.12_1.0)
 [![Coverage Status](https://coveralls.io/repos/github/ajozwik/sbt-quill-crud-generic/badge.svg?branch=master)](https://coveralls.io/github/ajozwik/sbt-quill-crud-generic?branch=master)
 [![Scala CI](https://github.com/ajozwik/sbt-quill-crud-generic/actions/workflows/ci.yml/badge.svg)](https://github.com/ajozwik/sbt-quill-crud-generic/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/ajozwik/sbt-quill-crud-generic/branch/master/graph/badge.svg?token=2DL1VU8F31)](https://codecov.io/gh/ajozwik/sbt-quill-crud-generic)
